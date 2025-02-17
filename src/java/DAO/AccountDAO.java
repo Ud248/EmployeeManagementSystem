@@ -8,12 +8,67 @@ import Model.Account;
 import Utils.JDBCUtil;
 import java.util.ArrayList;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Ud
  */
 public class AccountDAO implements DAOInterface<Account> {
+
+    public boolean isAdmin(String username) {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        boolean isAdmin = false;
+        try {
+            con = JDBCUtil.getConnection();
+            String sql = "SELECT IsAdmin FROM Account WHERE Username = ?";
+            st = con.prepareStatement(sql);
+            st.setString(1, username);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                isAdmin = rs.getBoolean("IsAdmin");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            JDBCUtil.closeConnection(con);
+            try {
+                if (st != null) {
+                    st.close();
+                }
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return isAdmin;
+    }
+
+    public boolean isTrueAccount(String username, String password) {
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            con = JDBCUtil.getConnection();
+            String sql = "SELECT 1 FROM Account WHERE Username = ? AND Password = ?";
+            st = con.prepareStatement(sql);
+            st.setString(1, username);
+            st.setString(2, password);
+            rs = st.executeQuery();
+            if (rs.next()) {
+                JDBCUtil.closeConnection(con);
+                return true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return false;
+    }
 
     @Override
     public ArrayList<Account> selectAll() {
@@ -175,6 +230,12 @@ public class AccountDAO implements DAOInterface<Account> {
             e.printStackTrace();
         }
         return result > 0;
+    }
+
+    public static void main(String[] args) {
+        AccountDAO x = new AccountDAO();
+        boolean isTrueAccount = x.isTrueAccount("ChienNCGD0001", "123");
+        System.out.println(isTrueAccount);
     }
 
 }
