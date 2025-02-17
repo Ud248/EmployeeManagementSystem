@@ -21,13 +21,13 @@
                 </div>
             </div>
             <!-- LOGIN FORM -->
-            <form action="#" class="login-form">
+            <form action="login" class="login-form" method="post">
                 <div class="input-box">
-                    <input type="text" class="input-field" id="username" required>
+                    <input type="text" class="input-field" id="username" name="username" value="${username}" required>
                     <label for="username" class="label">Username</label>
                 </div>
                 <div class="input-box">
-                    <input type="password" class="input-field" id="password" required>
+                    <input type="password" class="input-field" id="password" name="password" required>
                     <label for="password" class="label">Password</label>
                 </div>
                 <div class="input-box">
