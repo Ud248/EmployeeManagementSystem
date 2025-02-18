@@ -4,7 +4,11 @@
  */
 package Model;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -12,24 +16,24 @@ import java.time.LocalDate;
  */
 public class Work {
 
-    private int workId;
     private int shiftId;
-    private int employeeId;
     private LocalDate workDate;
+    private DayOfWeek weekDay;
+    List<Integer> employeeId;
 
-    public Work(int workId, int shiftId, int employeeId, LocalDate workDate) {
-        this.workId = workId;
+    public Work(int shiftId, LocalDate workDate) {
         this.shiftId = shiftId;
+        this.employeeId = new ArrayList<>();
+        this.workDate = workDate;
+        this.weekDay = workDate.getDayOfWeek();
+    }
+
+    public Work(int shiftId,  LocalDate workDate, ArrayList<Integer> employeeId) {
+        this.shiftId = shiftId;
+        this.employeeId = new ArrayList<>();
         this.employeeId = employeeId;
         this.workDate = workDate;
-    }
-
-    public int getWorkId() {
-        return workId;
-    }
-
-    public void setWorkId(int workId) {
-        this.workId = workId;
+        this.weekDay = workDate.getDayOfWeek();
     }
 
     public int getShiftId() {
@@ -40,11 +44,11 @@ public class Work {
         this.shiftId = shiftId;
     }
 
-    public int getEmployeeId() {
+    public List<Integer> getEmployeeId() {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
+    public void setEmployeeId(List<Integer> employeeId) {
         this.employeeId = employeeId;
     }
 
@@ -55,4 +59,13 @@ public class Work {
     public void setWorkDate(LocalDate workDate) {
         this.workDate = workDate;
     }
+
+    public DayOfWeek getWeekDay() {
+        return weekDay;
+    }
+
+    public void setWeekDay(DayOfWeek weekDay) {
+        this.weekDay = weekDay;
+    }
+    
 }
