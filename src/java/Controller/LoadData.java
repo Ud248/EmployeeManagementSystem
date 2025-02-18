@@ -6,6 +6,7 @@ package Controller;
 
 import DAO.AccountDAO;
 import DAO.EmployeeDAO;
+import DTO.EmployeeDTO;
 import Model.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -56,7 +57,7 @@ public class LoadData extends HttpServlet {
                 // Use default value
             }
 
-            List<Employee> employees = eDao.selectAll(page, itemsPerPage);
+            List<EmployeeDTO> employees = eDao.selectAllEmployeeDTO();
             int totalEmployees = eDao.getTotalEmployees();
             int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
 
