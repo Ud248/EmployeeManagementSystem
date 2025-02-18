@@ -5,6 +5,7 @@
 package Model;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
@@ -69,6 +70,10 @@ public class Employee {
     public LocalDate getBirthDate() {
         return birthDate;
     }
+    public String getFormattedBirthDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return birthDate.format(formatter);
+    }
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
@@ -101,7 +106,7 @@ public class Employee {
     public int getPositionId() {
         return positionId;
     }
-
+    
     public void setPositionId(int positionId) {
         this.positionId = positionId;
     }
@@ -115,7 +120,8 @@ public class Employee {
     }
     
     public String getFullName(){
-        return this.getFirstName() + " " + this.getLastName();
+        return this.getLastName() + " " + this.getFirstName();
     }
-
+    
+    
 }

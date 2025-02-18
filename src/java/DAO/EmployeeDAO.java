@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.EmployeeDTO;
 import Model.Employee;
 import Utils.JDBCUtil;
 import java.util.ArrayList;
@@ -45,6 +46,43 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 int departmentId = rs.getInt("DepartmentID");
                 Employee e = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address, positionId, departmentId);
                 result.add(e);
+            }
+
+            //B5: Đóng kết nối
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public ArrayList<EmployeeDTO> selectAllEmployeeDTO() {
+        ArrayList<EmployeeDTO> result = new ArrayList<>();
+        try {
+            //B1: Tạo kết nối đến CSDL
+            Connection con = JDBCUtil.getConnection();
+
+            //B2: Tạo ra đối tượng PreparedStatement
+            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName as 'Fullname', e.Gender, e.BirthDate, e.Tel, p.PositionName AS PositionName, d.DepartmentName AS DepartmentName\n"
+                    + "FROM Employee e\n"
+                    + "JOIN Position p ON e.PositionID = p.PositionID\n"
+                    + "JOIN Department d ON e.DepartmentID = d.DepartmentID";
+            PreparedStatement st = con.prepareStatement(sql);
+
+            //B3: Thực thi câu lệnh sql
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+
+            //B4: Xử lý kết quả truy vấn
+            while (rs.next()) {
+                String employeeCode = rs.getString("EmployeeCode");
+                String fullname = rs.getString("Fullname");
+                LocalDate birthDate = rs.getDate("BirthDate").toLocalDate();
+                String gender = rs.getString("Gender");
+                String tel = rs.getString("Tel");
+                String positionName = rs.getString("PositionName");
+                String departmentName = rs.getString("DepartmentName");
+                result.add(new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, positionName, departmentName));
             }
 
             //B5: Đóng kết nối
@@ -252,4 +290,10 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result > 0;
     }
 
+    public static void main(String[] args) {
+        ArrayList<EmployeeDTO> list = new EmployeeDAO().selectAllEmployeeDTO();
+        for(EmployeeDTO e : list){
+            System.out.println(e);
+        }
+    }
 }
