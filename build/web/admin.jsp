@@ -11,6 +11,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="./css/styleAdmin.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy tất cả các mục menu
@@ -131,13 +132,13 @@
                     <tbody>
                     <c:forEach var="employee" items="${employees}">
                         <tr>
-                            <td>${employee.id}</td>
-                            <td>${employee.userName}</td>
-                            <td>${employee.firstName}</td>
-                            <td>${employee.lastName}</td>
-                            <td>${employee.fullName}</td>
-                            <td>${employee.email}</td>
-                            <td>${employee.email}</td>
+                            <td>${employee.getEmployeeCode()}</td>
+                            <td>${employee.getFullName()}</td>
+                            <td>${employee.getGender()}</td>
+                            <td>${employee.getBirthDate()}</td>
+                            <td>${employee.getTel()}</td>
+                            <td>${employee.getPositionId()}</td>
+                            <td>${employee.getDepartmentId()}</td>
                             <td>
                                 <button class="btn btn-view" onclick="viewEmployee(${employee.id})">
                                     <i class="fas fa-eye"></i>

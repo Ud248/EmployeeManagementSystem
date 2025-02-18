@@ -113,5 +113,9 @@ public class Employee {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
+    
+    public String getFullName(){
+        return this.getFirstName() + " " + this.getLastName();
+    }
 
 }

@@ -34,12 +34,16 @@ public class Login extends HttpServlet {
             boolean isAdmin = accountDAO.isAdmin(username);
             System.out.println(isAdmin);
             if (isAdmin) {
-                response.sendRedirect("admin.jsp");
+//                response.sendRedirect("admin.jsp");
+                response.sendRedirect("employee-list");
+//                request.getRequestDispatcher("/employee-list").forward(request, response);
+
             } else {
                 response.sendRedirect("employee.jsp");
             }
         } else {
             request.setAttribute("username", username);
+            request.setAttribute("error", "Incorrect username or password.");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }

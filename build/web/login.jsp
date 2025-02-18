@@ -14,6 +14,12 @@
         <title>Login</title>
     </head>
     <body>
+        <% 
+        String error = request.getAttribute("error") + "";
+        if(error.equals("null")){
+        error = "";
+            }
+        %>
         <div class="wrapper">
             <div class="form-header">
                 <div class="titles">
@@ -33,6 +39,7 @@
                 <div class="input-box">
                     <button class="btn-submit" id="SignInBtn">Log In <i class='bx bx-log-in' ></i></button>
                 </div>
+                    <div style="text-align: center"><span style="color: red"><%=error %></span></div>
             </form>
         </div>
     </body>
