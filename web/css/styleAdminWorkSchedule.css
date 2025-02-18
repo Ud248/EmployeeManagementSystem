@@ -1,0 +1,48 @@
+.content{
+    background-color: #fff; /* Bên trong màu trắng */
+    border: 1px solid #fff; /* Viền màu trắng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Đổ bóng đậm hơn */
+    padding: 20px;
+    border-radius: 4px; /* Tùy chọn: bo tròn góc */
+    margin: 10px 10px;
+    height: 600px;
+    margin: 64px 50px;
+}
+
+h2{
+    font-weight: normal;
+}
+
+.title{
+    font-weight: normal;
+    border: 2px solid transparent; /* Viền trong suốt */
+    padding: 10px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    width: 450px;
+    margin-left: 30%;
+    margin-bottom: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+td{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+thead {
+    border-bottom: 3px solid #000; /* Đặt đường viền ở cuối thead */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Màu xám nhạt cho dòng chẵn */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff; /* Màu trắng cho dòng lẻ */
+}
+
