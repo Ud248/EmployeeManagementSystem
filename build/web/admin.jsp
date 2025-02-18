@@ -27,7 +27,7 @@
             </ul>
         </div>
         <div class="content" id="main-content">
-            
+
         </div>
     </body>
 </html>
@@ -48,7 +48,9 @@
             });
         });
     });
+</script>
 
+<script>
 //content
     // src/main/webapp/js/employee.js
     function searchEmployees() {
@@ -116,6 +118,7 @@
             url: page + ".jsp",
             success: function (data) {
                 $("#main-content").html(data);
+                localStorage.setItem("currentPage", page); // Lưu trạng thái vào localStorage
             },
             error: function () {
                 $("#main-content").html("<p>Không thể tải nội dung.</p>");
@@ -123,8 +126,12 @@
         });
     }
 
-    // Khi trang tải xong, mặc định load employeeList.jsp
+    // Khi trang tải xong, kiểm tra trạng thái trước đó và load trang tương ứng
     $(document).ready(function () {
-        loadContent("adminEmployeeList");
+        let savedPage = localStorage.getItem("currentPage");
+        if (!savedPage) {
+            savedPage = "adminEmployeeList"; // Mặc định mở adminEmployeeList
+        }
+        loadContent(savedPage);
     });
 </script>

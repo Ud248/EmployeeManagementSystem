@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="./css/styleAdminWorkSchedule.css"/>
     </head>
     <body>
-        <div class="content">
+        <div class="contentWS">
             <div class="title">
                 <h2>Work Schedule List</h2>
             </div>
