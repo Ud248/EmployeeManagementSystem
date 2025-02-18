@@ -82,7 +82,6 @@
     </div>
 </body>
 </html>
-//đánh dấu selected cho nội dung được chọn trên menu
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Lấy tất cả các mục menu
@@ -101,7 +100,6 @@
     });
 </script>
 
-//chuyển nội dung menu
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const menuItems = document.querySelectorAll('.menu li');
@@ -130,7 +128,6 @@
     });
 </script>
 
-//ẩn nút chấm công
 <script>
     function hideButton(form) {
         // Ẩn nút sau khi form được gửi
