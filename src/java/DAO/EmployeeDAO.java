@@ -58,20 +58,20 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public ArrayList<Employee> selectAll(int page, int itemsPerPage) {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            //B1: Tạo kết nối đến CSDL
+            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            //B2: Tạo ra đối tượng PreparedStatement
-            String sql = "SELECT * FROM Employee LIMIT ? OFFSET ?";
+            // B2: Tạo ra đối tượng PreparedStatement
+            String sql = "SELECT * FROM Employee ORDER BY EmployeeID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, itemsPerPage);
-            st.setInt(2, (page - 1) * itemsPerPage);
+            st.setInt(1, (page - 1) * itemsPerPage);
+            st.setInt(2, itemsPerPage);
 
-            //B3: Thực thi câu lệnh sql
+            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             ResultSet rs = st.executeQuery();
 
-            //B4: Xử lý kết quả truy vấn
+            // B4: Xử lý kết quả truy vấn
             while (rs.next()) {
                 int employeeId = rs.getInt("EmployeeID");
                 String employeeCode = rs.getString("EmployeeCode");
@@ -87,7 +87,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 result.add(e);
             }
 
-            //B5: Đóng kết nối
+            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();

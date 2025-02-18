@@ -51,67 +51,6 @@
 </script>
 
 <script>
-//content
-    // src/main/webapp/js/employee.js
-    function searchEmployees() {
-        const input = document.getElementById("searchName");
-        const filter = input.value.toUpperCase();
-        const table = document.querySelector(".table");
-        const rows = table.getElementsByTagName("tr");
-
-        for (let i = 1; i < rows.length; i++) {
-            const firstNameCell = rows[i].getElementsByTagName("td")[2]; // First Name column
-            if (firstNameCell) {
-                const txtValue = firstNameCell.textContent || firstNameCell.innerText;
-                rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-            }
-        }
-    }
-
-    function viewEmployee(id) {
-        window.location.href = 'viewEmployee?id=' + id;
-    }
-
-    function editEmployee(id) {
-        window.location.href = 'editEmployee?id=' + id;
-    }
-
-    function deleteEmployee(id) {
-        if (confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
-            window.location.href = 'deleteEmployee?id=' + id;
-        }
-    }
-
-    function changeItemsPerPage(value) {
-        window.location.href = '?page=1&items=' + value;
-    }
-
-// Debounce function để tối ưu search
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-// Áp dụng debounce cho search
-    const debouncedSearch = debounce(searchEmployees, 300);
-
-// Thêm event listener khi document đã load
-    document.addEventListener('DOMContentLoaded', function () {
-        const searchInput = document.getElementById('searchName');
-        if (searchInput) {
-            searchInput.addEventListener('input', debouncedSearch);
-        }
-    });
-</script>
-
-<script>
     // Hàm tải trang con vào #main-content
     function loadContent(page) {
         $.ajax({

@@ -31,13 +31,7 @@ public class Login extends HttpServlet {
         if (isTrueAccount) {
             HttpSession session = request.getSession();
             session.setAttribute("username", username);
-            boolean isAdmin = accountDAO.isAdmin(username);
-            System.out.println(isAdmin);
-            if (isAdmin) {
-                response.sendRedirect("admin.jsp");
-            } else {
-                response.sendRedirect("employee.jsp");
-            }
+            request.getRequestDispatcher("load-data").forward(request, response);
         } else {
             request.setAttribute("username", username);
             request.setAttribute("error", "Incorrect username or password.");
