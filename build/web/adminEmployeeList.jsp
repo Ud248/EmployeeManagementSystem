@@ -38,6 +38,43 @@
                 margin-top: 10px;
                 color: #666;
             }
+
+            /* Style cho popup */
+            .popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                justify-content: center;
+                align-items: center;
+            }
+
+            .popup-content {
+                background: white;
+                width: 600px;
+                height: 86%;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                position: relative;
+            }
+
+            .popup-content iframe {
+                width: 100%;
+                height: 90%;
+                border: none;
+            }
+
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 15px;
+                font-size: 20px;
+                cursor: pointer;
+            }
         </style>
 
         <script>
@@ -54,9 +91,34 @@
                     window.location.href = 'deleteEmployee?id=' + id;
                 }
             }
+
+            function openPopup() {
+                document.getElementById('insertEmployeePopup').style.display = 'flex';
+            }
+
+            function closePopup() {
+                document.getElementById('insertEmployeePopup').style.display = 'none';
+            }
+
+            // Đóng popup khi bấm ra ngoài
+            document.addEventListener('click', function (event) {
+                let popup = document.getElementById('insertEmployeePopup');
+                let popupContent = document.querySelector('.popup-content');
+
+                if (event.target === popup) {
+                    closePopup();
+                }
+            });
         </script>
     </head>
     <body>
+        <div id="insertEmployeePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <iframe id="insertEmployeeFrame" src="insertEmployee.jsp"></iframe>
+            </div>
+        </div>
+
         <div class="content">
             <div class="container">
                 <h2 class="page-title">Employee List</h2>
@@ -67,7 +129,7 @@
                            id="searchName" 
                            placeholder="Search With FirstName">
 
-                    <button class="new-employee-btn" onclick="location.href = 'newEmployee.jsp'">
+                    <button class="new-employee-btn" onclick="openPopup()">
                         <i class="fas fa-plus"></i> New Employee
                     </button>
                 </div>

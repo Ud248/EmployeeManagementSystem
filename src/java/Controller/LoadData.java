@@ -6,8 +6,11 @@ package Controller;
 
 import DAO.AccountDAO;
 import DAO.EmployeeDAO;
+import DAO.WorkDAO;
 import DTO.EmployeeDTO;
+import Model.Department;
 import Model.Employee;
+import Model.Position;
 import Model.Work;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +28,7 @@ import java.util.List;
  *
  * @author Ud
  */
-@WebServlet(name = "LoadData", urlPatterns = { "/load-data" })
+@WebServlet(name = "LoadData", urlPatterns = {"/load-data"})
 public class LoadData extends HttpServlet {
 
     @Override
@@ -61,21 +64,27 @@ public class LoadData extends HttpServlet {
             if (currentPage > totalPages) {
                 currentPage = totalPages;
             }
+            
+            //Set list position and department
+            List<Position> listPosition = new DAO.PositionDAO().selectAll();
+            List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
 
             // Get paginated list of employees
             List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
             session.setAttribute("employees", employees);
+            session.setAttribute("listPosition", listPosition);
+            session.setAttribute("listDepartment", listDepartment);
             session.setAttribute("currentPage", currentPage);
             session.setAttribute("totalPages", totalPages);
             session.setAttribute("itemsPerPage", itemsPerPage);
             session.setAttribute("totalEmployees", totalEmployees);
         } else {
             url = "employee.jsp";
+            WorkDAO w = new WorkDAO();
+            ArrayList<Work> works = w.selectAll();
+            request.getServletContext().setAttribute("works", works);
         }
-//        WorkDAO w = new WorkDAO();
-//        ArrayList<Work> works = w.selectAll();
-//        request.getServletContext().setAttribute("works", works);
-//        response.sendRedirect(url);
+        response.sendRedirect(url);
     }
 
     @Override

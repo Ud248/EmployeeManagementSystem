@@ -35,6 +35,19 @@ public class Employee {
         this.departmentId = departmentId;
     }
 
+    public Employee(String firstName, String lastName, LocalDate birthDate, String gender, String tel, String address, int positionId, int departmentId) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.tel = tel;
+        this.address = address;
+        this.positionId = positionId;
+        this.departmentId = departmentId;
+    }
+    
+    
+
     public int getEmployeeId() {
         return employeeId;
     }
