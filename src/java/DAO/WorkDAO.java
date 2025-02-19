@@ -140,4 +140,6 @@ public class WorkDAO implements DAOInterface<Work> {
 //        return result > 0;
         return false;
     }
+    
+    public boolean 
 }
