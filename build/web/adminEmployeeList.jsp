@@ -1,9 +1,3 @@
-<%-- 
-    Document   : Admin
-    Created on : Feb 17, 2025, 10:43:20 AM
-    Author     : anhnn
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -14,22 +8,39 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="./css/styleAdminEmployeeList.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-        <script>
-            function searchEmployees() {
-                const input = document.getElementById("searchName");
-                const filter = input.value.toUpperCase();
-                const table = document.querySelector(".table");
-                const rows = table.getElementsByTagName("tr");
-
-                for (let i = 1; i < rows.length; i++) {
-                    const firstNameCell = rows[i].getElementsByTagName("td")[2]; // First Name column
-                    if (firstNameCell) {
-                        const txtValue = firstNameCell.textContent || firstNameCell.innerText;
-                        rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-                    }
-                }
+        <style>
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                gap: 10px;
             }
 
+            .pagination a {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                text-decoration: none;
+                color: #333;
+            }
+
+            .pagination a.active {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #f0f0f0;
+            }
+
+            .page-info {
+                text-align: center;
+                margin-top: 10px;
+                color: #666;
+            }
+        </style>
+
+        <script>
             function viewEmployee(id) {
                 window.location.href = 'viewEmployee?id=' + id;
             }
@@ -43,34 +54,6 @@
                     window.location.href = 'deleteEmployee?id=' + id;
                 }
             }
-
-            function changeItemsPerPage(value) {
-                window.location.href = '?page=1&items=' + value;
-            }
-
-// Debounce function để tối ưu search
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
-
-// Áp dụng debounce cho search
-            const debouncedSearch = debounce(searchEmployees, 300);
-
-// Thêm event listener khi document đã load
-            document.addEventListener('DOMContentLoaded', function () {
-                const searchInput = document.getElementById('searchName');
-                if (searchInput) {
-                    searchInput.addEventListener('input', debouncedSearch);
-                }
-            });
         </script>
     </head>
     <body>
@@ -103,23 +86,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="e" items="${employees}">
+                        <c:forEach var="e" items="${sessionScope.employees}">
                             <tr>
                                 <td>${e.getEmployeeCode()}</td>
-                                <td>${e.getFullName()}</td>
+                                <td>${e.getFullname()}</td>
                                 <td>${e.getGender()}</td>
-                                <td>${e.getBirthDate()}</td>
+                                <td>${e.getFormattedBirthDate()}</td>
                                 <td>${e.getTel()}</td>
-                                <td>${e.getPositionId()}</td>
-                                <td>${e.getDepartmentId()}</td>
+                                <td>${e.getPositionName()}</td>
+                                <td>${e.getDepartmentName()}</td>
                                 <td>
-                                    <button class="btn btn-view" onclick="viewEmployee(${employee.id})">
+                                    <button class="btn btn-view" onclick="viewEmployee(${e.getEmployeeCode()})">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <button class="btn btn-edit" onclick="editEmployee(${employee.id})">
+                                    <button class="btn btn-edit" onclick="editEmployee(${e.getEmployeeCode()})">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-delete" onclick="deleteEmployee(${employee.id})">
+                                    <button class="btn btn-delete" onclick="deleteEmployee(${e.getEmployeeCode()})">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -128,34 +111,28 @@
                     </tbody>
                 </table>
 
-
+                <!-- Pagination -->
                 <div class="pagination">
                     <c:if test="${currentPage > 1}">
-                        <a href="?page=${currentPage - 1}">Prev</a>
+                        <a href="load-data?page=${currentPage - 1}">&laquo; Previous</a>
                     </c:if>
 
                     <c:forEach begin="1" end="${totalPages}" var="i">
-                        <c:choose>
-                            <c:when test="${currentPage == i}">
-                                <span class="current-page">${i}</span>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="?page=${i}">${i}</a>
-                            </c:otherwise>
-                        </c:choose>
+                        <a href="load-data?page=${i}" 
+                           class="${i == currentPage ? 'active' : ''}">${i}</a>
                     </c:forEach>
 
                     <c:if test="${currentPage < totalPages}">
-                        <a href="?page=${currentPage + 1}">Next</a>
+                        <a href="load-data?page=${currentPage + 1}">Next &raquo;</a>
                     </c:if>
+                </div>
 
-                    <select class="items-per-page" onchange="changeItemsPerPage(this.value)">
-                        <option value="5" ${itemsPerPage == 5 ? 'selected' : ''}>5</option>
-                        <option value="10" ${itemsPerPage == 10 ? 'selected' : ''}>10</option>
-                        <option value="20" ${itemsPerPage == 20 ? 'selected' : ''}>20</option>
-                    </select>
+                <div class="page-info">
+                    Showing page ${currentPage} of ${totalPages}
+                    (Total: ${totalEmployees} employees)
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

@@ -4,11 +4,13 @@
  */
 package DAO;
 
+import DTO.EmployeeDTO;
 import Model.Employee;
 import Utils.JDBCUtil;
 import java.util.ArrayList;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -20,18 +22,18 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public ArrayList<Employee> selectAll() {
         ArrayList<Employee> result = new ArrayList<>();
         try {
-            //B1: Tạo kết nối đến CSDL
+            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            //B2: Tạo ra đối tượng PreparedStatement
+            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "SELECT * FROM Employee";
             PreparedStatement st = con.prepareStatement(sql);
 
-            //B3: Thực thi câu lệnh sql
+            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             ResultSet rs = st.executeQuery();
 
-            //B4: Xử lý kết quả truy vấn
+            // B4: Xử lý kết quả truy vấn
             while (rs.next()) {
                 int employeeId = rs.getInt("EmployeeID");
                 String employeeCode = rs.getString("EmployeeCode");
@@ -43,16 +45,61 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
-                Employee e = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address, positionId, departmentId);
+                Employee e = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
+                        address, positionId, departmentId);
                 result.add(e);
             }
 
-            //B5: Đóng kết nối
+            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public List<EmployeeDTO> selectEmployeesByPage(int page, int itemsPerPage) {
+        List<EmployeeDTO> result = new ArrayList<>();
+        String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Gender, e.BirthDate, e.Tel, "
+                + "p.PositionName AS PositionName, d.DepartmentName AS DepartmentName "
+                + "FROM Employee e "
+                + "JOIN Position p ON e.PositionID = p.PositionID "
+                + "JOIN Department d ON e.DepartmentID = d.DepartmentID "
+                + "ORDER BY e.EmployeeCode "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setInt(1, (page - 1) * itemsPerPage);
+            st.setInt(2, itemsPerPage);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(new EmployeeDTO(
+                        rs.getString("EmployeeCode"),
+                        rs.getString("Fullname"),
+                        rs.getDate("BirthDate").toLocalDate(),
+                        rs.getString("Gender"),
+                        rs.getString("Tel"),
+                        rs.getString("PositionName"),
+                        rs.getString("DepartmentName")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int getTotalEmployees() {
+        String sql = "SELECT COUNT(*) AS total FROM Employee";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public ArrayList<Employee> selectAll(int page, int itemsPerPage) {
@@ -83,7 +130,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
-                Employee e = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address, positionId, departmentId);
+                Employee e = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
+                        address, positionId, departmentId);
                 result.add(e);
             }
 
@@ -95,37 +143,23 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result;
     }
 
-    public int getTotalEmployees() {
-        try {
-            Connection con = JDBCUtil.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM Employee");
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     @Override
     public Employee selectById(Employee t) {
         Employee result = null;
         try {
-            //B1: Tạo kết nối đến CSDL
+            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            //B2: Tạo ra đối tượng PreparedStatement
+            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "SELECT * FROM Employee WHERE EmployeeID=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, t.getEmployeeId());
 
-            //B3: Thực thi câu lệnh sql
+            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             ResultSet rs = st.executeQuery();
 
-            //B4: Xử lý kết quả truy vấn
+            // B4: Xử lý kết quả truy vấn
             while (rs.next()) {
                 int employeeId = rs.getInt("EmployeeID");
                 String employeeCode = rs.getString("EmployeeCode");
@@ -137,17 +171,18 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
-                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address, positionId, departmentId);
+                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address,
+                        positionId, departmentId);
             }
 
-            //B5: Đóng kết nối
+            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
     }
-    
+
     public Employee selectById(int id) {
         Employee result = null;
         try {
@@ -167,7 +202,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
-                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address, positionId, departmentId);
+                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address,
+                        positionId, departmentId);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -175,15 +211,15 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result;
     }
-    
+
     @Override
     public boolean insert(Employee t) {
         int result = 0;
         try {
-            //B1: Tạo kết nối đến CSDL
+            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            //B2: Tạo ra đối tượng PreparedStatement
+            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "INSERT INTO Employee(EmployeeCode, FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID)\n"
                     + "VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
@@ -197,15 +233,15 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             st.setInt(8, t.getPositionId());
             st.setInt(9, t.getDepartmentId());
 
-            //B3: Thực thi câu lệnh sql
+            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             result = st.executeUpdate();
 
-            //B4: Xử lý kết quả truy vấn        
+            // B4: Xử lý kết quả truy vấn
             System.out.println("You executed: " + sql);
             System.out.println("There are " + result + " rows affected!");
 
-            //B5: Đóng kết nối
+            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -217,23 +253,23 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public boolean delete(Employee t) {
         int result = 0;
         try {
-            //B1: Tạo kết nối đến CSDL
+            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            //B2: Tạo ra đối tượng PreparedStatement
+            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "DELETE from Employee WHERE EmployeeID=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, t.getEmployeeId());
 
-            //B3: Thực thi câu lệnh sql
+            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             result = st.executeUpdate();
 
-            //B4: Xử lý kết quả truy vấn        
+            // B4: Xử lý kết quả truy vấn
             System.out.println("You executed: " + sql);
             System.out.println("There are " + result + " rows affected!");
 
-            //B5: Đóng kết nối
+            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -245,10 +281,10 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public boolean update(Employee t) {
         int result = 0;
         try {
-            //B1: Tạo kết nối đến CSDL
+            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            //B2: Tạo ra đối tượng PreparedStatement
+            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "UPDATE Employee\n"
                     + "SET EmployeeCode=?, FirstName=?, LastName=?, BirthDate=?, Gender=?, Tel=?, Address=?, PositionID=?, DepartmentID=?\n"
                     + "WHERE EmployeeID=?";
@@ -264,20 +300,26 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             st.setInt(9, t.getDepartmentId());
             st.setInt(10, t.getEmployeeId());
 
-            //B3: Thực thi câu lệnh sql
+            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             result = st.executeUpdate();
 
-            //B4: Xử lý kết quả truy vấn        
+            // B4: Xử lý kết quả truy vấn
             System.out.println("You executed: " + sql);
             System.out.println("There are " + result + " rows affected!");
 
-            //B5: Đóng kết nối
+            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result > 0;
     }
-    
+
+    public static void main(String[] args) {
+        ArrayList<EmployeeDTO> list = (ArrayList<EmployeeDTO>) new EmployeeDAO().selectEmployeesByPage(2, 5);
+        for (EmployeeDTO e : list) {
+            System.out.println(e);
+        }
+    }
 }
