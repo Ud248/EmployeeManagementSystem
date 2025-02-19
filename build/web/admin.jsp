@@ -13,6 +13,8 @@
         <link rel="stylesheet" href="./css/styleAdmin.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     </head>
     <body>
         <div class="sidebar">
@@ -29,6 +31,23 @@
         <div class="content" id="main-content">
 
         </div>
+
+        <%
+    String message = (String) session.getAttribute("Message");
+    if (message != null) {
+        %>
+        <script>
+            Swal.fire({
+                icon: '<%= message.contains("thành công") ? "success" : "error" %>',
+                title: '<%= message.contains("thành công") ? "Thành công!" : "Lỗi!" %>',
+                text: '<%= message %>',
+                confirmButtonColor: '#3085d6'
+            });
+        </script>
+        <%
+            session.removeAttribute("Message"); // Xóa message sau khi hiển thị để tránh lặp lại
+            }
+        %>    
     </body>
 </html>
 

@@ -1,4 +1,6 @@
-﻿INSERT INTO Position (PositionCode, PositionName)
+﻿USE ASM_PRJ301
+
+INSERT INTO Position (PositionCode, PositionName)
 VALUES 
     ('GD', N'Giám đốc'),
     ('QL', N'Quản lý'),
@@ -13,7 +15,7 @@ VALUES
     (N'Phòng Marketing');
 
 INSERT INTO Employee(FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID) VALUES
-(N'Công Chiến', N'Nguyễn', '20050804', 'Nam', '0343008127', 'Xuân Đỉnh', 1, 1)
+(N'Công Chiến', N'Nguyễn', '20050804', 'Nam', '0343008127', N'Xuân Đỉnh', 1, 1)
 
 UPDATE ACCOUNT
 SET IsAdmin = 1 
@@ -32,9 +34,18 @@ VALUES
 (N'Dương', N'Anh Quân', '1999-09-09', N'Nam', '0901234567', N'606 Đường Nguyễn Thị Minh Khai, Phường Hồng Sơn, Thành phố Vinh, Tỉnh Nghệ An', 3, 4),
 (N'Vũ', N'Thị Kim Anh', '2000-10-10', N'Nữ', '0912345678', N'707 Đường Hà Huy Tập, Phường Nam Hà, Thành phố Hà Tĩnh, Tỉnh Hà Tĩnh', 3, 5);
 
+INSERT INTO [Shift](ShiftName, StartTime, EndTime) VALUES
+(N'Ca Sáng', '7:00', '12:00'),
+(N'Ca Chiều', '12:00', '17:00'),
+(N'Ca Tối', '17:00', '22:00')
+
+
+SELECT * FROM Employee
 
 SELECT * FROM ACCOUNT
 
 SELECT * FROM POSITION
 
 SELECT * FROM DEPARTMENT	
+
+SELECT * FROM Work

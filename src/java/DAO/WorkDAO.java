@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import Model.Employee;
 import Model.Work;
 import java.util.ArrayList;
 import Utils.JDBCUtil;
@@ -25,42 +26,39 @@ public class WorkDAO implements DAOInterface<Work> {
     @Override
     public ArrayList<Work> selectAll() {
         Connection con = JDBCUtil.getConnection();
-        String sql = "SELECT * FROM Work";
-        ArrayList<Work> list = new ArrayList<>();
-        int employeeId = 0;
-        int ShiftId = 0;
-        LocalDate workDate = null;
-        List<Object> key = new ArrayList<>();
-        List<Integer> value = new ArrayList<>();
-        Map<List<Object>, List<Integer>> map = new HashMap<>();
-        try {
-            PreparedStatement st = con.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
+        String sql = "SELECT w.ShiftID, w.WorkDate, e.EmployeeID, e.EmployeeCode, e.FirstName, e.LastName, "
+                + "e.BirthDate, e.Gender, e.Tel, e.Address, e.PositionId, e.DepartmentId "
+                + "FROM Work w "
+                + "JOIN Employee e ON w.EmployeeID = e.EmployeeID "
+                + "ORDER BY w.WorkDate, w.ShiftID";
+
+        Map<String, Work> workMap = new HashMap<>();
+        try (PreparedStatement stmt = con.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                employeeId = rs.getInt("EmployeeID");
-                ShiftId = rs.getInt("ShiftID");
-                workDate = rs.getDate("WorkDate").toLocalDate();
-                key.add(ShiftId);
-                key.add(workDate);
-                if (!map.containsKey(key)) {
-                    value.add(employeeId);
-                    map.put(key, value);
-                } else {
-                    value = map.get(key);
-                    value.add(employeeId);
-                    map.put(key, value);
-                }
-                key.clear();
-                value.clear();
+                int shiftId = rs.getInt("ShiftID");
+                LocalDate workDate = rs.getDate("WorkDate").toLocalDate();
+                String key = shiftId + "_" + workDate;
+                Work work = workMap.getOrDefault(key, new Work(shiftId, workDate, new ArrayList<>()));
+                Employee employee = new Employee(
+                        rs.getInt("EmployeeID"),
+                        rs.getString("EmployeeCode"),
+                        rs.getString("FirstName"),
+                        rs.getString("LastName"),
+                        rs.getDate("BirthDate").toLocalDate(),
+                        rs.getString("Gender"),
+                        rs.getString("Tel"),
+                        rs.getString("Address"),
+                        rs.getInt("PositionId"),
+                        rs.getInt("DepartmentId")
+                );
+                work.getEmployees().add(employee);
+                workMap.put(key, work);
             }
-            map.forEach((k, v) -> {
-                list.add(new Work((int) k.get(0), (LocalDate) k.get(1), (ArrayList<Integer>) v));
-            });
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return new ArrayList<>(workMap.values());
     }
 
     @Override
@@ -68,44 +66,29 @@ public class WorkDAO implements DAOInterface<Work> {
         return null;
     }
 
-//    public ArrayList<Work> selectByDate(LocalDate t) {
-//        Connection con = JDBCUtil.getConnection();
-//        String sql = "SELECT * FROM Work WHERE WorkDate = ?";
-//        ArrayList<Work> result = new ArrayList<>();
-//        try {
-//            PreparedStatement st = con.prepareStatement("sql");
-//            st.setDate(1, Date.valueOf(t));
-//            ResultSet rs = st.executeQuery();
-//            while (rs.next()) {
-//                int shiftId = rs.getInt("ShiftID");
-//                int employeeId = rs.getInt("EmployeeID");
-//                LocalDate workDate = rs.getDate("WorkDate").toLocalDate();
-//                result.add(new Work(shiftId, employeeId, workDate));
-//            }
-//            JDBCUtil.closeConnection(con);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
     @Override
-    public boolean insert(Work t) {
+    public boolean insert(Work work) {
         Connection con = JDBCUtil.getConnection();
-        String sql = "INSERT INTO Work(ShiftID, WorkDate, EmployeeID) VALUES(?, ?, ?)";
-        int result = 0;
-        try {
-            PreparedStatement st = con.prepareStatement(sql);
-            for (int i = 0; i < t.getEmployeeId().size(); i++) {
-                st.setInt(1, t.getShiftId());
-                st.setDate(2, Date.valueOf(t.getWorkDate()));
-                st.setInt(3, t.getEmployeeId().get(i));
-                result = st.executeUpdate();
+        String sql = "INSERT INTO Work (EmployeeID, ShiftID, WorkDate) VALUES (?, ?, ?)";
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            for (Employee employee : work.getEmployees()) {
+                stmt.setInt(1, employee.getEmployeeId());
+                stmt.setInt(2, work.getShiftId());
+                stmt.setDate(3, Date.valueOf(work.getWorkDate()));
+
+                stmt.addBatch();
             }
-            JDBCUtil.closeConnection(con);
+            int[] result = stmt.executeBatch();
+            if (result.length > 0) {
+                JDBCUtil.closeConnection(con);
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return result > 0;
+        return false;
     }
 
     @Override

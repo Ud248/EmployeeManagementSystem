@@ -82,4 +82,14 @@ body {
     transition: color 0.3s ease; /* Hiệu ứng chuyển đổi cho chữ */
 }
 
+ol, ul {
+    padding-left: 0rem;
+}
+
+h4{
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
 

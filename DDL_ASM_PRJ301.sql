@@ -117,7 +117,7 @@ CREATE FUNCTION dbo.ConvertToASCII(@text NVARCHAR(255))
 RETURNS NVARCHAR(255)
 AS
 BEGIN
-    DECLARE @Result NVARCHAR(255) = @text;
+    DECLARE @Result NVARCHAR(255) = LOWER(@text);
 
 	SET @Result = REPLACE(@Result, N'đ', 'd');
     SET @Result = REPLACE(@Result, N'á', 'a');
@@ -186,73 +186,7 @@ BEGIN
     SET @Result = REPLACE(@Result, N'ỷ', 'y');
     SET @Result = REPLACE(@Result, N'ỹ', 'y');
     SET @Result = REPLACE(@Result, N'ỵ', 'y');
-    SET @Result = REPLACE(@Result, N'Đ', 'D');
-    SET @Result = REPLACE(@Result, N'Á', 'A');
-    SET @Result = REPLACE(@Result, N'À', 'A');
-    SET @Result = REPLACE(@Result, N'Ả', 'A');
-    SET @Result = REPLACE(@Result, N'Ã', 'A');
-    SET @Result = REPLACE(@Result, N'Ạ', 'A');
-	SET @Result = REPLACE(@Result, N'Â', 'A');
-    SET @Result = REPLACE(@Result, N'Ấ', 'A');
-    SET @Result = REPLACE(@Result, N'Ầ', 'A');
-    SET @Result = REPLACE(@Result, N'Ẩ', 'A');
-    SET @Result = REPLACE(@Result, N'Ẫ', 'A');
-    SET @Result = REPLACE(@Result, N'Ậ', 'A');
-    SET @Result = REPLACE(@Result, N'Ă', 'A');
-    SET @Result = REPLACE(@Result, N'Ắ', 'A');
-    SET @Result = REPLACE(@Result, N'Ằ', 'A');
-    SET @Result = REPLACE(@Result, N'Ẳ', 'A');
-    SET @Result = REPLACE(@Result, N'Ẵ', 'A');
-    SET @Result = REPLACE(@Result, N'Ặ', 'A');
-    SET @Result = REPLACE(@Result, N'É', 'E');
-    SET @Result = REPLACE(@Result, N'È', 'E');
-    SET @Result = REPLACE(@Result, N'Ẻ', 'E');
-    SET @Result = REPLACE(@Result, N'Ẽ', 'E');
-    SET @Result = REPLACE(@Result, N'Ẹ', 'E');
-	SET @Result = REPLACE(@Result, N'Ê', 'E');
-    SET @Result = REPLACE(@Result, N'Ế', 'E');
-    SET @Result = REPLACE(@Result, N'Ề', 'E');
-    SET @Result = REPLACE(@Result, N'Ể', 'E');
-    SET @Result = REPLACE(@Result, N'Ễ', 'E');
-    SET @Result = REPLACE(@Result, N'Ệ', 'E');
-    SET @Result = REPLACE(@Result, N'Í', 'I');
-    SET @Result = REPLACE(@Result, N'Ì', 'I');
-    SET @Result = REPLACE(@Result, N'Ỉ', 'I');
-    SET @Result = REPLACE(@Result, N'Ĩ', 'I');
-    SET @Result = REPLACE(@Result, N'Ị', 'I');
-    SET @Result = REPLACE(@Result, N'Ó', 'O');
-    SET @Result = REPLACE(@Result, N'Ò', 'O');
-    SET @Result = REPLACE(@Result, N'Ỏ', 'O');
-    SET @Result = REPLACE(@Result, N'Õ', 'O');
-    SET @Result = REPLACE(@Result, N'Ọ', 'O');
-	SET @Result = REPLACE(@Result, N'Ô', 'O');
-    SET @Result = REPLACE(@Result, N'Ố', 'O');
-    SET @Result = REPLACE(@Result, N'Ồ', 'O');
-    SET @Result = REPLACE(@Result, N'Ổ', 'O');
-    SET @Result = REPLACE(@Result, N'Ỗ', 'O');
-    SET @Result = REPLACE(@Result, N'Ộ', 'O');
-    SET @Result = REPLACE(@Result, N'Ơ', 'O');
-    SET @Result = REPLACE(@Result, N'Ớ', 'O');
-    SET @Result = REPLACE(@Result, N'Ờ', 'O');
-    SET @Result = REPLACE(@Result, N'Ở', 'O');
-    SET @Result = REPLACE(@Result, N'Ỡ', 'O');
-    SET @Result = REPLACE(@Result, N'Ợ', 'O');
-    SET @Result = REPLACE(@Result, N'Ú', 'U');
-    SET @Result = REPLACE(@Result, N'Ù', 'U');
-    SET @Result = REPLACE(@Result, N'Ủ', 'U');
-    SET @Result = REPLACE(@Result, N'Ũ', 'U');
-    SET @Result = REPLACE(@Result, N'Ụ', 'U');
-    SET @Result = REPLACE(@Result, N'Ư', 'U');
-    SET @Result = REPLACE(@Result, N'Ứ', 'U');
-    SET @Result = REPLACE(@Result, N'Ừ', 'U');
-    SET @Result = REPLACE(@Result, N'Ử', 'U');
-    SET @Result = REPLACE(@Result, N'Ữ', 'U');
-    SET @Result = REPLACE(@Result, N'Ự', 'U');
-    SET @Result = REPLACE(@Result, N'Ý', 'Y');
-    SET @Result = REPLACE(@Result, N'Ỳ', 'Y');
-    SET @Result = REPLACE(@Result, N'Ỷ', 'Y');
-    SET @Result = REPLACE(@Result, N'Ỹ', 'Y');
-    SET @Result = REPLACE(@Result, N'Ỵ', 'Y');
+
 
     RETURN @Result
 END
@@ -277,7 +211,7 @@ BEGIN
 			dbo.ConvertToASCII(RIGHT(i.FirstName, CHARINDEX(' ', REVERSE(i.FirstName) + ' ') - 1)), 
 			dbo.ConvertToASCII(LEFT(i.LastName, 1)),
 			dbo.ConvertToASCII(LEFT(i.FirstName, 1)),
-			e.EmployeeCode
+			LOWER(e.EmployeeCode)
 		)
 	FROM INSERTED i 
 	JOIN Employee e ON i.Tel = e.Tel

@@ -6,7 +6,9 @@ package Controller;
 
 import DAO.AccountDAO;
 import DAO.EmployeeDAO;
+import DAO.WorkDAO;
 import Model.Employee;
+import Model.Work;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -16,6 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,12 +27,6 @@ import java.util.List;
  */
 @WebServlet(name = "LoadData", urlPatterns = {"/load-data"})
 public class LoadData extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -43,19 +40,12 @@ public class LoadData extends HttpServlet {
             EmployeeDAO eDao = new EmployeeDAO();
             int page = 1;
             int itemsPerPage = 5;
-
             try {
                 page = Integer.parseInt(request.getParameter("page"));
-            } catch (NumberFormatException e) {
-                // Use default value
-            }
-
-            try {
                 itemsPerPage = Integer.parseInt(request.getParameter("items"));
             } catch (NumberFormatException e) {
                 // Use default value
             }
-
             List<Employee> employees = eDao.selectAll(page, itemsPerPage);
             int totalEmployees = eDao.getTotalEmployees();
             int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
@@ -65,9 +55,11 @@ public class LoadData extends HttpServlet {
             session.setAttribute("totalPages", totalPages);
             session.setAttribute("itemsPerPage", itemsPerPage);
         } else {
-            System.out.println("chien lam");
+            url = "employee.jsp";
         }
-
+        WorkDAO w = new WorkDAO();
+        ArrayList<Work> works = w.selectAll();
+        request.getServletContext().setAttribute("works", works);
         response.sendRedirect(url);
     }
 }

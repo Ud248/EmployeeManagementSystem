@@ -19,19 +19,19 @@ public class Work {
     private int shiftId;
     private LocalDate workDate;
     private DayOfWeek weekDay;
-    List<Integer> employeeId;
+    List<Employee> employees;
 
     public Work(int shiftId, LocalDate workDate) {
         this.shiftId = shiftId;
-        this.employeeId = new ArrayList<>();
+        this.employees = new ArrayList<>();
         this.workDate = workDate;
         this.weekDay = workDate.getDayOfWeek();
     }
 
-    public Work(int shiftId,  LocalDate workDate, ArrayList<Integer> employeeId) {
+    public Work(int shiftId, LocalDate workDate, ArrayList<Employee> employees) {
         this.shiftId = shiftId;
-        this.employeeId = new ArrayList<>();
-        this.employeeId = employeeId;
+        this.employees = new ArrayList<>();
+        this.employees = employees;
         this.workDate = workDate;
         this.weekDay = workDate.getDayOfWeek();
     }
@@ -44,12 +44,12 @@ public class Work {
         this.shiftId = shiftId;
     }
 
-    public List<Integer> getEmployeeId() {
-        return employeeId;
+    public List<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setEmployeeId(List<Integer> employeeId) {
-        this.employeeId = employeeId;
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     public LocalDate getWorkDate() {
@@ -67,5 +67,5 @@ public class Work {
     public void setWeekDay(DayOfWeek weekDay) {
         this.weekDay = weekDay;
     }
-    
+
 }

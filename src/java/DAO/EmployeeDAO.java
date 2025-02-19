@@ -147,7 +147,35 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result;
     }
-
+    
+    public Employee selectById(int id) {
+        Employee result = null;
+        try {
+            Connection con = JDBCUtil.getConnection();
+            String sql = "SELECT * FROM Employee WHERE EmployeeID=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int employeeId = rs.getInt("EmployeeID");
+                String employeeCode = rs.getString("EmployeeCode");
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                LocalDate birthDate = rs.getDate("BirthDate").toLocalDate();
+                String gender = rs.getString("Gender");
+                String tel = rs.getString("Tel");
+                String address = rs.getString("Address");
+                int positionId = rs.getInt("PositionID");
+                int departmentId = rs.getInt("DepartmentID");
+                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address, positionId, departmentId);
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
     @Override
     public boolean insert(Employee t) {
         int result = 0;
@@ -251,5 +279,5 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result > 0;
     }
-
+    
 }
