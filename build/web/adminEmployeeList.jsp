@@ -8,22 +8,39 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="./css/styleAdminEmployeeList.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-        <script>
-            function searchEmployees() {
-                const input = document.getElementById("searchName");
-                const filter = input.value.toUpperCase();
-                const table = document.querySelector(".table");
-                const rows = table.getElementsByTagName("tr");
-
-                for (let i = 1; i < rows.length; i++) {
-                    const firstNameCell = rows[i].getElementsByTagName("td")[2]; // First Name column
-                    if (firstNameCell) {
-                        const txtValue = firstNameCell.textContent || firstNameCell.innerText;
-                        rows[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
-                    }
-                }
+        <style>
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                gap: 10px;
             }
 
+            .pagination a {
+                padding: 8px 12px;
+                border: 1px solid #ddd;
+                text-decoration: none;
+                color: #333;
+            }
+
+            .pagination a.active {
+                background-color: #007bff;
+                color: white;
+                border-color: #007bff;
+            }
+
+            .pagination a:hover:not(.active) {
+                background-color: #f0f0f0;
+            }
+
+            .page-info {
+                text-align: center;
+                margin-top: 10px;
+                color: #666;
+            }
+        </style>
+
+        <script>
             function viewEmployee(id) {
                 window.location.href = 'viewEmployee?id=' + id;
             }
@@ -37,27 +54,6 @@
                     window.location.href = 'deleteEmployee?id=' + id;
                 }
             }
-
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
-
-            const debouncedSearch = debounce(searchEmployees, 300);
-
-            document.addEventListener('DOMContentLoaded', function () {
-                const searchInput = document.getElementById('searchName');
-                if (searchInput) {
-                    searchInput.addEventListener('input', debouncedSearch);
-                }
-            });
         </script>
     </head>
     <body>
@@ -90,7 +86,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="e" items="${employees}">
+                        <c:forEach var="e" items="${sessionScope.employees}">
                             <tr>
                                 <td>${e.getEmployeeCode()}</td>
                                 <td>${e.getFullname()}</td>
@@ -115,27 +111,28 @@
                     </tbody>
                 </table>
 
+                <!-- Pagination -->
                 <div class="pagination">
                     <c:if test="${currentPage > 1}">
-                        <a href="?page=${currentPage - 1}">Prev</a>
+                        <a href="load-data?page=${currentPage - 1}">&laquo; Previous</a>
                     </c:if>
 
                     <c:forEach begin="1" end="${totalPages}" var="i">
-                        <c:choose>
-                            <c:when test="${currentPage == i}">
-                                <span class="current-page">${i}</span>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="?page=${i}">${i}</a>
-                            </c:otherwise>
-                        </c:choose>
+                        <a href="load-data?page=${i}" 
+                           class="${i == currentPage ? 'active' : ''}">${i}</a>
                     </c:forEach>
 
                     <c:if test="${currentPage < totalPages}">
-                        <a href="?page=${currentPage + 1}">Next</a>
+                        <a href="load-data?page=${currentPage + 1}">Next &raquo;</a>
                     </c:if>
+                </div>
+
+                <div class="page-info">
+                    Showing page ${currentPage} of ${totalPages}
+                    (Total: ${totalEmployees} employees)
                 </div>
             </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

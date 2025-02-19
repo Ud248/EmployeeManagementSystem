@@ -10,6 +10,7 @@ import Utils.JDBCUtil;
 import java.util.ArrayList;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
@@ -56,41 +57,49 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result;
     }
 
-    public ArrayList<EmployeeDTO> selectAllEmployeeDTO() {
-        ArrayList<EmployeeDTO> result = new ArrayList<>();
-        try {
-            //B1: Tạo kết nối đến CSDL
-            Connection con = JDBCUtil.getConnection();
+    public List<EmployeeDTO> selectEmployeesByPage(int page, int itemsPerPage) {
+        List<EmployeeDTO> result = new ArrayList<>();
+        String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Gender, e.BirthDate, e.Tel, "
+                + "p.PositionName AS PositionName, d.DepartmentName AS DepartmentName "
+                + "FROM Employee e "
+                + "JOIN Position p ON e.PositionID = p.PositionID "
+                + "JOIN Department d ON e.DepartmentID = d.DepartmentID "
+                + "ORDER BY e.EmployeeCode "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
-            //B2: Tạo ra đối tượng PreparedStatement
-            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName as 'Fullname', e.Gender, e.BirthDate, e.Tel, p.PositionName AS PositionName, d.DepartmentName AS DepartmentName\n"
-                    + "FROM Employee e\n"
-                    + "JOIN Position p ON e.PositionID = p.PositionID\n"
-                    + "JOIN Department d ON e.DepartmentID = d.DepartmentID";
-            PreparedStatement st = con.prepareStatement(sql);
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setInt(1, (page - 1) * itemsPerPage);
+            st.setInt(2, itemsPerPage);
 
-            //B3: Thực thi câu lệnh sql
-            System.out.println(sql);
             ResultSet rs = st.executeQuery();
-
-            //B4: Xử lý kết quả truy vấn
             while (rs.next()) {
-                String employeeCode = rs.getString("EmployeeCode");
-                String fullname = rs.getString("Fullname");
-                LocalDate birthDate = rs.getDate("BirthDate").toLocalDate();
-                String gender = rs.getString("Gender");
-                String tel = rs.getString("Tel");
-                String positionName = rs.getString("PositionName");
-                String departmentName = rs.getString("DepartmentName");
-                result.add(new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, positionName, departmentName));
+                result.add(new EmployeeDTO(
+                        rs.getString("EmployeeCode"),
+                        rs.getString("Fullname"),
+                        rs.getDate("BirthDate").toLocalDate(),
+                        rs.getString("Gender"),
+                        rs.getString("Tel"),
+                        rs.getString("PositionName"),
+                        rs.getString("DepartmentName")
+                ));
             }
-
-            //B5: Đóng kết nối
-            JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public int getTotalEmployees() {
+        String sql = "SELECT COUNT(*) AS total FROM Employee";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public ArrayList<Employee> selectAll(int page, int itemsPerPage) {
@@ -132,21 +141,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result;
     }
-
-    public int getTotalEmployees() {
-        try {
-            Connection con = JDBCUtil.getConnection();
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM Employee");
-            if (rs.next()) {
-                return rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
+    
     @Override
     public Employee selectById(Employee t) {
         Employee result = null;
@@ -291,8 +286,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     }
 
     public static void main(String[] args) {
-        ArrayList<EmployeeDTO> list = new EmployeeDAO().selectAllEmployeeDTO();
-        for(EmployeeDTO e : list){
+        ArrayList<EmployeeDTO> list = (ArrayList<EmployeeDTO>) new EmployeeDAO().selectEmployeesByPage(2, 5);
+        for (EmployeeDTO e : list) {
             System.out.println(e);
         }
     }

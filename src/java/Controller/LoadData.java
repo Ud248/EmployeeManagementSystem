@@ -29,12 +29,6 @@ public class LoadData extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
         boolean isAdmin = new AccountDAO().isAdmin(username);
@@ -42,33 +36,47 @@ public class LoadData extends HttpServlet {
         if (isAdmin) {
             url = "admin.jsp";
             EmployeeDAO eDao = new EmployeeDAO();
-            int page = 1;
-            int itemsPerPage = 5;
+            int currentPage = 1;
+            int itemsPerPage = 10;
 
             try {
-                page = Integer.parseInt(request.getParameter("page"));
+                String pageParam = request.getParameter("page");
+                if (pageParam != null && !pageParam.isEmpty()) {
+                    currentPage = Integer.parseInt(pageParam);
+                }
             } catch (NumberFormatException e) {
                 // Use default value
             }
 
-            try {
-                itemsPerPage = Integer.parseInt(request.getParameter("items"));
-            } catch (NumberFormatException e) {
-                // Use default value
-            }
-
-            List<EmployeeDTO> employees = eDao.selectAllEmployeeDTO();
+            // Calculate pagination values
             int totalEmployees = eDao.getTotalEmployees();
             int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
 
-            request.getServletContext().setAttribute("employees", employees);
-            session.setAttribute("currentPage", page);
+            // Ensure currentPage is within valid range
+            if (currentPage < 1) {
+                currentPage = 1;
+            }
+            if (currentPage > totalPages) {
+                currentPage = totalPages;
+            }
+
+            // Get paginated list of employees
+            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+            session.setAttribute("employees", employees);
+            session.setAttribute("currentPage", currentPage);
             session.setAttribute("totalPages", totalPages);
             session.setAttribute("itemsPerPage", itemsPerPage);
+            session.setAttribute("totalEmployees", totalEmployees);
         } else {
             System.out.println("chien lam");
         }
 
         response.sendRedirect(url);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
     }
 }
