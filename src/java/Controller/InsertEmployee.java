@@ -1,6 +1,7 @@
 package Controller;
 
 import DAO.EmployeeDAO;
+import DTO.EmployeeDTO;
 import Model.Employee;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -9,6 +10,9 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import jakarta.websocket.Session;
 
 @WebServlet(name = "InsertEmployee", urlPatterns = {"/insert-employee"})
 public class InsertEmployee extends HttpServlet {
@@ -79,7 +83,37 @@ public class InsertEmployee extends HttpServlet {
             boolean success = eDao.insert(new Employee(firstName, lastName, birthdate, gender, tel, address, positionId, departmentId));
 
             if (success) {
-                response.sendRedirect("employee-list");  // Chuyển hướng đến danh sách nhân viên
+                request.setAttribute("successMsg", "Add employee " + lastName + " " + firstName + " successfully!");
+
+                //Update list employee
+                int currentPage = 1;
+                int itemsPerPage = 10;
+
+                try {
+                    String pageParam = request.getParameter("page");
+                    if (pageParam != null && !pageParam.isEmpty()) {
+                        currentPage = Integer.parseInt(pageParam);
+                    }
+                } catch (NumberFormatException e) {
+                    // Use default value
+                }
+
+                // Calculate pagination values
+                int totalEmployees = eDao.getTotalEmployees();
+                int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
+
+                // Ensure currentPage is within valid range
+                if (currentPage < 1) {
+                    currentPage = 1;
+                }
+                if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+                HttpSession session = request.getSession();
+                session.setAttribute("employees", employees);
+                session.setAttribute("totalEmployees", totalEmployees);
+                request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Failed to insert employee. Please try again.");
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);

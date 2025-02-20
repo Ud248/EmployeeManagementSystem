@@ -220,18 +220,17 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             Connection con = JDBCUtil.getConnection();
 
             // B2: Tạo ra đối tượng PreparedStatement
-            String sql = "INSERT INTO Employee(EmployeeCode, FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID)\n"
-                    + "VALUES(?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO Employee(FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID)\n"
+                    + "VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, t.getEmployeeCode());
-            st.setString(2, t.getFirstName());
-            st.setString(3, t.getLastName());
-            st.setDate(4, Date.valueOf(t.getBirthDate()));
-            st.setString(5, t.getGender());
-            st.setString(6, t.getTel());
-            st.setString(7, t.getAddress());
-            st.setInt(8, t.getPositionId());
-            st.setInt(9, t.getDepartmentId());
+            st.setString(1, t.getFirstName());
+            st.setString(2, t.getLastName());
+            st.setDate(3, Date.valueOf(t.getBirthDate()));
+            st.setString(4, t.getGender());
+            st.setString(5, t.getTel());
+            st.setString(6, t.getAddress());
+            st.setInt(7, t.getPositionId());
+            st.setInt(8, t.getDepartmentId());
 
             // B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -317,9 +316,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     }
 
     public static void main(String[] args) {
-        ArrayList<EmployeeDTO> list = (ArrayList<EmployeeDTO>) new EmployeeDAO().selectEmployeesByPage(2, 5);
-        for (EmployeeDTO e : list) {
-            System.out.println(e);
-        }
+        EmployeeDAO edao = new EmployeeDAO();
+        edao.insert(new Employee("Anh Đức", "Lê", LocalDate.now(), "Nam", "0966716905", "HN", 1, 1));
+        
     }
 }

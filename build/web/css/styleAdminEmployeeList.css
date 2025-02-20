@@ -62,10 +62,6 @@ body {
     cursor: pointer;
 }
 
-.container {
-    padding: 20px;
-}
-
 .page-title {
     color: #333;
     margin-bottom: 20px;
@@ -109,4 +105,3 @@ body {
     border-radius: 3px;
     border: 1px solid #ddd;
 }
-

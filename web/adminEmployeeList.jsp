@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="./css/styleAdminEmployeeList.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <style>
+
+
             .pagination {
                 display: flex;
                 justify-content: center;
@@ -76,7 +78,7 @@
                 cursor: pointer;
             }
         </style>
-
+        
         <script>
             function viewEmployee(id) {
                 window.location.href = 'viewEmployee?id=' + id;
@@ -98,6 +100,7 @@
 
             function closePopup() {
                 document.getElementById('insertEmployeePopup').style.display = 'none';
+                location.reload();
             }
 
             // Đóng popup khi bấm ra ngoài
@@ -120,7 +123,7 @@
         </div>
 
         <div class="content">
-            <div class="container">
+            <div style="padding: 20px 20px 0px 20px">
                 <h2 class="page-title">Employee List</h2>
 
                 <div class="toolbar">

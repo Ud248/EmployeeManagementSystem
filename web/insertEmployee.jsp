@@ -17,6 +17,8 @@
     <%
         String error = "" + request.getAttribute("error");
         error = error.equals("null") ? "": error;
+        String successMsg = "" + request.getAttribute("successMsg");
+        successMsg = successMsg.equals("null") ? "": successMsg;
     %>
     <body>
         <div class="modal-content">
@@ -75,7 +77,8 @@
                         <button type="submit" class="btn btn-primary">Insert</button>
                     </div>
                     <div style="color:red">
-                        <%=error%>
+                        <span style="color:red"><%=error%></span>
+                        <span style="color:greenyellow"><%=successMsg%></span>
                     </div>
                 </form>
             </div>
