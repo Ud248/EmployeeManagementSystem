@@ -70,7 +70,7 @@
         </div>
 
         <div class="content">
-            <div style="padding: 20px 20px 0px 20px">
+            <div style="padding: 10px 20px 0px 20px">
                 <h2 class="page-title">Employee List</h2>
 
                 <div class="toolbar">

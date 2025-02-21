@@ -45,8 +45,9 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
+                int basicSalary = rs.getInt("BasicSalary");
                 Employee e = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
-                        address, positionId, departmentId);
+                        address, positionId, departmentId, basicSalary);
                 result.add(e);
             }
 
@@ -60,7 +61,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
     public List<EmployeeDTO> selectEmployeesByPage(int page, int itemsPerPage) {
         List<EmployeeDTO> result = new ArrayList<>();
-        String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Gender, e.BirthDate, e.Tel, "
+        String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, "
                 + "p.PositionName AS PositionName, d.DepartmentName AS DepartmentName "
                 + "FROM Employee e "
                 + "JOIN Position p ON e.PositionID = p.PositionID "
@@ -77,8 +78,6 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 result.add(new EmployeeDTO(
                         rs.getString("EmployeeCode"),
                         rs.getString("Fullname"),
-                        rs.getDate("BirthDate").toLocalDate(),
-                        rs.getString("Gender"),
                         rs.getString("Tel"),
                         rs.getString("PositionName"),
                         rs.getString("DepartmentName")));
@@ -130,8 +129,9 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
-                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address,
-                        positionId, departmentId);
+                int basicSalary = rs.getInt("BasicSalary");
+                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
+                        address, positionId, departmentId, basicSalary);
             }
 
             // B5: Đóng kết nối
@@ -161,8 +161,9 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String address = rs.getString("Address");
                 int positionId = rs.getInt("PositionID");
                 int departmentId = rs.getInt("DepartmentID");
-                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel, address,
-                        positionId, departmentId);
+                int basicSalary = rs.getInt("BasicSalary");
+                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
+                        address, positionId, departmentId, basicSalary);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -179,8 +180,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             Connection con = JDBCUtil.getConnection();
 
             // B2: Tạo ra đối tượng PreparedStatement
-            String sql = "INSERT INTO Employee(FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID)\n"
-                    + "VALUES(?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO Employee(FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID, BasicSalary)\n"
+                    + "VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getFirstName());
             st.setString(2, t.getLastName());
@@ -190,6 +191,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             st.setString(6, t.getAddress());
             st.setInt(7, t.getPositionId());
             st.setInt(8, t.getDepartmentId());
+            st.setInt(9, t.getBasicSalary());
 
             // B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -244,7 +246,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
             // B2: Tạo ra đối tượng PreparedStatement
             String sql = "UPDATE Employee\n"
-                    + "SET EmployeeCode=?, FirstName=?, LastName=?, BirthDate=?, Gender=?, Tel=?, Address=?, PositionID=?, DepartmentID=?\n"
+                    + "SET EmployeeCode=?, FirstName=?, LastName=?, BirthDate=?, Gender=?, Tel=?, Address=?, PositionID=?, DepartmentID=?, BasicSalary=?\n"
                     + "WHERE EmployeeID=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getEmployeeCode());
@@ -256,7 +258,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             st.setString(7, t.getAddress());
             st.setInt(8, t.getPositionId());
             st.setInt(9, t.getDepartmentId());
-            st.setInt(10, t.getEmployeeId());
+            st.setInt(10, t.getBasicSalary());
+            st.setInt(11, t.getEmployeeId());
 
             // B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -272,11 +275,5 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             e.printStackTrace();
         }
         return result > 0;
-    }
-
-    public static void main(String[] args) {
-        EmployeeDAO edao = new EmployeeDAO();
-        edao.insert(new Employee("Anh Đức", "Lê", LocalDate.now(), "Nam", "0966716905", "HN", 1, 1));
-        
     }
 }

@@ -18,6 +18,7 @@ public class Employee {
     private LocalDate birthDate;
     private String gender, tel, address;
     private int positionId, departmentId;
+    private int basicSalary;
 
     public Employee() {
     }
@@ -25,10 +26,19 @@ public class Employee {
     public Employee(String employeeCode) {
         this.employeeCode = employeeCode;
     }
-    
-    
 
-    public Employee(int employeeId, String employeeCode, String firstName, String lastName, LocalDate birthDate, String gender, String tel, String address, int positionId, int departmentId) {
+    public Employee(String firstName, String lastName, LocalDate birthDate, String tel, String address, int positionId, int departmentId, int basicSalary) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.tel = tel;
+        this.address = address;
+        this.positionId = positionId;
+        this.departmentId = departmentId;
+        this.basicSalary = basicSalary;
+    }
+
+    public Employee(int employeeId, String employeeCode, String firstName, String lastName, LocalDate birthDate, String gender, String tel, String address, int positionId, int departmentId, int basicSalary) {
         this.employeeId = employeeId;
         this.employeeCode = employeeCode;
         this.firstName = firstName;
@@ -39,20 +49,8 @@ public class Employee {
         this.address = address;
         this.positionId = positionId;
         this.departmentId = departmentId;
+        this.basicSalary = basicSalary;
     }
-
-    public Employee(String firstName, String lastName, LocalDate birthDate, String gender, String tel, String address, int positionId, int departmentId) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.gender = gender;
-        this.tel = tel;
-        this.address = address;
-        this.positionId = positionId;
-        this.departmentId = departmentId;
-    }
-    
-    
 
     public int getEmployeeId() {
         return employeeId;
@@ -89,6 +87,7 @@ public class Employee {
     public LocalDate getBirthDate() {
         return birthDate;
     }
+
     public String getFormattedBirthDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         return birthDate.format(formatter);
@@ -125,7 +124,7 @@ public class Employee {
     public int getPositionId() {
         return positionId;
     }
-    
+
     public void setPositionId(int positionId) {
         this.positionId = positionId;
     }
@@ -137,10 +136,16 @@ public class Employee {
     public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
-    
-    public String getFullName(){
+
+    public String getFullName() {
         return this.getLastName() + " " + this.getFirstName();
     }
-    
-    
+
+    public int getBasicSalary() {
+        return basicSalary;
+    }
+
+    public void setBasicSalary(int basicSalary) {
+        this.basicSalary = basicSalary;
+    }
 }

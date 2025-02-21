@@ -30,7 +30,7 @@ public class InsertEmployee extends HttpServlet {
         String gender = request.getParameter("gender");
         String tel = request.getParameter("telephone");
         String address = request.getParameter("address");
-        int positionId = 0, departmentId = 0;
+        int positionId = 0, departmentId = 0, basicSalary = 0;
 
         // Kiểm tra các trường bắt buộc
         if (firstName == null || firstName.trim().isEmpty()) {
@@ -74,14 +74,19 @@ public class InsertEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please select a valid department.<br>";
         }
+        
+        try {
+            basicSalary = Integer.parseInt(request.getParameter("basicSalary"));
+        } catch (NumberFormatException e) {
+            error += "Please select a valid basic salary.<br>";
+        }
 
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
             request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
         } else {
             EmployeeDAO eDao = new EmployeeDAO();
-            boolean success = eDao.insert(new Employee(firstName, lastName, birthdate, gender, tel, address, positionId, departmentId));
-
+            boolean success = eDao.insert(new Employee(firstName, lastName, birthdate, tel, address, positionId, departmentId, basicSalary));
             if (success) {
                 request.setAttribute("successMsg", "Add employee " + lastName + " " + firstName + " successfully!");
 

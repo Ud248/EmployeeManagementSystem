@@ -17,11 +17,21 @@ public class EmployeeDTO {
     private LocalDate birthDate;
     private String gender, tel;
     private String positionName, departmentName;
+    private int basicSalary;
+    private String username, password;
 
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(String employeeCode, String fullname, LocalDate birthDate, String gender, String tel, String positionName, String departmentName) {
+    public EmployeeDTO(String employeeCode, String fullname, String tel, String positionName, String departmentName) {
+        this.employeeCode = employeeCode;
+        this.fullname = fullname;
+        this.tel = tel;
+        this.positionName = positionName;
+        this.departmentName = departmentName;
+    }
+
+    public EmployeeDTO(String employeeCode, String fullname, LocalDate birthDate, String gender, String tel, String positionName, String departmentName, int basicSalary) {
         this.employeeCode = employeeCode;
         this.fullname = fullname;
         this.birthDate = birthDate;
@@ -29,6 +39,7 @@ public class EmployeeDTO {
         this.tel = tel;
         this.positionName = positionName;
         this.departmentName = departmentName;
+        this.basicSalary = basicSalary;
     }
 
     public String getEmployeeCode() {
@@ -92,10 +103,28 @@ public class EmployeeDTO {
         return birthDate.format(formatter);
     }
 
-    @Override
-    public String toString() {
-        return "EmployeeDTO{" + "employeeCode=" + employeeCode + ", fullname=" + fullname + ", birthDate=" + birthDate + ", gender=" + gender + ", tel=" + tel + ", positionName=" + positionName + ", departmentName=" + departmentName + '}';
+    public int getBasicSalary() {
+        return basicSalary;
     }
-    
-    
+
+    public void setBasicSalary(int basicSalary) {
+        this.basicSalary = basicSalary;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

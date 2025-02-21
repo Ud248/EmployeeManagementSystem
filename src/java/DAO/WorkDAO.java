@@ -49,7 +49,8 @@ public class WorkDAO implements DAOInterface<Work> {
                         rs.getString("Tel"),
                         rs.getString("Address"),
                         rs.getInt("PositionId"),
-                        rs.getInt("DepartmentId")
+                        rs.getInt("DepartmentId"),
+                        rs.getInt("BasicSalary")
                 );
                 work.getEmployees().add(employee);
                 workMap.put(key, work);
@@ -140,6 +141,6 @@ public class WorkDAO implements DAOInterface<Work> {
 //        return result > 0;
         return false;
     }
-    
+
 //    public boolean 
 }
