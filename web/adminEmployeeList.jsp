@@ -8,112 +8,59 @@
         <title>JSP Page</title>
         <link rel="stylesheet" href="./css/styleAdminEmployeeList.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-        <style>
-
-
-            .pagination {
-                display: flex;
-                justify-content: center;
-                margin-top: 20px;
-                gap: 10px;
-            }
-
-            .pagination a {
-                padding: 8px 12px;
-                border: 1px solid #ddd;
-                text-decoration: none;
-                color: #333;
-            }
-
-            .pagination a.active {
-                background-color: #007bff;
-                color: white;
-                border-color: #007bff;
-            }
-
-            .pagination a:hover:not(.active) {
-                background-color: #f0f0f0;
-            }
-
-            .page-info {
-                text-align: center;
-                margin-top: 10px;
-                color: #666;
-            }
-
-            /* Style cho popup */
-            .popup {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                justify-content: center;
-                align-items: center;
-            }
-
-            .popup-content {
-                background: white;
-                width: 600px;
-                height: 86%;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-                position: relative;
-            }
-
-            .popup-content iframe {
-                width: 100%;
-                height: 90%;
-                border: none;
-            }
-
-            .close-btn {
-                position: absolute;
-                top: 10px;
-                right: 15px;
-                font-size: 20px;
-                cursor: pointer;
-            }
-        </style>
-        
-        <script>
-            function viewEmployee(id) {
-                window.location.href = 'viewEmployee?id=' + id;
-            }
-
-            function editEmployee(id) {
-                window.location.href = 'editEmployee?id=' + id;
-            }
-
-            function deleteEmployee(id) {
-                if (confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
-                    window.location.href = 'deleteEmployee?id=' + id;
-                }
-            }
-
-            function openPopup() {
-                document.getElementById('insertEmployeePopup').style.display = 'flex';
-            }
-
-            function closePopup() {
-                document.getElementById('insertEmployeePopup').style.display = 'none';
-                location.reload();
-            }
-
-            // Đóng popup khi bấm ra ngoài
-            document.addEventListener('click', function (event) {
-                let popup = document.getElementById('insertEmployeePopup');
-                let popupContent = document.querySelector('.popup-content');
-
-                if (event.target === popup) {
-                    closePopup();
-                }
-            });
-        </script>
     </head>
+
+    <script>
+        function viewEmployee(id) {
+            window.location.href = 'viewEmployee?id=' + id;
+        }
+
+        function editEmployee(id) {
+            window.location.href = 'editEmployee?id=' + id;
+        }
+
+        function deleteEmployee(employeeCode) {
+            if (confirm("Are you sure you want to delete employee " + employeeCode + "?")) {
+                // Gửi yêu cầu DELETE đến Servlet
+                fetch("delete-employee?employeeCode=" + employeeCode, {method: "GET"})
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text();
+                            }
+                            throw new Error('Network response was not ok');
+                        })
+                        .then(data => {
+                            alert(data); // Hiển thị thông báo xóa thành công/thất bại
+                            // Tải lại trang để cập nhật danh sách
+                            location.reload();
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                            alert("Có lỗi xảy ra khi xóa nhân viên");
+                        });
+            }
+        }
+
+        function openPopup() {
+            document.getElementById('insertEmployeePopup').style.display = 'flex';
+        }
+
+        function closePopup() {
+            document.getElementById('insertEmployeePopup').style.display = 'none';
+            location.reload();
+        }
+
+        // Đóng popup khi bấm ra ngoài
+        document.addEventListener('click', function (event) {
+            let popup = document.getElementById('insertEmployeePopup');
+            let popupContent = document.querySelector('.popup-content');
+
+            if (event.target === popup) {
+                closePopup();
+            }
+        });
+    </script>
+    
     <body>
         <div id="insertEmployeePopup" class="popup">
             <div class="popup-content">
@@ -142,8 +89,6 @@
                         <tr>
                             <th>ID</th>
                             <th>Full Name</th>
-                            <th>Gender</th>
-                            <th>Birth Date</th>
                             <th>Telephone</th>
                             <th>Position Name</th>
                             <th>Department Name</th>
@@ -155,19 +100,17 @@
                             <tr>
                                 <td>${e.getEmployeeCode()}</td>
                                 <td>${e.getFullname()}</td>
-                                <td>${e.getGender()}</td>
-                                <td>${e.getFormattedBirthDate()}</td>
                                 <td>${e.getTel()}</td>
                                 <td>${e.getPositionName()}</td>
                                 <td>${e.getDepartmentName()}</td>
-                                <td>
-                                    <button class="btn btn-view" onclick="viewEmployee(${e.getEmployeeCode()})">
+                                <td class="action_button">
+                                    <button class="btn btn-view" onclick="viewEmployee('${e.getEmployeeCode()}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <button class="btn btn-edit" onclick="editEmployee(${e.getEmployeeCode()})">
+                                    <button class="btn btn-edit" onclick="editEmployee('${e.getEmployeeCode()}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-delete" onclick="deleteEmployee(${e.getEmployeeCode()})">
+                                    <button class="btn btn-delete" onclick="deleteEmployee('${e.getEmployeeCode()}')">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </td>
@@ -199,5 +142,7 @@
             </div>
         </div>
     </div>
+
+
 </body>
 </html>

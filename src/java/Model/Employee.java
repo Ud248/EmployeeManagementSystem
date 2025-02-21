@@ -22,6 +22,12 @@ public class Employee {
     public Employee() {
     }
 
+    public Employee(String employeeCode) {
+        this.employeeCode = employeeCode;
+    }
+    
+    
+
     public Employee(int employeeId, String employeeCode, String firstName, String lastName, LocalDate birthDate, String gender, String tel, String address, int positionId, int departmentId) {
         this.employeeId = employeeId;
         this.employeeCode = employeeCode;
