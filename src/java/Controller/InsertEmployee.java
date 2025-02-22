@@ -50,7 +50,7 @@ public class InsertEmployee extends HttpServlet {
             error += "Invalid birthdate format.<br>";
         }
 
-        if (gender == null || gender.equals("None")) {
+        if (gender.equals("None")) {
             error += "Please select your gender.<br>";
         } else {
             gender = gender.equals("Male") ? "Nam" : "Nữ";
@@ -74,15 +74,23 @@ public class InsertEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please select a valid department.<br>";
         }
-        
         try {
             basicSalary = Integer.parseInt(request.getParameter("basicSalary"));
         } catch (NumberFormatException e) {
-            error += "Please select a valid basic salary.<br>";
+            error += "Please input a valid basic salary.<br>";
         }
 
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
+            request.setAttribute("firstName", firstName);
+            request.setAttribute("lastName", lastName);
+            request.setAttribute("birthdateStr", birthdateStr);
+            request.setAttribute("gender", gender.equals("Nam") ? "Male" : "Female");
+            request.setAttribute("tel", tel);
+            request.setAttribute("address", address);
+            request.setAttribute("positionId", positionId);
+            request.setAttribute("departmentId", departmentId);
+            request.setAttribute("basicSalary", basicSalary);
             request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
         } else {
             EmployeeDAO eDao = new EmployeeDAO();
@@ -120,7 +128,18 @@ public class InsertEmployee extends HttpServlet {
                 session.setAttribute("totalEmployees", totalEmployees);
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             } else {
+                request.setAttribute("firstName", firstName);
+                request.setAttribute("lastName", lastName);
+                request.setAttribute("birthdateStr", birthdateStr);
+                request.setAttribute("gender", gender.equals("Nam") ? "Male" : "Female");
+                request.setAttribute("tel", tel);
+                request.setAttribute("address", address);
+                request.setAttribute("positionId", positionId);
+                request.setAttribute("departmentId", departmentId);
+                request.setAttribute("basicSalary", basicSalary);
+                
                 request.setAttribute("error", "Failed to insert employee. Please try again.");
+                
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             }
         }

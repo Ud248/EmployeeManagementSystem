@@ -71,8 +71,6 @@
 
         <div class="content">
             <div style="padding: 10px 20px 0px 20px">
-                <h2 class="page-title">Employee List</h2>
-
                 <div class="toolbar">
                     <input type="text" 
                            class="search-box" 
