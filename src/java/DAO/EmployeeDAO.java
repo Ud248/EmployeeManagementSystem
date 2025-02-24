@@ -141,6 +141,51 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result;
     }
+    
+    //Thêm salary cả add phần where nữa
+    public EmployeeDTO selectByEmployeeCode(Employee t) {
+        EmployeeDTO result = null;
+        try {
+            // B1: Tạo kết nối đến CSDL
+            Connection con = JDBCUtil.getConnection();
+
+            // B2: Tạo ra đối tượng PreparedStatement
+            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel,p.PositionName AS PositionName, d.DepartmentName AS DepartmentName, e.Gender, e.BirthDate, e.Address , a.Username, a.Password\n"
+                    + "FROM Employee e \n"
+                    + "JOIN Position p ON e.PositionID = p.PositionID \n"
+                    + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
+                    + "JOIN Account a ON e.EmployeeID = a.EmployeeID";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, t.getEmployeeId());
+
+            // B3: Thực thi câu lệnh sql
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+
+            // B4: Xử lý kết quả truy vấn
+            while (rs.next()) {
+                int employeeId = rs.getInt("EmployeeID");
+                String employeeCode = rs.getString("EmployeeCode");
+                String firstName = rs.getString("FirstName");
+                String lastName = rs.getString("LastName");
+                LocalDate birthDate = rs.getDate("BirthDate").toLocalDate();
+                String gender = rs.getString("Gender");
+                String tel = rs.getString("Tel");
+                String address = rs.getString("Address");
+                int positionId = rs.getInt("PositionID");
+                int departmentId = rs.getInt("DepartmentID");
+                int basicSalary = rs.getInt("BasicSalary");
+                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
+                        address, positionId, departmentId, basicSalary);
+            }
+
+            // B5: Đóng kết nối
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     public Employee selectById(int id) {
         Employee result = null;

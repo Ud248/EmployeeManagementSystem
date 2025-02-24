@@ -11,14 +11,6 @@
     </head>
 
     <script>
-        function viewEmployee(id) {
-            window.location.href = 'viewEmployee?id=' + id;
-        }
-
-        function editEmployee(id) {
-            window.location.href = 'editEmployee?id=' + id;
-        }
-
         function deleteEmployee(employeeCode) {
             if (confirm("Are you sure you want to delete employee " + employeeCode + "?")) {
                 // Gửi yêu cầu DELETE đến Servlet
@@ -41,31 +33,39 @@
             }
         }
 
-        function openPopup() {
-            document.getElementById('insertEmployeePopup').style.display = 'flex';
+        function openPopup(id) {
+            document.getElementById(id).style.display = 'flex';
         }
 
-        function closePopup() {
-            document.getElementById('insertEmployeePopup').style.display = 'none';
+        function closePopup(id) {
+            document.getElementById(id).style.display = 'none';
             location.reload();
         }
 
         // Đóng popup khi bấm ra ngoài
         document.addEventListener('click', function (event) {
-            let popup = document.getElementById('insertEmployeePopup');
-            let popupContent = document.querySelector('.popup-content');
+            let popups = document.querySelectorAll('.popup');
 
-            if (event.target === popup) {
-                closePopup();
-            }
+            popups.forEach(popup => {
+                if (event.target === popup) {
+                    popup.style.display = 'none'; // Ẩn popup
+                }
+            });
         });
     </script>
-    
+
     <body>
         <div id="insertEmployeePopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopup()">&times;</span>
+                <span class="close-btn" onclick="closePopup('insertEmployeePopup')">&times;</span>
                 <iframe id="insertEmployeeFrame" src="insertEmployee.jsp"></iframe>
+            </div>
+        </div>
+
+        <div id="viewEmployeePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
+                <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
             </div>
         </div>
 
@@ -77,7 +77,7 @@
                            id="searchName" 
                            placeholder="Search With FirstName">
 
-                    <button class="new-employee-btn" onclick="openPopup()">
+                    <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup')">
                         <i class="fas fa-plus"></i> New Employee
                     </button>
                 </div>
@@ -85,7 +85,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Employee Code</th>
                             <th>Full Name</th>
                             <th>Telephone</th>
                             <th>Position Name</th>
@@ -102,7 +102,7 @@
                                 <td>${e.getPositionName()}</td>
                                 <td>${e.getDepartmentName()}</td>
                                 <td class="action_button">
-                                    <button class="btn btn-view" onclick="viewEmployee('${e.getEmployeeCode()}')">
+                                    <button class="btn btn-view" onclick="openPopup('viewEmployeePopup')">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <button class="btn btn-edit" onclick="editEmployee('${e.getEmployeeCode()}')">
@@ -140,7 +140,5 @@
             </div>
         </div>
     </div>
-
-
 </body>
 </html>
