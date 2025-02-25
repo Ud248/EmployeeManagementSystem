@@ -49,6 +49,7 @@
             popups.forEach(popup => {
                 if (event.target === popup) {
                     popup.style.display = 'none'; // Ẩn popup
+                    location.reload();
                 }
             });
         });

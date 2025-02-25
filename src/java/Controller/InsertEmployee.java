@@ -94,7 +94,7 @@ public class InsertEmployee extends HttpServlet {
             request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
         } else {
             EmployeeDAO eDao = new EmployeeDAO();
-            boolean success = eDao.insert(new Employee(firstName, lastName, birthdate, tel, address, positionId, departmentId, basicSalary));
+            boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
                 request.setAttribute("successMsg", "Add employee " + lastName + " " + firstName + " successfully!");
 

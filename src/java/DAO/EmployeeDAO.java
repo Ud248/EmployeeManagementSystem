@@ -141,8 +141,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result;
     }
-    
-    //Thêm salary cả add phần where nữa
+
     public EmployeeDTO selectByEmployeeCode(Employee t) {
         EmployeeDTO result = null;
         try {
@@ -150,11 +149,12 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             Connection con = JDBCUtil.getConnection();
 
             // B2: Tạo ra đối tượng PreparedStatement
-            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel,p.PositionName AS PositionName, d.DepartmentName AS DepartmentName, e.Gender, e.BirthDate, e.Address , a.Username, a.Password\n"
-                    + "FROM Employee e \n"
-                    + "JOIN Position p ON e.PositionID = p.PositionID \n"
+            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, e.Gender, e.BirthDate, e.Address ,e.BasicSalary ,p.PositionName AS PositionName, d.DepartmentName AS DepartmentName, a.Username, a.Password\n"
+                    + "FROM Employee e\n"
+                    + "JOIN Position p ON e.PositionID = p.PositionID\n"
                     + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
-                    + "JOIN Account a ON e.EmployeeID = a.EmployeeID";
+                    + "JOIN Account a ON e.EmployeeID = a.EmployeeID\n"
+                    + "WHERE e.EmployeeCode = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setInt(1, t.getEmployeeId());
 
@@ -164,19 +164,18 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
             // B4: Xử lý kết quả truy vấn
             while (rs.next()) {
-                int employeeId = rs.getInt("EmployeeID");
                 String employeeCode = rs.getString("EmployeeCode");
-                String firstName = rs.getString("FirstName");
-                String lastName = rs.getString("LastName");
+                String fullname = rs.getString("Fullname");
                 LocalDate birthDate = rs.getDate("BirthDate").toLocalDate();
                 String gender = rs.getString("Gender");
                 String tel = rs.getString("Tel");
                 String address = rs.getString("Address");
-                int positionId = rs.getInt("PositionID");
-                int departmentId = rs.getInt("DepartmentID");
+                String positionName = rs.getString("PositionName");
+                String departmentName = rs.getString("DepartmentName");
                 int basicSalary = rs.getInt("BasicSalary");
-                result = new Employee(employeeId, employeeCode, firstName, lastName, birthDate, gender, tel,
-                        address, positionId, departmentId, basicSalary);
+                String username = rs.getString("Username");
+                String password = rs.getString("Password");
+                result = new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, positionName, departmentName, basicSalary, username, password);           
             }
 
             // B5: Đóng kết nối

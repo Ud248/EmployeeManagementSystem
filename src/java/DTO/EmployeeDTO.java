@@ -42,6 +42,19 @@ public class EmployeeDTO {
         this.basicSalary = basicSalary;
     }
 
+    public EmployeeDTO(String employeeCode, String fullname, LocalDate birthDate, String gender, String tel, String positionName, String departmentName, int basicSalary, String username, String password) {
+        this.employeeCode = employeeCode;
+        this.fullname = fullname;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.tel = tel;
+        this.positionName = positionName;
+        this.departmentName = departmentName;
+        this.basicSalary = basicSalary;
+        this.username = username;
+        this.password = password;
+    }
+
     public String getEmployeeCode() {
         return employeeCode;
     }
