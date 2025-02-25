@@ -32,64 +32,47 @@
 
         </div>
 
-        <%
-    String message = (String) session.getAttribute("Message");
-    if (message != null) {
-        %>
         <script>
-            Swal.fire({
-                icon: '<%= message.contains("thành công") ? "success" : "error" %>',
-                title: '<%= message.contains("thành công") ? "Thành công!" : "Lỗi!" %>',
-                text: '<%= message %>',
-                confirmButtonColor: '#3085d6'
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy tất cả các mục menu
+                const menuItems = document.querySelectorAll('.menu li a');
+
+                // Lặp qua mỗi mục và thêm sự kiện click
+                menuItems.forEach(item => {
+                    item.addEventListener('click', function () {
+                        // Xóa lớp 'selected' khỏi tất cả mục
+                        menuItems.forEach(i => i.classList.remove('selected'));
+
+                        // Thêm lớp 'selected' cho mục được nhấp
+                        item.classList.add('selected');
+                    });
+                });
+            });
+            // Hàm tải trang con vào #main-content
+            function loadContent(page) {
+                $.ajax({
+                    url: page + '.jsp',
+                    success: function (data) {
+                        $('#main-content').html(data);
+                        sessionStorage.setItem('currentPage', page);
+                    },
+                    error: function () {
+                        $('#main-content').html('<p>Không thể tải nội dung.</p>');
+                    }
+                });
+            }
+            // Khi trang tải xong, kiểm tra trạng thái trước đó và load trang tương ứng
+            $(document).ready(function () {
+                let savedPage = sessionStorage.getItem('currentPage');
+                if (!savedPage) {
+                    $('#main-content').html('<p>Hello</p>');
+                } else {
+                    loadContent(savedPage);
+                }
             });
         </script>
-        <%
-            session.removeAttribute("Message"); // Xóa message sau khi hiển thị để tránh lặp lại
-            }
-        %>    
+
     </body>
 </html>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        // Lấy tất cả các mục menu
-        const menuItems = document.querySelectorAll('.menu li');
 
-        // Lặp qua mỗi mục và thêm sự kiện click
-        menuItems.forEach(item => {
-            item.addEventListener('click', function () {
-                // Xóa lớp 'selected' khỏi tất cả mục
-                menuItems.forEach(i => i.classList.remove('selected'));
-
-                // Thêm lớp 'selected' cho mục được nhấp
-                item.classList.add('selected');
-            });
-        });
-    });
-</script>
-
-<script>
-    // Hàm tải trang con vào #main-content
-    function loadContent(page) {
-        $.ajax({
-            url: page + ".jsp",
-            success: function (data) {
-                $("#main-content").html(data);
-                localStorage.setItem("currentPage", page); // Lưu trạng thái vào localStorage
-            },
-            error: function () {
-                $("#main-content").html("<p>Không thể tải nội dung.</p>");
-            }
-        });
-    }
-
-    // Khi trang tải xong, kiểm tra trạng thái trước đó và load trang tương ứng
-    $(document).ready(function () {
-        let savedPage = localStorage.getItem("currentPage");
-        if (!savedPage) {
-            savedPage = "adminEmployeeList"; // Mặc định mở adminEmployeeList
-        }
-        loadContent(savedPage);
-    });
-</script>
