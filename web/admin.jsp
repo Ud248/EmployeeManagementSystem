@@ -35,7 +35,7 @@
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy tất cả các mục menu
-                const menuItems = document.querySelectorAll('.menu li a');
+                const menuItems = document.querySelectorAll('.menu li');
 
                 // Lặp qua mỗi mục và thêm sự kiện click
                 menuItems.forEach(item => {

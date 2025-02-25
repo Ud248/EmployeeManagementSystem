@@ -54,7 +54,7 @@ body {
     flex: 1;
 }
 
-.menu li.selected {
+.menu li .selected {
     background: linear-gradient(135deg, #4caf50, #81c784); /* Màu nền gradient khi chọn */
     color: white; /* Chữ màu trắng khi chọn */
     transform: scale(1.05); /* Tăng kích thước một chút khi chọn */
