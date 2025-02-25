@@ -15,6 +15,20 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
+
+    <%
+        String employeeCode = request.getAttribute("employeeCode") +"";
+        String fullname = request.getAttribute("fullname") +"";
+        String birthDate = request.getAttribute("birthDate") +"";
+        String gender = request.getAttribute("gender") +"";
+        String tel = request.getAttribute("tel") +"";
+        String address = request.getAttribute("address") +"";
+        String positionName = request.getAttribute("positionName") +"";
+        String departmentName = request.getAttribute("departmentName") +"";
+        String basicSalary = request.getAttribute("basicSalary") +"";
+        String username = request.getAttribute("username") +"";
+        String password = request.getAttribute("password") +"";
+    %>
     <body>
         <div class="container mt-5">
             <div class="modal-content p-4">
@@ -26,57 +40,56 @@
                         <!-- Cột bên trái -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">First Name</label>
-                                <input type="text" class="form-control" value="${employee.firstName}" readonly>
+                                <label class="form-label">Employee Code</label>
+                                <input type="text" class="form-control" value="<%=employeeCode%>" readonly>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Last Name</label>
-                                <input type="text" class="form-control" value="${employee.lastName}" readonly>
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-control" value="<%=fullname%>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Birthdate</label>
-                                <input type="date" class="form-control" value="${employee.birthdate}" readonly>
+                                <input type="date" class="form-control" value="<%=birthDate%>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Gender</label>
-                                <input type="text" class="form-control" value="${employee.gender}" readonly>
+                                <input type="text" class="form-control" value="<%=gender%>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Telephone</label>
-                                <input type="text" class="form-control" value="${employee.telephone}" readonly>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="text" class="form-control" value="${employee.email}" readonly>
+                                <input type="text" class="form-control" value="<%=tel%>" readonly>
                             </div>
                         </div>
 
                         <!-- Cột bên phải -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label class="form-label">Position</label>
-                                <input type="text" class="form-control" value="${employee.positionName}" readonly>
+                                <label class="form-label">Position Name</label>
+                                <input type="text" class="form-control" value="<%=positionName%>" readonly>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Department</label>
-                                <input type="text" class="form-control" value="${employee.departmentName}" readonly>
+                                <label class="form-label">Department Name</label>
+                                <input type="text" class="form-control" value="<%=departmentName%>" readonly>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Basic Salary</label>
-                                <input type="text" class="form-control" value="${employee.basicSalary}" readonly>
+                                <input type="text" class="form-control" value="<%=basicSalary%>" readonly>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Address</label>
-                                <textarea class="form-control" rows="3" readonly>${employee.address}</textarea>
+                                <label class="form-label">Username</label>                               
+                                <input type="text" class="form-control" value="<%=username%>" readonly>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Date of Joining</label>
-                                <input type="text" class="form-control" value="${employee.dateOfJoining}" readonly>
+                                <label class="form-label">Password</label>
+                                <input type="text   " class="form-control" value="<%=password%>" readonly>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-center">
-                        <a href="employee-list" class="btn btn-secondary">Back</a>
+
+
+                        <div class="col-md-12">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" value="<%=address%>" readonly>
+                        </div>
                     </div>
                 </div>
             </div>

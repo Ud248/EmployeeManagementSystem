@@ -156,7 +156,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                     + "JOIN Account a ON e.EmployeeID = a.EmployeeID\n"
                     + "WHERE e.EmployeeCode = ?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, t.getEmployeeId());
+            st.setString(1, t.getEmployeeCode());
 
             // B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -175,7 +175,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 int basicSalary = rs.getInt("BasicSalary");
                 String username = rs.getString("Username");
                 String password = rs.getString("Password");
-                result = new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, positionName, departmentName, basicSalary, username, password);           
+                result = new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, address, positionName, departmentName, basicSalary, username, password);
             }
 
             // B5: Đóng kết nối
@@ -319,5 +319,10 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             e.printStackTrace();
         }
         return result > 0;
+    }
+    
+    public static void main(String[] args) {
+        EmployeeDTO e = new EmployeeDAO().selectByEmployeeCode(new Employee("GD0001"));
+        System.out.println(e);
     }
 }

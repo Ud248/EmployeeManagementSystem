@@ -37,6 +37,17 @@
             document.getElementById(id).style.display = 'flex';
         }
 
+        function openViewPopup(id, employeeCode = null) {
+            let popup = document.getElementById(id);
+
+            if (employeeCode && id === 'viewEmployeePopup') {
+                document.getElementById('viewEmployeeFrame').src = "view-employee?employeeCode=" + employeeCode;
+            }
+
+            popup.style.display = 'flex';
+        }
+
+
         function closePopup(id) {
             document.getElementById(id).style.display = 'none';
             location.reload();
@@ -103,7 +114,7 @@
                                 <td>${e.getPositionName()}</td>
                                 <td>${e.getDepartmentName()}</td>
                                 <td class="action_button">
-                                    <button class="btn btn-view" onclick="openPopup('viewEmployeePopup')">
+                                    <button class="btn btn-view" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
                                     <button class="btn btn-edit" onclick="editEmployee('${e.getEmployeeCode()}')">
