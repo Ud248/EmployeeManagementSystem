@@ -20,11 +20,11 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    public int getDepartmentID() {
+    public int getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentID(int departmentId) {
+    public void setDepartmentId(int departmentId) {
         this.departmentId = departmentId;
     }
 

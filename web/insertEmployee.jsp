@@ -34,7 +34,7 @@
         basicSalary = basicSalary.equals("null") ? "": basicSalary;
     %>
     <body>
-        <div class="container mt-5">
+        <div class="container" style="padding-top: 10px">
             <div class="modal-content p-4" style="padding: 0 1.5rem 0 1.5rem !important;">
                 <div class="modal-header" style="padding-bottom: 15px">
                     <h3 class="modal-title mx-auto" id="insertEmployeeLabel">INSERT NEW EMPLOYEE</h5>
@@ -60,8 +60,8 @@
                                     <label for="gender" class="form-label">Gender</label>
                                     <select class="form-select" id="gender" name="gender">
                                         <option value="None">--Select gender--</option>
-                                        <option value="Male" ${gender == 'Male' ? 'selected="selected"' : ''}>Male</option>
-                                        <option value="Female" ${gender == 'Female' ? 'selected="selected"' : ''}>Female</option>
+                                        <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
+                                        <option value="Nữ" ${gender == 'Nữ' ? 'selected="selected"' : ''}>Nữ</option>
                                     </select>
                                 </div>
                             </div>
@@ -89,8 +89,8 @@
                                     <select class="form-select" id="department" name="department" required>
                                         <option selected value="None">Select Employee Department</option>
                                         <c:forEach var="department" items="${sessionScope.listDepartment}">
-                                            <option value="${department.departmentID}" 
-                                                    ${departmentId == department.departmentID ? 'selected="selected"' : ''}>
+                                            <option value="${department.departmentId}" 
+                                                    ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
                                                 ${department.departmentName}
                                             </option>
                                         </c:forEach>

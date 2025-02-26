@@ -46,9 +46,22 @@
 
             popup.style.display = 'flex';
         }
+        
+        function openUpdatePopup(id, employeeCode = null) {
+            let popup = document.getElementById(id);
 
+            if (employeeCode && id === 'updateEmployeePopup') {
+                document.getElementById('updateEmployeeFrame').src = "update-employee?employeeCode=" + employeeCode;
+            }
 
+            popup.style.display = 'flex';
+        }
+        
         function closePopup(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function closePopupAndReload(id) {
             document.getElementById(id).style.display = 'none';
             location.reload();
         }
@@ -69,7 +82,7 @@
     <body>
         <div id="insertEmployeePopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopup('insertEmployeePopup')">&times;</span>
+                <span class="close-btn" onclick="closePopupAndReload('insertEmployeePopup')">&times;</span>
                 <iframe id="insertEmployeeFrame" src="insertEmployee.jsp"></iframe>
             </div>
         </div>
@@ -78,6 +91,13 @@
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
                 <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
+            </div>
+        </div>
+        
+        <div id="updateEmployeePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
+                <iframe id="updateEmployeeFrame" src="updateEmployee.jsp"></iframe>
             </div>
         </div>
 
@@ -117,7 +137,7 @@
                                     <button class="btn btn-view" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}')">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <button class="btn btn-edit" onclick="editEmployee('${e.getEmployeeCode()}')">
+                                    <button class="btn btn-edit" onclick="openUpdatePopup('updateEmployeePopup', '${e.getEmployeeCode()}')">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <button class="btn btn-delete" onclick="deleteEmployee('${e.getEmployeeCode()}')">

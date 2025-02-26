@@ -17,6 +17,7 @@ public class EmployeeDTO {
     private LocalDate birthDate;
     private String gender, tel, address;
     private String positionName, departmentName;
+    private int positionId, departmentId;
     private int basicSalary;
     private String username, password;
 
@@ -31,7 +32,7 @@ public class EmployeeDTO {
         this.departmentName = departmentName;
     }
 
-    public EmployeeDTO(String employeeCode, String fullname, LocalDate birthDate, String gender, String tel, String address, String positionName, String departmentName, int basicSalary, String username, String password) {
+    public EmployeeDTO(String employeeCode, String fullname, LocalDate birthDate, String gender, String tel, String address, String positionName, String departmentName, int positionId, int departmentId, int basicSalary, String username, String password) {
         this.employeeCode = employeeCode;
         this.fullname = fullname;
         this.birthDate = birthDate;
@@ -40,6 +41,8 @@ public class EmployeeDTO {
         this.address = address;
         this.positionName = positionName;
         this.departmentName = departmentName;
+        this.positionId = positionId;
+        this.departmentId = departmentId;
         this.basicSalary = basicSalary;
         this.username = username;
         this.password = password;
@@ -137,6 +140,17 @@ public class EmployeeDTO {
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    
+
+    public int getPositionId() {
+        return positionId;
+    }
+
+    public int getDepartmentId() {
+        return departmentId;
+    }
+
+    @Override
+    public String toString() {
+        return "EmployeeDTO{" + "employeeCode=" + employeeCode + ", fullname=" + fullname + ", birthDate=" + birthDate + ", gender=" + gender + ", tel=" + tel + ", address=" + address + ", positionName=" + positionName + ", departmentName=" + departmentName + ", positionId=" + positionId + ", departmentId=" + departmentId + ", basicSalary=" + basicSalary + ", username=" + username + ", password=" + password + '}';
+    }   
 }

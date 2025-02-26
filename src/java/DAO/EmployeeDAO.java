@@ -149,7 +149,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             Connection con = JDBCUtil.getConnection();
 
             // B2: Tạo ra đối tượng PreparedStatement
-            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, e.Gender, e.BirthDate, e.Address ,e.BasicSalary ,p.PositionName AS PositionName, d.DepartmentName AS DepartmentName, a.Username, a.Password\n"
+            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, e.Gender, e.BirthDate, e.Address ,e.BasicSalary , p.PositionID, p.PositionName AS PositionName, d.DepartmentID,d.DepartmentName AS DepartmentName, a.Username, a.Password\n"
                     + "FROM Employee e\n"
                     + "JOIN Position p ON e.PositionID = p.PositionID\n"
                     + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
@@ -170,12 +170,14 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 String gender = rs.getString("Gender");
                 String tel = rs.getString("Tel");
                 String address = rs.getString("Address");
+                int positionId = rs.getInt("PositionID");
                 String positionName = rs.getString("PositionName");
+                int departmentId = rs.getInt("departmentId");
                 String departmentName = rs.getString("DepartmentName");
                 int basicSalary = rs.getInt("BasicSalary");
                 String username = rs.getString("Username");
                 String password = rs.getString("Password");
-                result = new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, address, positionName, departmentName, basicSalary, username, password);
+                result = new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, address, positionName, departmentName, positionId, departmentId, basicSalary, username, password);
             }
 
             // B5: Đóng kết nối
@@ -290,20 +292,19 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
             // B2: Tạo ra đối tượng PreparedStatement
             String sql = "UPDATE Employee\n"
-                    + "SET EmployeeCode=?, FirstName=?, LastName=?, BirthDate=?, Gender=?, Tel=?, Address=?, PositionID=?, DepartmentID=?, BasicSalary=?\n"
-                    + "WHERE EmployeeID=?";
+                    + "SET FirstName=?, LastName=?, BirthDate=?, Gender=?, Tel=?, Address=?, PositionID=?, DepartmentID=?, BasicSalary=?\n"
+                    + "WHERE EmployeeCode=?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, t.getEmployeeCode());
-            st.setString(2, t.getFirstName());
-            st.setString(3, t.getLastName());
-            st.setDate(4, Date.valueOf(t.getBirthDate()));
-            st.setString(5, t.getGender());
-            st.setString(6, t.getTel());
-            st.setString(7, t.getAddress());
-            st.setInt(8, t.getPositionId());
-            st.setInt(9, t.getDepartmentId());
-            st.setInt(10, t.getBasicSalary());
-            st.setInt(11, t.getEmployeeId());
+            st.setString(1, t.getFirstName());
+            st.setString(2, t.getLastName());
+            st.setDate(3, Date.valueOf(t.getBirthDate()));
+            st.setString(4, t.getGender());
+            st.setString(5, t.getTel());
+            st.setString(6, t.getAddress());
+            st.setInt(7, t.getPositionId());
+            st.setInt(8, t.getDepartmentId());
+            st.setInt(9, t.getBasicSalary());
+            st.setString(10, t.getEmployeeCode());
 
             // B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -320,7 +321,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return result > 0;
     }
-    
+
     public static void main(String[] args) {
         EmployeeDTO e = new EmployeeDAO().selectByEmployeeCode(new Employee("GD0001"));
         System.out.println(e);

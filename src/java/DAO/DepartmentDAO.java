@@ -56,7 +56,7 @@ public class DepartmentDAO implements DAOInterface<Department> {
             //B2: Tạo ra đối tượng PreparedStatement
             String sql = "SELECT * FROM Department WHERE DepartmentID=?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, t.getDepartmentID());
+            st.setInt(1, t.getDepartmentId());
 
             //B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -116,7 +116,7 @@ public class DepartmentDAO implements DAOInterface<Department> {
             //B2: Tạo ra đối tượng PreparedStatement
             String sql = "DELETE FROM Department WHERE DepartmentID=?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, t.getDepartmentID());
+            st.setInt(1, t.getDepartmentId());
 
             //B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -147,7 +147,7 @@ public class DepartmentDAO implements DAOInterface<Department> {
                     + "WHERE DepartmentID=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getDepartmentName());
-            st.setInt(2, t.getDepartmentID());
+            st.setInt(2, t.getDepartmentId());
 
             //B3: Thực thi câu lệnh sql
             System.out.println(sql);
