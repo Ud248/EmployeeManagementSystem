@@ -49,25 +49,29 @@ public class AccountDAO implements DAOInterface<Account> {
         return isAdmin;
     }
 
-    public boolean isTrueAccount(String username, String password) {
+    public Account selectByUsernameAndPassword(Account t) {
+        Account result = null;
         Connection con = null;
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
             con = JDBCUtil.getConnection();
-            String sql = "SELECT 1 FROM Account WHERE Username = ? AND Password = ?";
+            String sql = "SELECT * FROM Account WHERE Username = ? AND Password = ?";
             st = con.prepareStatement(sql);
-            st.setString(1, username);
-            st.setString(2, password);
-            rs = st.executeQuery();
-            if (rs.next()) {
-                JDBCUtil.closeConnection(con);
-                return true;
+            st.setString(1, t.getUsername());
+            st.setString(2, t.getPassword());
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                int accountId = rs.getInt("AccountID");
+                int employeeId = rs.getInt("EmployeeID");
+                String username = rs.getString("Username");
+                String password = rs.getString("Password");
+                boolean isAdmin = rs.getInt("IsAdmin") == 1;
+                result = new Account(accountId, employeeId, username, password, isAdmin);
             }
         } catch (SQLException ex) {
             Logger.getLogger(AccountDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        return false;
+        }
+        return result;
     }
 
     @Override
@@ -233,9 +237,12 @@ public class AccountDAO implements DAOInterface<Account> {
     }
 
     public static void main(String[] args) {
-        AccountDAO x = new AccountDAO();
-        boolean isTrueAccount = x.isTrueAccount("ChienNCGD0001", "123");
-        System.out.println(isTrueAccount);
-    }
+        Account a = new Account();
+        a.setUsername("chienncgd0001");
+        a.setPassword("123");
 
+        AccountDAO accountDAO = new AccountDAO();
+        Account account = accountDAO.selectByUsernameAndPassword(a);
+        System.out.println(account);
+    }
 }

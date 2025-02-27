@@ -14,13 +14,13 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     </head>
+
     <body>
         <div class="sidebar">
             <div class="avatar">
-                <img src="./image/tai-anh-phong-canh-dep-49.jpg" alt="alt"/>
-                <h4>Welcome ${sessionScope.username}</h4>
+                <h3>Welcome</h3>
+                <h4>${sessionScope.employee.fullName} <i class="fas fa-caret-down"></i></h4>
             </div>
             <ul class="menu">
                 <li><a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')">Employee List</a></li>

@@ -35,8 +35,12 @@ public class LoadData extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username");
-        boolean isAdmin = new AccountDAO().isAdmin(username);
+        Object obj = session.getAttribute("employee");
+        Employee employee = null;
+        if(obj != null){
+            employee = (Employee)obj;
+        }
+        boolean isAdmin = new AccountDAO().isAdmin(session.getAttribute("username")+"");
         String url = "";
         if (isAdmin) {
             url = "admin.jsp";

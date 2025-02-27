@@ -5,6 +5,9 @@
 package Controller;
 
 import DAO.AccountDAO;
+import DAO.EmployeeDAO;
+import Model.Account;
+import Model.Employee;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -26,16 +29,26 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
+        String url = "";
+
+        Account a = new Account();
+        a.setUsername(username);
+        a.setPassword(password);
+
         AccountDAO accountDAO = new AccountDAO();
-        boolean isTrueAccount = accountDAO.isTrueAccount(username, password);
-        if (isTrueAccount) {
+        Account account = accountDAO.selectByUsernameAndPassword(a);
+        if (account != null) {
+            EmployeeDAO employeeDao = new EmployeeDAO();
+            Employee employee = employeeDao.selectById(account.getEmployeeId());
             HttpSession session = request.getSession();
-            session.setAttribute("username", username);
-            request.getRequestDispatcher("load-data").forward(request, response);
+            session.setAttribute("employee", employee);
+            session.setAttribute("username", account.getUsername());
+            url = "load-data";
         } else {
             request.setAttribute("username", username);
             request.setAttribute("error", "Incorrect username or password.");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            url = "login.jsp";
         }
+        request.getRequestDispatcher(url).forward(request, response);
     }
 }
