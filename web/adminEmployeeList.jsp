@@ -46,7 +46,7 @@
 
             popup.style.display = 'flex';
         }
-        
+
         function openUpdatePopup(id, employeeCode = null) {
             let popup = document.getElementById(id);
 
@@ -56,27 +56,32 @@
 
             popup.style.display = 'flex';
         }
-        
+
         function closePopup(id) {
             document.getElementById(id).style.display = 'none';
         }
 
         function closePopupAndReload(id) {
             document.getElementById(id).style.display = 'none';
-            location.reload();
+            if (id === 'insertEmployeePopup' || id === 'updateEmployeePopup') {
+                location.reload();
+            }
         }
 
-        // Đóng popup khi bấm ra ngoài
+// Đóng popup khi bấm ra ngoài, chỉ reload nếu không phải popup View
         document.addEventListener('click', function (event) {
             let popups = document.querySelectorAll('.popup');
 
             popups.forEach(popup => {
                 if (event.target === popup) {
-                    popup.style.display = 'none'; // Ẩn popup
-                    location.reload();
+                    popup.style.display = 'none';
+                    if (popup.id === 'insertEmployeePopup' || popup.id === 'updateEmployeePopup') {
+                        location.reload();
+                    }
                 }
             });
         });
+
     </script>
 
     <body>
@@ -93,7 +98,7 @@
                 <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
             </div>
         </div>
-        
+
         <div id="updateEmployeePopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
@@ -102,12 +107,9 @@
         </div>
 
         <div class="content">
-            <div style="padding: 10px 20px 0px 20px">
+            <div style="padding: 20px 20px 0px 20px">
                 <div class="toolbar">
-                    <input type="text" 
-                           class="search-box" 
-                           id="searchName" 
-                           placeholder="Search With FirstName">
+                    <h3 class="title_table">Employee List</h3>
 
                     <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup')">
                         <i class="fas fa-plus"></i> New Employee

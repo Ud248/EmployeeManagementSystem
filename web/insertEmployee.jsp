@@ -34,8 +34,8 @@
         basicSalary = basicSalary.equals("null") ? "": basicSalary;
     %>
     <body>
-        <div class="container" style="padding-top: 10px">
-            <div class="modal-content p-4" style="padding: 0 1.5rem 0 1.5rem !important;">
+        <div class="container">
+            <div class="modal-content" style="padding-top: 35px">
                 <div class="modal-header" style="padding-bottom: 15px">
                     <h3 class="modal-title mx-auto" id="insertEmployeeLabel">INSERT NEW EMPLOYEE</h5>
                 </div>

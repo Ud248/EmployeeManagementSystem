@@ -21,19 +21,21 @@
                 </div>
             </div>
             <!-- LOGIN FORM -->
-            <form action="#" class="change-password-form">
+            <form action="change-password" class="change-password-form" method="post">
                 <div class="input-box">
-                    <input type="text" class="input-field" id="username" required>
-                    <label for="username" class="label">Username</label>
+                    <input type="password" class="input-field" id="oldPassword" name="oldPassword" required>
+                    <label for="oldPassword" class="label">Old password</label>
                 </div>
                 <div class="input-box">
-                    <input type="password" class="input-field" id="password" required>
-                    <label for="password" class="label">Password</label>
+                    <input type="password" class="input-field" id="newPassword" name="newPassword" required>
+                    <label for="newPassword" class="label">New password</label>
                 </div>
                 <div class="input-box">
-                    <input type="password" class="input-field" id="password2" required>
-                    <label for="password2" class="label">Confirmn password</label>
+                    <input type="password" class="input-field" id="confirmNewPassword" name="confirmNewPassword" required onkeyup="kiemTraMatKhau()">
+                    <span id="msg" style="color: red; margin: 10px 0px 0px 20px; font-size: 15px"></span>
+                    <label for="confirmNewPassword" class="label">Confirm new password</label>
                 </div>
+                <span style="color: red;">${empty error ? '' : error}</span>
                 <div class="input-box">
                     <button class="btn-submit">Change Password</button>
                 </div>
@@ -41,3 +43,17 @@
         </div>
     </body>
 </html>
+
+<script>
+    function kiemTraMatKhau() {
+        newPassword = document.getElementById("newPassword").value;
+        confirmNewPassword = document.getElementById("confirmNewPassword").value;
+        if (newPassword != confirmNewPassword) {
+            document.getElementById("msg").innerHTML = "Mật khẩu không khớp!";
+            return false;
+        } else {
+            document.getElementById("msg").innerHTML = "";
+            return true;
+        }
+    }
+</script>

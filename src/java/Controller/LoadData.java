@@ -36,9 +36,9 @@ public class LoadData extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         Object obj = session.getAttribute("employee");
-        Employee employee = null;
+        EmployeeDTO employee = null;
         if(obj != null){
-            employee = (Employee)obj;
+            employee = (EmployeeDTO)obj;
         }
         boolean isAdmin = new AccountDAO().isAdmin(session.getAttribute("username")+"");
         String url = "";

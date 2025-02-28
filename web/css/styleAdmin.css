@@ -21,7 +21,6 @@ body {
     width: 100%;
     height: 20%;
     background: url(avatar.jpg) no-repeat center / cover;
-    margin-bottom: 80px;
 }
 
 .avatar img{
@@ -29,6 +28,28 @@ body {
     height: 85%;
     border-radius: 50%;
     margin-left: 20%;
+}
+
+
+.main {
+    width: 100%;
+    height: 70%;
+    background: url(avatar.jpg) no-repeat center / cover;
+}
+
+.account {
+    width: 100%;
+    height: 15%;
+    background: url(avatar.jpg) no-repeat center / cover;
+}
+
+.title-side-bar{
+    font-size: 10px;
+    font-weight: 500;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #f6f6f6;
 }
 
 .menu {
@@ -49,6 +70,10 @@ body {
 }
 .menu li:hover {
     background-color: #555;
+}
+
+.text{
+    margin-left: 15px;
 }
 .content {
     flex: 1;

@@ -30,7 +30,7 @@
         String password = request.getAttribute("password") +"";
     %>
     <body>
-        <div class="container mt-5">
+        <div class="container   ">
             <div class="modal-content p-4">
                 <div class="modal-header" style="padding-bottom: 15px">
                     <h3 class="modal-title mx-auto">VIEW EMPLOYEE DETAILS</h3>

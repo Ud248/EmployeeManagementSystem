@@ -4,6 +4,7 @@
  */
 package DAO;
 
+import DTO.EmployeeDTO;
 import Model.Account;
 import Utils.JDBCUtil;
 import java.util.ArrayList;
@@ -219,6 +220,37 @@ public class AccountDAO implements DAOInterface<Account> {
             st.setString(3, t.getPassword());
             st.setInt(4, t.isIsAdmin() ? 1 : 0);
             st.setInt(5, t.getAccountId());
+
+            //B3: Thực thi câu lệnh sql
+            System.out.println(sql);
+            result = st.executeUpdate();
+
+            //B4: Xử lý kết quả truy vấn        
+            System.out.println("You executed: " + sql);
+            System.out.println("There are " + result + " rows affected!");
+
+            //B5: Đóng kết nối
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result > 0;
+    }
+
+    public boolean update(EmployeeDTO t) {
+        int result = 0;
+        try {
+            //B1: Tạo kết nối đến CSDL
+            Connection con = JDBCUtil.getConnection();
+
+            //B2: Tạo ra đối tượng PreparedStatement
+            String sql = "UPDATE a\n"
+                    + "SET Password = ?\n"
+                    + "FROM Employee e JOIN Account a on e.EmployeeID = a.EmployeeID\n"
+                    + "WHERE EmployeeCode = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, t.getPassword());
+            st.setString(2, t.getEmployeeCode());
 
             //B3: Thực thi câu lệnh sql
             System.out.println(sql);

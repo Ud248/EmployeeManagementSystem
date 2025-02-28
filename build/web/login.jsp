@@ -12,6 +12,7 @@
         <!-- CSS -->
         <link rel="stylesheet" href="css/styleLogin.css">
         <title>Login</title>
+        <link rel="icon" type="image/x-icon" href="image/logo.png">
     </head>
     <body>
         <% 
@@ -39,7 +40,7 @@
                 <div class="input-box">
                     <button class="btn-submit" id="SignInBtn">Log In <i class='bx bx-log-in' ></i></button>
                 </div>
-                    <div style="text-align: center"><span style="color: red"><%=error %></span></div>
+                <div style="text-align: center"><span style="color: red"><%=error %></span></div>
             </form>
         </div>
     </body>

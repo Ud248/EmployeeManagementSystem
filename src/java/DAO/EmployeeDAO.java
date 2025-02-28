@@ -218,6 +218,42 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result;
     }
 
+    public EmployeeDTO selectDTOById(int id) {
+        EmployeeDTO result = null;
+        try {
+            Connection con = JDBCUtil.getConnection();
+            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, e.Gender, e.BirthDate, e.Address ,e.BasicSalary , p.PositionID, p.PositionName AS PositionName, d.DepartmentID,d.DepartmentName AS DepartmentName, a.Username, a.Password\n"
+                    + "FROM Employee e\n"
+                    + "JOIN Position p ON e.PositionID = p.PositionID\n"
+                    + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
+                    + "JOIN Account a ON e.EmployeeID = a.EmployeeID\n"
+                    + "WHERE e.EmployeeID = ?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String employeeCode = rs.getString("EmployeeCode");
+                String fullname = rs.getString("Fullname");
+                LocalDate birthDate = rs.getDate("BirthDate").toLocalDate();
+                String gender = rs.getString("Gender");
+                String tel = rs.getString("Tel");
+                String address = rs.getString("Address");
+                int positionId = rs.getInt("PositionID");
+                String positionName = rs.getString("PositionName");
+                int departmentId = rs.getInt("departmentId");
+                String departmentName = rs.getString("DepartmentName");
+                int basicSalary = rs.getInt("BasicSalary");
+                String username = rs.getString("Username");
+                String password = rs.getString("Password");
+                result = new EmployeeDTO(employeeCode, fullname, birthDate, gender, tel, address, positionName, departmentName, positionId, departmentId, basicSalary, username, password);
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     @Override
     public boolean insert(Employee t) {
         int result = 0;

@@ -9,24 +9,62 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Home page</title>
+        <link rel="icon" type="image/x-icon" href="image/logo.png">
         <link rel="stylesheet" href="./css/styleAdmin.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- ICONS -->
+        <script src="https://unpkg.com/@phosphor-icons/web"></script>
     </head>
 
     <body>
         <div class="sidebar">
             <div class="avatar">
                 <h3>Welcome</h3>
-                <h4>${sessionScope.employee.fullName} <i class="fas fa-caret-down"></i></h4>
+                <h3>${sessionScope.employee.fullname}</h3>
             </div>
-            <ul class="menu">
-                <li><a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')">Employee List</a></li>
-                <li><a href="javascript:void(0);" onclick="loadContent('adminWorkSchedule')">Work Schedule</a></li>
-                <li><a href="javascript:void(0);" onclick="loadContent('attendanceReport')">Attendance Report</a></li>
-            </ul>
+            <div class="main"> 
+                <h4 class="title-side-bar">Main</h4>
+                <ul class="menu">
+                    <li>
+                        <a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')">
+                            <i class="ph-bold ph-list"></i>
+                            <span class="text">Employee List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onclick="loadContent('adminWorkSchedule')">
+                            <i class="ph-bold ph-calendar-blank"></i>
+                            <span class="text">Work Schedule</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onclick="loadContent('attendanceReport')">
+                            <i class="ph-bold ph-clipboard-text"></i>
+                            <span class="text">Attendance Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="account">
+                <h4 class="title-side-bar">Account</h4>
+                <ul class="menu">
+                    <li>
+                        <a href="changePassword.jsp">
+                            <i class="ph-bold ph-arrows-clockwise"></i>
+                            <span class="text">Change Password</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="logOut.jsp">
+                            <i class="icon ph-bold ph-sign-out"></i>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="content" id="main-content">
 

@@ -6,6 +6,7 @@ package Controller;
 
 import DAO.AccountDAO;
 import DAO.EmployeeDAO;
+import DTO.EmployeeDTO;
 import Model.Account;
 import Model.Employee;
 import java.io.IOException;
@@ -39,7 +40,7 @@ public class Login extends HttpServlet {
         Account account = accountDAO.selectByUsernameAndPassword(a);
         if (account != null) {
             EmployeeDAO employeeDao = new EmployeeDAO();
-            Employee employee = employeeDao.selectById(account.getEmployeeId());
+            EmployeeDTO employee = employeeDao.selectDTOById(account.getEmployeeId());
             HttpSession session = request.getSession();
             session.setAttribute("employee", employee);
             session.setAttribute("username", account.getUsername());
