@@ -3,8 +3,13 @@
     Created on : Feb 17, 2025, 10:43:20 AM
     Author     : anhnn
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if (session.getAttribute("employee") == null) {
+        response.sendRedirect("login.jsp"); // Nếu chưa đăng nhập, chuyển về trang login
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -58,7 +63,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="logOut.jsp">
+                        <a href="dang-xuat">
                             <i class="icon ph-bold ph-sign-out"></i>
                             <span class="text">Logout</span>
                         </a>

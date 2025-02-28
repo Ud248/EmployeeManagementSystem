@@ -10,6 +10,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
     <%
+    if (session.getAttribute("employee") == null) {
+        response.sendRedirect("login.jsp"); // Nếu chưa đăng nhập, chuyển về trang login
+        return;
+    }
         String error = "" + request.getAttribute("error");
         error = error.equals("null") ? "": error;
         String successMsg = "" + request.getAttribute("successMsg");

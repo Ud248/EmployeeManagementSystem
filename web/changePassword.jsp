@@ -5,6 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if (session.getAttribute("employee") == null) {
+        response.sendRedirect("login.jsp"); // Nếu chưa đăng nhập, chuyển về trang login
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
