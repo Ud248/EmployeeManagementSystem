@@ -27,4 +27,28 @@
         <servlet-name>login</servlet-name>
         <url-pattern>/login</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ViewDepartment</servlet-name>
+        <servlet-class>Controller.ViewDepartment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ViewDepartment</servlet-name>
+        <url-pattern>/viewdepartment</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteDepartment</servlet-name>
+        <url-pattern>/deletedepartment</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteDepartment</servlet-name>
+        <servlet-class>Controller.DeleteDepartment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateDepartment</servlet-name>
+        <servlet-class>Controller.UpdateDepartment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateDepartment</servlet-name>
+        <url-pattern>/updatedepartment</url-pattern>
+    </servlet-mapping>
 </web-app>

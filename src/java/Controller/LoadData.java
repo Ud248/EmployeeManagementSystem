@@ -5,8 +5,10 @@
 package Controller;
 
 import DAO.AccountDAO;
+import DAO.DepartmentDAO;
 import DAO.EmployeeDAO;
 import DAO.WorkDAO;
+import DTO.DepartmentDTO;
 import DTO.EmployeeDTO;
 import Model.Department;
 import Model.Employee;
@@ -37,14 +39,16 @@ public class LoadData extends HttpServlet {
         HttpSession session = request.getSession();
         Object obj = session.getAttribute("employee");
         EmployeeDTO employee = null;
-        if(obj != null){
-            employee = (EmployeeDTO)obj;
+        if (obj != null) {
+            employee = (EmployeeDTO) obj;
         }
-        boolean isAdmin = new AccountDAO().isAdmin(session.getAttribute("username")+"");
+        boolean isAdmin = new AccountDAO().isAdmin(session.getAttribute("username") + "");
         String url = "";
         if (isAdmin) {
             url = "admin.jsp";
             EmployeeDAO eDao = new EmployeeDAO();
+            DepartmentDAO dDAO = new DepartmentDAO();
+
             int currentPage = 1;
             int itemsPerPage = 10;
 
@@ -68,13 +72,16 @@ public class LoadData extends HttpServlet {
             if (currentPage > totalPages) {
                 currentPage = totalPages;
             }
-            
+
             //Set list position and department
             List<Position> listPosition = new DAO.PositionDAO().selectAll();
             List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
 
             // Get paginated list of employees
             List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage();
+
+            session.setAttribute("departments", departments);
             session.setAttribute("employees", employees);
             session.setAttribute("listPosition", listPosition);
             session.setAttribute("listDepartment", listDepartment);

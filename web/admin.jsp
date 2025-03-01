@@ -40,6 +40,12 @@
                         </a>
                     </li>
                     <li>
+                        <a href="javascript:void(0);" onclick="loadContent('adminDepartmentManagement')">
+                            <i class="ph-bold ph-list"></i>
+                            <span class="text">Department Management</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="javascript:void(0);" onclick="loadContent('adminWorkSchedule')">
                             <i class="ph-bold ph-calendar-blank"></i>
                             <span class="text">Work Schedule</span>
@@ -111,6 +117,15 @@
                     $('#main-content').html('<p>Hello</p>');
                 } else {
                     loadContent(savedPage);
+                }
+            });
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const params = new URLSearchParams(window.location.search);
+                if (params.get("status") === "success") {
+                    alert("Thành công!");
+                } else if (params.get("status") === "failure") {
+                    alert("Thất bại!");
                 }
             });
         </script>
