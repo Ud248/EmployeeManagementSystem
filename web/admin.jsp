@@ -27,9 +27,12 @@
     <body>
         <div class="sidebar">
             <div class="avatar">
-                <h3>Welcome</h3>
-                <h3>${sessionScope.employee.fullname}</h3>
+                <img src="image/${sessionScope.employee.gender == 'Nam' ? 'MaleAvatar.png' : 'FemaleAvatar.png'}" alt="Employee Avatar">
+                <p class="position">${sessionScope.employee.positionName}</p>
+                <h3 class="name">${sessionScope.employee.fullname}</h3>
             </div>
+
+
             <div class="main"> 
                 <h4 class="title-side-bar">Main</h4>
                 <ul class="menu">
@@ -41,7 +44,7 @@
                     </li>
                     <li>
                         <a href="javascript:void(0);" onclick="loadContent('adminDepartmentManagement')">
-                            <i class="ph-bold ph-list"></i>
+                            <i class="ph ph-users-four"></i>    
                             <span class="text">Department Management</span>
                         </a>
                     </li>
