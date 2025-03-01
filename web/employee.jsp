@@ -15,21 +15,57 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Employee</title>
+        <title>Home page</title>
+        <link rel="icon" type="image/x-icon" href="image/logo.png">
         <link rel="stylesheet" href="./css/styleEmployee.css">
+        <!-- ICONS -->
+        <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     </head>
     <body>
         <div class="sidebar">
             <div class="avatar">
-                <img src="./image/tai-anh-phong-canh-dep-49.jpg" alt="alt"/>
-                <h4>Welcome ${sessionScope.username}</h4>
+                <img src="image/${sessionScope.employee.gender == 'Nam' ? 'MaleAvatar.png' : 'FemaleAvatar.png'}" alt="Employee Avatar">
+                <p class="position">${sessionScope.employee.positionName}</p>
+                <h3 class="name">${sessionScope.employee.fullname}</h3>
             </div>
-            <ul class="menu">
-                <li data-target="work-schedule"><a href="#">Work Schedule</a></li>
-                <li data-target="attendance-report"><a href="#">Attendance Report</a></li>
-            </ul>
+
+            <div class="main"> 
+                <h4 class="title-side-bar">Main</h4>
+                <ul class="menu">
+                    <li data-target="work-schedule">
+                        <a href="#">
+                            <i class="ph-bold ph-calendar-blank"></i>
+                            <span class="text">Work Schedule</span>
+                        </a>
+                    </li>
+                    <li data-target="attendance-report">
+                        <a href="#">
+                            <i class="ph-bold ph-clipboard-text"></i>
+                            <span class="text">Attendance Report</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="account">
+                <h4 class="title-side-bar">Account</h4>
+                <ul class="menu">
+                    <li>
+                        <a href="changePassword.jsp">
+                            <i class="ph-bold ph-arrows-clockwise"></i>
+                            <span class="text">Change Password</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="dang-xuat">
+                            <i class="icon ph-bold ph-sign-out"></i>
+                            <span class="text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+
         <div class="content">
             <div id="work-schedule" class="content-section">
                 <div class="title">
