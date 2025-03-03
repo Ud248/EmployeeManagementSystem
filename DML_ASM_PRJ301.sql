@@ -72,7 +72,7 @@ SELECT * FROM POSITION
 
 SELECT * FROM DEPARTMENT	
 
-
+/*
 SELECT 
 	d.DepartmentID, 
 	d.DepartmentName, 
@@ -86,6 +86,7 @@ SELECT
 FROM Department d 
 LEFT JOIN Employee e ON e.DepartmentID = d.DepartmentID and e.PositionID = 2
 ORDER BY d.DepartmentID 
+*/
 
 --delete department where departmentid = 1
 
@@ -123,4 +124,10 @@ JOIN Position p ON e.PositionID = p.PositionID
 LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID
 JOIN Account a ON e.EmployeeID = a.EmployeeID
 WHERE e.EmployeeCode = 'NV0011'
+*/
+
+/*
+SELECT 1
+FROM Employee 
+WHERE DepartmentID = ? and PositionID = 2 
 */

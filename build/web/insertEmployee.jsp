@@ -80,7 +80,7 @@
                                     <label for="position" class="form-label">Position</label>
                                     <select class="form-select" id="position" name="position" required>
                                         <option selected value="None">Select Employee Position</option>
-                                        <c:forEach var="position" items="${sessionScope.listPosition}">
+                                        <c:forEach var="position" items="${applicationScope.listPosition}">
                                             <option value="${position.positionId}" 
                                                     ${positionId == position.positionId ? 'selected="selected"' : ''}>
                                                 ${position.positionName}
@@ -92,7 +92,7 @@
                                     <label for="department" class="form-label">Department</label>
                                     <select class="form-select" id="department" name="department" required>
                                         <option selected value="None">Select Employee Department</option>
-                                        <c:forEach var="department" items="${sessionScope.listDepartment}">
+                                        <c:forEach var="department" items="${applicationScope.listDepartment}">
                                             <option value="${department.departmentId}" 
                                                     ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
                                                 ${department.departmentName}

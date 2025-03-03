@@ -115,9 +115,18 @@ public class UpdateDepartment extends HttpServlet {
         LocalTime endTime = null;
 
         String errorTelephoneMsg = "";
+        String errorNameMsg = "";
         String errorDescriptionMsg = "";
         String errorOpenTimeMsg = "";
-
+        if (departmentName.trim().isEmpty()) {
+            errorNameMsg = "Department Name must be not empty field";
+        }
+        if (openTime.trim().isEmpty()) {
+            errorOpenTimeMsg = "Open Time must be not empty field";
+        }
+        if (telephone.trim().isEmpty()) {
+            errorTelephoneMsg = "Telephone must be not empty field";
+        }
         if (isEmptyDescription(descriptionArray)) {
             errorDescriptionMsg = "Description must be not empty";
         }
@@ -135,6 +144,7 @@ public class UpdateDepartment extends HttpServlet {
             }
         }
         if (!errorTelephoneMsg.isEmpty() || !errorDescriptionMsg.isEmpty() || !errorOpenTimeMsg.isEmpty()) {
+            request.setAttribute("errorNameMsg", errorNameMsg);
             request.setAttribute("errorTelephoneMsg", errorTelephoneMsg);
             request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
             request.setAttribute("errorOpenTimeMsg", errorOpenTimeMsg);

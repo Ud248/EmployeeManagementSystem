@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -375,8 +377,25 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result > 0;
     }
 
-    public static void main(String[] args) {
-        EmployeeDTO e = new EmployeeDAO().selectByEmployeeCode(new Employee("GD0001"));
-        System.out.println(e);
+    public boolean isExistManagerInDepartment(int departmentId) {
+        String sql = "SELECT 1\n"
+                + "FROM Employee \n"
+                + "WHERE DepartmentID = ? and PositionID = 2";
+        boolean isExist = false;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, departmentId);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                isExist = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            JDBCUtil.closeConnection(con);
+        }
+        return isExist;
     }
+
 }

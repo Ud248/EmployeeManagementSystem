@@ -1,6 +1,7 @@
 package Controller;
 
 import DAO.EmployeeDAO;
+import DTO.DepartmentDTO;
 import DTO.EmployeeDTO;
 import Model.Employee;
 import java.io.IOException;
@@ -12,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import jakarta.websocket.Session;
 
 @WebServlet(name = "InsertEmployee", urlPatterns = {"/insert-employee"})
 public class InsertEmployee extends HttpServlet {
@@ -23,6 +23,7 @@ public class InsertEmployee extends HttpServlet {
 
         String error = "";
         String url = "";
+        EmployeeDAO eDao = new EmployeeDAO();
 
         String firstName = request.getParameter("firstName");
         String lastName = request.getParameter("lastName");
@@ -77,7 +78,9 @@ public class InsertEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please input a valid basic salary.<br>";
         }
-
+        if (eDao.isExistManagerInDepartment(departmentId)) {
+            error += "Selected Department already has manager. One Department can have only one manager.";
+        }
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
             request.setAttribute("firstName", firstName);
@@ -91,7 +94,6 @@ public class InsertEmployee extends HttpServlet {
             request.setAttribute("basicSalary", basicSalary);
             request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
         } else {
-            EmployeeDAO eDao = new EmployeeDAO();
             boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
                 request.setAttribute("successMsg", "Add employee " + lastName + " " + firstName + " successfully!");
@@ -121,8 +123,10 @@ public class InsertEmployee extends HttpServlet {
                     currentPage = totalPages;
                 }
                 List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage();
                 HttpSession session = request.getSession();
                 request.getServletContext().setAttribute("employees", employees);
+                request.getServletContext().setAttribute("departments", departments);
                 session.setAttribute("totalEmployees", totalEmployees);
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             } else {
@@ -143,3 +147,4 @@ public class InsertEmployee extends HttpServlet {
         }
     }
 }
+
