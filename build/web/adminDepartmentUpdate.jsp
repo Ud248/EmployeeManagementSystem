@@ -11,75 +11,156 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="./css/styleAdminDepartmentUpdate.css"/>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <style>
+            .detail{
+                font-weight: bolder;
+            }
 
+            /* CSS cho nút Edit */
+            .edit-button {
+                background-color: #28a745; /* Xanh lá */
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s, transform 0.2s;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-left: 45%;
+            }
+
+            /* Hiệu ứng hover */
+            .edit-button:hover {
+                background-color: #218838; /* Màu tối hơn khi hover */
+                transform: scale(1.05);
+            }
+
+            .detail {
+                font-weight: bolder;
+            }
+
+            .mb-3 {
+                margin-bottom: 0px !important;
+            }
+
+            .error{
+                color: red;
+                text-align: center;
+            }
+
+            .update-button {
+                background-color: #28a745; /* Xanh lá */
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s, transform 0.2s;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-left: 45%;
+            }
+
+            /* Hiệu ứng hover */
+            .update-button:hover {
+                background-color: #218838; /* Màu tối hơn khi hover */
+                transform: scale(1.05);
+            }
+
+        </style>
     </head>
     <body>
-        <button type="button" class="btn-back" onclick="goBack()">Back</button>
 
-        <h2 style="text-align: center">Department Update</h2>
-
-        <form action="updatedepartment" method="post">
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="mb-3">
-                        <input type="hidden" name="departmentId" value="${departmentId}">
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Department Name</label>
-                        <span style="font-style: italic; font-size: 70%">(requirement: Not empty field)</span>
-                        <input type="text" class="form-control" name="departmentName" value="${departmentName}" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Telephone</label>
-                        <span style="font-style: italic; font-size: 70%">(requirement: Not empty field, Telephone must have 10 numbers from 0 to 9)</span>
-                        <input type="text" class="form-control" name="telephone" value="${telephone}" required>
-                        <c:if test="${not empty errorTelephoneMsg}">
-                            <div style="color: red">${errorTelephoneMsg}</div>
-                        </c:if>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Open Time</label>
-                        <span style="font-style: italic; font-size: 70%">(requirement: Not empty field, Open Time must be in format 'HH:mm - HH:mm')</span>
-                        <input type="text" class="form-control" name="openTime" value="${openTime}" required>
-                        <c:if test="${not empty errorOpenTimeMsg}">
-                            <div style="color: red">${errorOpenTimeMsg}</div>
-                        </c:if>
-                    </div>
-
-                    <div class="mb-3" id="description-container">
-                        <label class="form-label">Description</label> 
-                        <span style="font-style: italic; font-size: 70%">(requirement: Not empty field)</span>
-
-                        <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
-                            <div class="d-flex mb-2">
-                                <input type="text" class="form-control" name="description" value="${sub}" style="width: 97%"/>
-                                <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
-                                    <i class="fa fa-minus"></i>
-                                </button>
+        <div class="container   ">
+            <div class="modal-content p-4">
+                <div class="modal-header d-flex align-items-center justify-content-between w-100">
+                    <button onclick="goBack(${departmentId})" class="btn btn-secondary">Back</button>
+                    <h3 class="modal-title mx-auto">UPDATE DEPARTMENT DETAIL</h3>
+                </div>
+                <br/>
+                <div class="modal-body">
+                    <form action="updatedepartment" method="post">
+                        <div class="mb-3">
+                            <h5 style="color: green">General Information</h5>
+                            <div class="row mb-3 align-items-center">
+                                <label class="col-md-4 col-form-label text-md-end">Department ID:</label>
+                                <div class="col-md-8">
+                                    <span class="detail">${departmentId}</span>
+                                    <input type="hidden" name="departmentId" value="${departmentId}"/>
+                                </div>
                             </div>
-                        </c:forEach>
 
-                        <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
-                            <i class="fa fa-plus"></i>
-                        </button>
+                            <div class="row mb-3"> 
+                                <label class="col-md-4 col-form-label text-md-end">Department Name:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="departmentName" value="${departmentName}" required>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
 
-                        <c:if test="${not empty errorDescriptionMsg}">
-                            <div style="color: red">${errorDescriptionMsg}</div>
-                        </c:if>
-                    </div>
+                        <div class="mb-3">
+                            <h5 style="color: green">Work Information</h5>
+                            <div class="row mb-3">
+                                <label class="col-md-4 col-form-label text-md-end">Open Time:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="openTime" value="${openTime}" required>
+                                </div>
+                                <div class="error">${errorOpenTimeMsg}</div>
+                            </div>
 
-                    <input type="submit" value="Update" class="btn-update"/>
-                    <div style="color: red">${errorMsg} </div>
+                            <div class="row mb-3 align-items-center">
+                                <label class="col-md-4 col-form-label text-md-end">Manager:</label>
+                                <div class="col-md-8">
+                                    <span class="detail">${managerName}</span>
+                                </div>
+                            </div>
 
+                            <div class="row mb-3">
+                                <label class="col-md-4 col-form-label text-md-end">Telephone:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="telephone" value="${telephone}" required>
+                                </div>
+                                <div class="error">${errorTelephoneMsg}</div>
+                            </div>                       
+                        </div>
+                        <br/>
+
+                        <div class="mb-3">
+                            <h5 style="color: green">Other Information</h5>
+                            <div class="row mb-3">
+                                <label class="col-md-4 col-form-label text-md-end">Description</label>
+                                <div class="col-md-8" id="description-container">
+                                    <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
+                                        <div class="d-flex mb-2">
+                                            <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
+                                            <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                    </c:forEach>
+
+                                    <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    <div class="error">${errorDescriptionMsg}</div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3 align-items-center">
+                                <label class="col-md-4 col-form-label text-md-end">Cost Per Month:</label>
+                                <div class="col-md-8">
+                                    <span class="detail">${costPerMonth}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="update-button" value="Update"/>
+                    </form>
                 </div>
             </div>
-        </form>
+        </div>
 
         <script>
             function goBack() {
@@ -124,6 +205,11 @@
                 let parentDiv = button.parentElement;
                 parentDiv.remove();
                 saveToLocalStorage();
+            }
+
+            function goBack(departmentId) {
+                let frame = window.parent.document.getElementById('viewDepartmentFrame');
+                frame.src = "viewdepartment?departmentId=" + departmentId;
             }
 
         </script>

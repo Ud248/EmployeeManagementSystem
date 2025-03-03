@@ -16,80 +16,6 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     </head>
 
-    <script>
-        function deleteEmployee(employeeCode) {
-            if (confirm("Are you sure you want to delete employee " + employeeCode + "?")) {
-                // Gửi yêu cầu DELETE đến Servlet
-                fetch("delete-employee?employeeCode=" + employeeCode, {method: "GET"})
-                        .then(response => {
-                            if (response.ok) {
-                                return response.text();
-                            }
-                            throw new Error('Network response was not ok');
-                        })
-                        .then(data => {
-                            alert(data); // Hiển thị thông báo xóa thành công/thất bại
-                            // Tải lại trang để cập nhật danh sách
-                            location.reload();
-                        })
-                        .catch(error => {
-                            console.error("Error:", error);
-                            alert("Có lỗi xảy ra khi xóa nhân viên");
-                        });
-            }
-        }
-
-        function openPopup(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
-
-        function openViewPopup(id, employeeCode = null) {
-            let popup = document.getElementById(id);
-
-            if (employeeCode && id === 'viewEmployeePopup') {
-                document.getElementById('viewEmployeeFrame').src = "view-employee?employeeCode=" + employeeCode;
-            }
-
-            popup.style.display = 'flex';
-        }
-
-        function openUpdatePopup(id, employeeCode = null) {
-            let popup = document.getElementById(id);
-
-            if (employeeCode && id === 'updateEmployeePopup') {
-                document.getElementById('updateEmployeeFrame').src = "update-employee?employeeCode=" + employeeCode;
-            }
-
-            popup.style.display = 'flex';
-        }
-
-        function closePopup(id) {
-            document.getElementById(id).style.display = 'none';
-        }
-
-        function closePopupAndReload(id) {
-            document.getElementById(id).style.display = 'none';
-            if (id === 'insertEmployeePopup' || id === 'updateEmployeePopup') {
-                location.reload();
-            }
-        }
-
-// Đóng popup khi bấm ra ngoài, chỉ reload nếu không phải popup View
-        document.addEventListener('click', function (event) {
-            let popups = document.querySelectorAll('.popup');
-
-            popups.forEach(popup => {
-                if (event.target === popup) {
-                    popup.style.display = 'none';
-                    if (popup.id === 'insertEmployeePopup' || popup.id === 'updateEmployeePopup') {
-                        location.reload();
-                    }
-                }
-            });
-        });
-
-    </script>
-
     <body>
         <div id="insertEmployeePopup" class="popup">
             <div class="popup-content">
@@ -179,6 +105,78 @@
                 </div>
             </div>
         </div>
-    </div>
-</body>
+        <script>
+            function deleteEmployee(employeeCode) {
+                if (confirm("Are you sure you want to delete employee " + employeeCode + "?")) {
+                    // Gửi yêu cầu DELETE đến Servlet
+                    fetch("delete-employee?employeeCode=" + employeeCode, {method: "GET"})
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.text();
+                                }
+                                throw new Error('Network response was not ok');
+                            })
+                            .then(data => {
+                                alert(data); // Hiển thị thông báo xóa thành công/thất bại
+                                // Tải lại trang để cập nhật danh sách
+                                location.reload();
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                                alert("Có lỗi xảy ra khi xóa nhân viên");
+                            });
+                }
+            }
+
+            function openPopup(id) {
+                document.getElementById(id).style.display = 'flex';
+            }
+
+            function openViewPopup(id, employeeCode = null) {
+                let popup = document.getElementById(id);
+
+                if (employeeCode && id === 'viewEmployeePopup') {
+                    document.getElementById('viewEmployeeFrame').src = "view-employee?employeeCode=" + employeeCode;
+                }
+
+                popup.style.display = 'flex';
+            }
+
+            function openUpdatePopup(id, employeeCode = null) {
+                let popup = document.getElementById(id);
+
+                if (employeeCode && id === 'updateEmployeePopup') {
+                    document.getElementById('updateEmployeeFrame').src = "update-employee?employeeCode=" + employeeCode;
+                }
+
+                popup.style.display = 'flex';
+            }
+
+            function closePopup(id) {
+                document.getElementById(id).style.display = 'none';
+            }
+
+            function closePopupAndReload(id) {
+                document.getElementById(id).style.display = 'none';
+                if (id === 'insertEmployeePopup' || id === 'updateEmployeePopup') {
+                    location.reload();
+                }
+            }
+
+// Đóng popup khi bấm ra ngoài, chỉ reload nếu không phải popup View
+            document.addEventListener('click', function (event) {
+                let popups = document.querySelectorAll('.popup');
+
+                popups.forEach(popup => {
+                    if (event.target === popup) {
+                        popup.style.display = 'none';
+                        if (popup.id === 'insertEmployeePopup' || popup.id === 'updateEmployeePopup') {
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
+        </script>
+    </body>
 </html>

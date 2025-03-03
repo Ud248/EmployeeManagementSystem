@@ -21,13 +21,18 @@ public class DeleteDepartment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int departmentId = Integer.parseInt(request.getParameter("departmentId"));
-        boolean deleteResult = new DepartmentDAO().delete(departmentId);
-        if (deleteResult) {
-            response.sendRedirect("admin.jsp?status=success");
-        } else {
-            response.sendRedirect("admin.jsp?status=failure");
+        PrintWriter out = response.getWriter();
+        String departmentIdParam = request.getParameter("departmentId");
+        String[] departmentId = departmentIdParam.split(",");
+        for (String id : departmentId) {
+            
         }
+//        boolean deleteResult = new DepartmentDAO().delete(departmentId);
+//        if (deleteResult) {
+//            response.sendRedirect("admin.jsp?status=success");
+//        } else {
+//            response.sendRedirect("admin.jsp?status=failure");
+//        }
     }
 
     @Override

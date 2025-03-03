@@ -150,9 +150,7 @@ public class UpdateDepartment extends HttpServlet {
             description = getDescription(descriptionArray);
             boolean updateResult = new DepartmentDAO().update(new Department(departmentId, departmentName, description, startTime, endTime, telephone));
             if (updateResult) {
-                response.sendRedirect("admin.jsp?status=success");
-            } else {
-                response.sendRedirect("admin.jsp?status=failure");
+                response.sendRedirect("viewdepartment?departmentId=" + departmentId);
             }
         }
     }
