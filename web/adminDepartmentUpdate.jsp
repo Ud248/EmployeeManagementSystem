@@ -97,6 +97,7 @@
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="departmentName" value="${departmentName}" required>
                                 </div>
+                                <div class="error">${errorNameMsg}</div>
                             </div>
                         </div>
                         <br/>
@@ -125,7 +126,7 @@
                                 </div>
                                 <div class="error">${errorTelephoneMsg}</div>
                             </div>     
-                            
+
                             <div class="row mb-3 align-items-center">
                                 <label class="col-md-4 col-form-label text-md-end">Total Employee:</label>
                                 <div class="col-md-8">
