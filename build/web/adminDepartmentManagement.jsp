@@ -55,7 +55,7 @@
                     </thead>
 
                     <tbody>
-                        <c:forEach var="d" items="${sessionScope.departments}">
+                        <c:forEach var="d" items="${applicationScope.departments}">
                             <tr>
                                 <td style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${d.getDepartmentId()}" style="display: none;">

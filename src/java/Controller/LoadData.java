@@ -45,7 +45,6 @@ public class LoadData extends HttpServlet {
         if (isAdmin) {
             url = "admin.jsp";
             EmployeeDAO eDao = new EmployeeDAO();
-            DepartmentDAO dDAO = new DepartmentDAO();
 
             int currentPage = 1;
             int itemsPerPage = 10;
@@ -59,30 +58,17 @@ public class LoadData extends HttpServlet {
                 // Use default value
             }
 
-            // Calculate pagination values
             int totalEmployees = eDao.getTotalEmployees();
             int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
 
-            // Ensure currentPage is within valid range
             if (currentPage < 1) {
                 currentPage = 1;
             }
             if (currentPage > totalPages) {
                 currentPage = totalPages;
             }
-
-            //Set list position and department
-            List<Position> listPosition = new DAO.PositionDAO().selectAll();
-            List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
-
-            // Get paginated list of employees
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
-            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage();
-
-            session.setAttribute("departments", departments);
-            session.setAttribute("employees", employees);
-            session.setAttribute("listPosition", listPosition);
-            session.setAttribute("listDepartment", listDepartment);
+            List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(currentPage, itemsPerPage);
+            request.getServletContext().setAttribute("employees", employees);
             session.setAttribute("currentPage", currentPage);
             session.setAttribute("totalPages", totalPages);
             session.setAttribute("itemsPerPage", itemsPerPage);

@@ -17,6 +17,7 @@ import java.text.DecimalFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import Model.Department;
+import java.util.List;
 
 /**
  *
@@ -78,7 +79,7 @@ public class UpdateDepartment extends HttpServlet {
         int index = Integer.parseInt(departmentId) - 1;
 
         HttpSession session = request.getSession();
-        DepartmentDTO dep = ((ArrayList<DepartmentDTO>) session.getAttribute("departments")).get(index);
+        DepartmentDTO dep = ((ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments")).get(index);
         String departmentName = dep.getDepartmentName();
         String description = dep.getDescription();
         String openTime = dep.getOpenTime();
@@ -150,6 +151,8 @@ public class UpdateDepartment extends HttpServlet {
             description = getDescription(descriptionArray);
             boolean updateResult = new DepartmentDAO().update(new Department(departmentId, departmentName, description, startTime, endTime, telephone));
             if (updateResult) {
+                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage();
+                request.getServletContext().setAttribute("departments", departments);
                 response.sendRedirect("viewdepartment?departmentId=" + departmentId);
             }
         }

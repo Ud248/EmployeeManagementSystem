@@ -51,4 +51,7 @@
         <servlet-name>UpdateDepartment</servlet-name>
         <url-pattern>/updatedepartment</url-pattern>
     </servlet-mapping>
+    <listener>
+        <listener-class>listenner.InitProjectData</listener-class>
+    </listener>
 </web-app>

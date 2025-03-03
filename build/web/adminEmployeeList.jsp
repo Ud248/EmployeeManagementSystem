@@ -60,7 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="e" items="${sessionScope.employees}">
+                        <c:forEach var="e" items="${applicationScope.employees}">
                             <tr>
                                 <td>${e.getEmployeeCode()}</td>
                                 <td>${e.getFullname()}</td>

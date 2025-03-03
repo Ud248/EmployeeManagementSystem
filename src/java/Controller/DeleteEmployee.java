@@ -61,7 +61,7 @@ public class DeleteEmployee extends HttpServlet {
             }
             List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
             HttpSession session = request.getSession();
-            session.setAttribute("employees", employees);
+            request.getServletContext().setAttribute("employees", employees);
             session.setAttribute("totalEmployees", totalEmployees);
             response.getWriter().write("Employee " + employeeCode + " deleted successfully!");
         } else {

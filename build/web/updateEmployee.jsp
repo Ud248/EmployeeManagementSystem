@@ -63,7 +63,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Position Name</label>
                                     <select class="form-select" id="positionId" name="positionId" required>
-                                        <c:forEach var="position" items="${requestScope.listPosition}">
+                                        <c:forEach var="position" items="${applicationScope.listPosition}">
                                             <option value="${position.positionId}" ${positionId == position.positionId ? 'selected="selected"' : ''}>
                                                 ${position.positionName}
                                             </option>
@@ -73,7 +73,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Department Name</label>
                                     <select class="form-select" id="departmentId" name="departmentId" required>
-                                        <c:forEach var="department" items="${requestScope.listDepartment}">
+                                        <c:forEach var="department" items="${applicationScope.listDepartment}">
                                             <option value="${department.departmentId}" ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
                                                 ${department.departmentName}
                                             </option>

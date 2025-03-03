@@ -5,12 +5,13 @@
 package Controller;
 
 import DAO.DepartmentDAO;
+import DTO.DepartmentDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  *
@@ -21,18 +22,22 @@ public class DeleteDepartment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
         String departmentIdParam = request.getParameter("departmentId");
         String[] departmentId = departmentIdParam.split(",");
+        DepartmentDAO dDAO = new DepartmentDAO();
+        boolean deleteResult = true;
         for (String id : departmentId) {
-            
+            if (!dDAO.delete(Integer.parseInt(id))) {
+                deleteResult = false;
+            }
         }
-//        boolean deleteResult = new DepartmentDAO().delete(departmentId);
-//        if (deleteResult) {
-//            response.sendRedirect("admin.jsp?status=success");
-//        } else {
-//            response.sendRedirect("admin.jsp?status=failure");
-//        }
+        if (deleteResult) {
+            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage();
+            request.getServletContext().setAttribute("departments", departments);
+            response.sendRedirect("admin.jsp?status=success");
+        } else {
+            response.sendRedirect("admin.jsp?status=failure");
+        }
     }
 
     @Override

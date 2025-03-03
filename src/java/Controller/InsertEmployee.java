@@ -122,7 +122,7 @@ public class InsertEmployee extends HttpServlet {
                 }
                 List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
                 HttpSession session = request.getSession();
-                session.setAttribute("employees", employees);
+                request.getServletContext().setAttribute("employees", employees);
                 session.setAttribute("totalEmployees", totalEmployees);
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             } else {
@@ -135,9 +135,9 @@ public class InsertEmployee extends HttpServlet {
                 request.setAttribute("positionId", positionId);
                 request.setAttribute("departmentId", departmentId);
                 request.setAttribute("basicSalary", basicSalary);
-                
+
                 request.setAttribute("error", "Failed to insert employee. Please try again.");
-                
+
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             }
         }

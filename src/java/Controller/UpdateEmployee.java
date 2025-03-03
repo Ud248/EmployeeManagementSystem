@@ -47,11 +47,6 @@ public class UpdateEmployee extends HttpServlet {
         request.setAttribute("username", e.getUsername());
         request.setAttribute("password", e.getPassword());
 
-        List<Position> listPosition = new DAO.PositionDAO().selectAll();
-        List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
-        request.setAttribute("listPosition", listPosition);
-        request.setAttribute("listDepartment", listDepartment);
-
         // Nhận successMsg từ request nếu có
         String successMsg = request.getParameter("successMsg");
         if (successMsg != null) {
@@ -168,9 +163,9 @@ public class UpdateEmployee extends HttpServlet {
                 }
                 List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
                 HttpSession session = request.getSession();
-                session.setAttribute("employees", employees);
+                request.getServletContext().setAttribute("employees", employees);
                 session.setAttribute("totalEmployees", totalEmployees);
-                
+
                 response.sendRedirect("update-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");
             } else {
                 request.setAttribute("error", "Failed to update employee. Please try again.");
