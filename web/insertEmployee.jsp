@@ -18,10 +18,8 @@
         error = error.equals("null") ? "": error;
         String successMsg = "" + request.getAttribute("successMsg");
         successMsg = successMsg.equals("null") ? "": successMsg;
-        String firstName = "" + request.getAttribute("firstName");
-        firstName = firstName.equals("null") ? "": firstName;
-        String lastName = "" + request.getAttribute("lastName");
-        lastName = lastName.equals("null") ? "": lastName;
+        String fullname = "" + request.getAttribute("fullname");
+        fullname = fullname.equals("null") ? "": fullname;
         String birthdateStr = "" + request.getAttribute("birthdateStr");
         birthdateStr = birthdateStr.equals("null") ? "": birthdateStr;
         String gender = "" + request.getAttribute("gender");
@@ -37,80 +35,197 @@
         String basicSalary = "" + request.getAttribute("basicSalary");
         basicSalary = basicSalary.equals("null") ? "": basicSalary;
     %>
+
+    <style>
+        :root {
+            --primary-color: #0D1936;
+            --secondary-color: #535354;
+            --background-color: #EFEFEF;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --white-color: #FFF;
+            --black-color: #000;
+            --input-border-color: #E3E4E6;
+            --transition-3s: 0.3s;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--background-color);
+        }
+
+        .form-label {
+            text-align: left;
+            font-weight: bold;
+            padding-left: 15px;
+            width: 170px; /* Thay đổi từ min-width thành width cố định */
+            display: inline-block;
+            margin-right: 25px;
+            vertical-align: top;
+        }
+
+        /* Normal text for details instead of bold */
+        .detail {
+            font-weight: normal;
+            display: inline-block;
+            vertical-align: top;
+            width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
+
+        }
+
+        /* Bold section headers */
+        .section-header {
+            font-weight: bold;
+            color: green;
+            margin-bottom: 15px;
+        }
+
+        /* Horizontal divider */
+        .section-divider {
+            height: 1px;
+            background-color: #dee2e6;
+            margin: 25px 0;
+        }
+
+        /* CSS cho nút Edit */
+        .edit-button {
+            background-color: #28a745; /* Xanh lá */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin-left: 45%;
+            margin-top: 20px;
+        }
+
+        /* Hiệu ứng hover */
+        .edit-button:hover {
+            background-color: #218838; /* Màu tối hơn khi hover */
+            transform: scale(1.05);
+        }
+
+        /* Add spacing between info groups */
+        .info-group {
+            margin-bottom: 15px;
+        }
+
+        /* Field container styling */
+        .field-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding-right: 15px;
+        }
+    </style>
+
     <body>
-        <div class="container">
-            <div class="modal-content" style="padding-top: 35px">
+        <div style="max-width: 1030px;">
+            <div class="modal-content p-4">
                 <div class="modal-header" style="padding-bottom: 15px">
-                    <h3 class="modal-title mx-auto" id="insertEmployeeLabel">INSERT NEW EMPLOYEE</h5>
+                    <h3 class="modal-title mx-auto">INSERT NEW EMPLOYEE</h3>
                 </div>
-                <div class="modal-body">
-                    <form action="insert-employee" method="post">
-                        <div class="row">
-                            <!-- Cột bên trái -->
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="firstName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" name="firstName" required value="<%=firstName%>">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lastName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" name="lastName" required value="<%=lastName%>">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="birthdate" class="form-label">Birthdate</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate" required value="<%=birthdateStr%>">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="gender" name="gender">
-                                        <option value="None">--Select gender--</option>
-                                        <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
-                                        <option value="Nữ" ${gender == 'Nữ' ? 'selected="selected"' : ''}>Nữ</option>
-                                    </select>
-                                </div>
-                            </div>
+                <form id="employeeForm" action="insert-employee" method="post">
+                    <div class="modal-body">
+                        <!-- PERSONAL INFORMATION SECTION -->
+                        <div class="mb-3">
+                            <h5 class="section-header">PERSONAL INFORMATION</h5>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Full Name:</label>
+                                        <input type="text" class="form-control detail" id="fullname" name="fullname" required value="<%=fullname%>">
+                                    </div>
 
-                            <!-- Cột bên phải -->
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="telephone" class="form-label">Telephone</label>
-                                    <input type="tel" class="form-control" id="telephone" name="telephone" required value="<%=tel%>">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="position" class="form-label">Position</label>
-                                    <select class="form-select" id="position" name="position" required>
-                                        <option selected value="None">Select Employee Position</option>
-                                        <c:forEach var="position" items="${sessionScope.listPosition}">
-                                            <option value="${position.positionId}" 
-                                                    ${positionId == position.positionId ? 'selected="selected"' : ''}>
-                                                ${position.positionName}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="department" class="form-label">Department</label>
-                                    <select class="form-select" id="department" name="department" required>
-                                        <option selected value="None">Select Employee Department</option>
-                                        <c:forEach var="department" items="${sessionScope.listDepartment}">
-                                            <option value="${department.departmentId}" 
-                                                    ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
-                                                ${department.departmentName}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="basicSalary" class="form-label">Basic Salary</label>
-                                    <input type="number" class="form-control" id="basicSalary" name="basicSalary" required min="0" value="<%=basicSalary%>">
-                                </div>
-                            </div>
+                                    <div class="field-container">
+                                        <label class="form-label">Birth Date:</label>                               
+                                        <input type="date" class="form-control detail" id="birthdate" name="birthdate" required value="<%=birthdateStr%>">
+                                    </div>
 
-                            <div class="col-md-12">
-                                <label for="address" class="form-label">Address</label>
-                                <textarea class="form-control" id="address" name="address" value required rows="3"><%=address%></textarea>
+                                    <div class="field-container">
+                                        <label class="form-label">Telephone:</label>
+                                        <input type="tel" class="form-control detail" id="telephone" name="telephone" required value="<%=tel%>">
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Gender:</label>
+                                        <select class="form-select detail" name="gender">
+                                            <option value="None">--Select gender--</option>
+                                            <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
+                                            <option value="Nữ" ${gender == 'Nữ' ? 'selected="selected"' : ''}>Nữ</option>
+                                        </select>
+                                    </div>
+
+
+                                    <div class="field-container">
+                                        <label class="form-label">Address:</label>
+                                        <textarea class="form-control detail" id="address" name="address" value required rows="3"><%=address%></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <div class="section-divider"></div>
+
+                        <!-- EMPLOYMENT INFORMATION SECTION -->
+                        <div class="mb-3">
+                            <h5 class="section-header">EMPLOYMENT INFORMATION</h5>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Position Name:</label>
+                                        <select class="form-select detail" id="position" name="position" required>
+                                            <option selected value="None">Select Employee Position</option>
+                                            <c:forEach var="position" items="${applicationScope.listPosition}">
+                                                <option value="${position.positionId}" 
+                                                        ${positionId == position.positionId ? 'selected="selected"' : ''}>
+                                                    ${position.positionName}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <div class="field-container">
+                                        <label class="form-label">Department Name:</label>
+                                        <select class="form-select detail" id="department" name="department" required>
+                                            <option selected value="None">Select Employee Department</option>
+                                            <c:forEach var="department" items="${applicationScope.listDepartment}">
+                                                <option value="${department.departmentId}" 
+                                                        ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
+                                                    ${department.departmentName}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Basic Salary:</label>
+                                        <input type="number" class="form-control detail" name="basicSalary" value="${basicSalary}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <br>
                         <div class="modal-footer justify-content-center">
                             <button type="submit" class="btn btn-primary">Insert</button>
@@ -121,9 +236,9 @@
                             <span style="color:green"><%=successMsg%></span>
                             <br>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
-        </div>
+        </div>                   
     </body>
 </html>

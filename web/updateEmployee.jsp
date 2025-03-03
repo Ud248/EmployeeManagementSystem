@@ -12,6 +12,81 @@
         return;
     }
 %>
+
+<style>
+    body{
+        height: 100vh;
+        background-color: #EFEFEF;
+    }
+
+    .form-label {
+        text-align: left;
+        font-weight: bold;
+        padding-left: 15px;
+        width: 170px; /* Thay đổi từ min-width thành width cố định */
+        display: inline-block;
+        margin-right: 25px;
+        vertical-align: top;
+    }
+
+    /* Normal text for details instead of bold */
+    .detail {
+        font-weight: normal;
+        display: inline-block;
+        vertical-align: top;
+        width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
+
+    }
+
+    /* Bold section headers */
+    .section-header {
+        font-weight: bold;
+        color: green;
+        margin-bottom: 15px;
+    }
+
+    /* Horizontal divider */
+    .section-divider {
+        height: 1px;
+        background-color: #dee2e6;
+        margin: 25px 0;
+    }
+
+    /* CSS cho nút Edit */
+    .submit-button {
+        background-color: #28a745; /* Xanh lá */
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s, transform 0.2s;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        margin-left: 45%;
+        margin-top: 20px;
+    }
+
+    /* Hiệu ứng hover */
+    .submit-button:hover {
+        background-color: #218838; /* Màu tối hơn khi hover */
+        transform: scale(1.05);
+    }
+
+    /* Add spacing between info groups */
+    .info-group {
+        margin-bottom: 15px;
+    }
+
+    /* Field container styling */
+    .field-container {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 10px;
+        padding-right: 15px;
+    }
+</style>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -30,80 +105,119 @@
                 </div>
                 <div class="modal-body">
                     <form action="update-employee" method="POST">
-                        <div class="row">
-                            <!-- Cột bên trái -->
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Employee Code</label>
-                                    <input type="text" class="form-control" value="${empty employeeCode ? '' : employeeCode}" name="employeeCode" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" value="${empty fullname ? '' : fullname}" name="fullname">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Birthdate</label>
-                                    <input type="date" class="form-control" value="${empty birthDate ? '' : birthDate}" name="birthdate">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="gender" name="gender">
-                                        <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
-                                        <option value="Nữ" ${gender == 'Nữ ' ? 'selected="selected"' : ''}>Nữ</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Telephone</label>
-                                    <input type="text" class="form-control" value="${empty tel ? '' : tel}" name="tel">
-                                </div>
-                            </div>
+                        <!-- PERSONAL INFORMATION SECTION -->
+                        <div class="mb-3">
+                            <h5 class="section-header">PERSONAL INFORMATION</h5>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Employee Code:</label>
+                                        <span class="detail">${employeeCode}</span>
+                                        <input type="hidden" name="employeeCode" value="${employeeCode}">
+                                    </div>
 
-                            <!-- Cột bên phải -->
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label class="form-label">Position Name</label>
-                                    <select class="form-select" id="positionId" name="positionId" required>
-                                        <c:forEach var="position" items="${applicationScope.listPosition}">
-                                            <option value="${position.positionId}" ${positionId == position.positionId ? 'selected="selected"' : ''}>
-                                                ${position.positionName}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Department Name</label>
-                                    <select class="form-select" id="departmentId" name="departmentId" required>
-                                        <c:forEach var="department" items="${applicationScope.listDepartment}">
-                                            <option value="${department.departmentId}" ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
-                                                ${department.departmentName}
-                                            </option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Basic Salary</label>
-                                    <input type="text" class="form-control" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Username</label>                               
-                                    <input type="text" class="form-control" value="${empty username ? '' : username}" name="username" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Password</label>
-                                    <input type="text   " class="form-control" value="${empty password ? '' : password}" name="password" readonly>
-                                </div>
-                            </div>
+                                    <div class="field-container">
+                                        <label class="form-label">Full Name:</label>
+                                        <input type="text" class="form-control" value="${empty fullname ? '' : fullname}" name="fullname">
+                                    </div>
 
-                            <div class="col-md-12">
-                                <label class="form-label">Address</label>
-                                <input type="text" class="form-control" value="${empty address ? '' : address}" name="address">
+                                    <div class="field-container">
+                                        <label class="form-label">Birth Date:</label>
+                                        <input type="date" class="form-control" value="${empty birthDate ? '' : birthDate}" name="birthdate">
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Gender:</label>
+                                        <select class="form-select" id="gender" name="gender">
+                                            <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
+                                            <option value="Nữ" ${gender == 'Nữ ' ? 'selected="selected"' : ''}>Nữ</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="field-container">
+                                        <label class="form-label">Telephone:</label>
+                                        <input type="text" class="form-control" value="${empty tel ? '' : tel}" name="tel">
+                                    </div>
+
+                                    <div class="field-container">
+                                        <label class="form-label">Address:</label>
+                                        <textarea class="form-control" name="address" rows="3">${empty address ? '' : address}</textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <br>
-                        <div class="modal-footer justify-content-center">
-                            <button type="submit" class="btn btn-primary">Update</button>
+
+                        <div class="section-divider"></div>
+
+                        <!-- EMPLOYMENT INFORMATION SECTION -->
+                        <div class="mb-3">
+                            <h5 class="section-header">EMPLOYMENT INFORMATION</h5>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Position Name:</label>
+                                        <select class="form-select" id="positionId" name="positionId" required>
+                                            <c:forEach var="position" items="${applicationScope.listPosition}">
+                                                <option value="${position.positionId}" ${positionId == position.positionId ? 'selected="selected"' : ''}>
+                                                    ${position.positionName}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+
+                                    <div class="field-container">
+                                        <label class="form-label">Department Name:</label>
+                                        <select class="form-select" id="departmentId" name="departmentId" required>
+                                            <c:forEach var="department" items="${applicationScope.listDepartment}">
+                                                <option value="${department.departmentId}" ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
+                                                    ${department.departmentName}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Basic Salary:</label>
+                                        <input type="text" class="form-control" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
+                        <div class="section-divider"></div>
+
+                        <!-- ACCOUNT INFORMATION SECTION -->
+                        <div class="mb-3">
+                            <h5 class="section-header">ACCOUNT INFORMATION</h5>
+                            <div class="row">
+                                <!-- Left Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Username:</label>
+                                        <span class="detail">${username}</span>
+                                        <input type="hidden" name="username" value="${username}">
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Password:</label>
+                                        <span class="detail">${password}</span>
+                                        <input type="hidden" name="password" value="${password}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-button">Update</button>  
                         <c:if test="${not empty error}">
                             <div class="alert alert-danger mt-3">
                                 ${error}
@@ -115,8 +229,7 @@
                                 ${successMsg}
                             </div>
                         </c:if>
-                        
-                    </form>         
+                    </form>     
                 </div>
             </div>
         </div>

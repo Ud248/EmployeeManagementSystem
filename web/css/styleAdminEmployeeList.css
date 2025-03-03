@@ -67,6 +67,23 @@ body {
     cursor: pointer;
 }
 
+.delete-btn {
+    background-color: #dc3545; /* Màu đỏ */
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+
+
 .page-title {
     color: #333;
     margin-bottom: 20px;
@@ -158,7 +175,7 @@ body {
 
 .popup-content {
     background: white;
-    width: 65%;
+    width: 70%;
     height: 95%;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -178,4 +195,20 @@ body {
     right: 15px;
     font-size: 20px;
     cursor: pointer;
+}
+
+td a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: bold;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+td a:hover {
+    color: #0056b3;
+    text-shadow: 0px 0px 5px rgba(0, 123, 255, 0.5);
+}
+
+.action-btn{
+    padding-bottom: 20px;
 }

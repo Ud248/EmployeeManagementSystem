@@ -24,8 +24,7 @@ public class InsertEmployee extends HttpServlet {
         String error = "";
         String url = "";
 
-        String firstName = request.getParameter("firstName");
-        String lastName = request.getParameter("lastName");
+        String fullname = request.getParameter("fullname");
         String birthdateStr = request.getParameter("birthdate");
         String gender = request.getParameter("gender");
         String tel = request.getParameter("telephone");
@@ -33,12 +32,18 @@ public class InsertEmployee extends HttpServlet {
         int positionId = 0, departmentId = 0, basicSalary = 0;
 
         // Kiểm tra các trường bắt buộc
-        if (firstName == null || firstName.trim().isEmpty()) {
-            error += "First name is required.<br>";
+        String firstName = "", lastName = "";
+        if (fullname == null || fullname.trim().isEmpty()) {
+            error += "Full name is required.<br>";
+        } else {
+            String[] fullnameArray = fullname.split("\\s+");
+            lastName = fullnameArray[0];
+            for (int i = 1; i < fullnameArray.length; i++) {
+                firstName += fullnameArray[i] + " ";
+            }
+            firstName = firstName.trim();
         }
-        if (lastName == null || lastName.trim().isEmpty()) {
-            error += "Last name is required.<br>";
-        }
+
         if (birthdateStr == null || birthdateStr.trim().isEmpty()) {
             error += "Birthdate is required.<br>";
         }
@@ -80,8 +85,7 @@ public class InsertEmployee extends HttpServlet {
 
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
-            request.setAttribute("firstName", firstName);
-            request.setAttribute("lastName", lastName);
+            request.setAttribute("fullname", fullname);
             request.setAttribute("birthdateStr", birthdateStr);
             request.setAttribute("gender", gender);
             request.setAttribute("tel", tel);
@@ -94,7 +98,7 @@ public class InsertEmployee extends HttpServlet {
             EmployeeDAO eDao = new EmployeeDAO();
             boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
-                request.setAttribute("successMsg", "Add employee " + lastName + " " + firstName + " successfully!");
+                request.setAttribute("successMsg", "Add employee " + fullname + " successfully!");
 
                 //Update list employee
                 int currentPage = 1;
@@ -126,8 +130,7 @@ public class InsertEmployee extends HttpServlet {
                 session.setAttribute("totalEmployees", totalEmployees);
                 request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
             } else {
-                request.setAttribute("firstName", firstName);
-                request.setAttribute("lastName", lastName);
+                request.setAttribute("fullname", fullname);
                 request.setAttribute("birthdateStr", birthdateStr);
                 request.setAttribute("gender", gender);
                 request.setAttribute("tel", tel);

@@ -26,14 +26,14 @@
 
         <div id="viewEmployeePopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
+                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
                 <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
             </div>
         </div>
 
         <div id="updateEmployeePopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
+                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
                 <iframe id="updateEmployeeFrame" src="updateEmployee.jsp"></iframe>
             </div>
         </div>
@@ -42,46 +42,42 @@
             <div style="padding: 20px 20px 0px 20px">
                 <div class="toolbar">
                     <h3 class="title_table">Employee List</h3>
+                </div>
 
+                <div class="action-btn">
+                    <button id="deleteButton" class="delete-btn" onclick="toggleDeleteMode()">Delete</button>
                     <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup')">
                         <i class="fas fa-plus"></i> New Employee
-                    </button>
+                    </button> 
                 </div>
 
                 <table class="table">
                     <thead>
                         <tr>
+                            <th class="select-column"><input type="checkbox" id="selectAll"></th>
                             <th>Employee Code</th>
                             <th>Full Name</th>
                             <th>Telephone</th>
                             <th>Position Name</th>
                             <th>Department Name</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="e" items="${applicationScope.employees}">
                             <tr>
-                                <td>${e.getEmployeeCode()}</td>
+                                <td class="select-column" style="text-align: center;">
+                                    <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}">
+                                </td>
+                                <td><a href="#" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getEmployeeCode()}</a></td>
                                 <td>${e.getFullname()}</td>
                                 <td>${e.getTel()}</td>
                                 <td>${e.getPositionName()}</td>
                                 <td>${e.getDepartmentName()}</td>
-                                <td class="action_button">
-                                    <button class="btn btn-view" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}')">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="btn btn-edit" onclick="openUpdatePopup('updateEmployeePopup', '${e.getEmployeeCode()}')">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="btn btn-delete" onclick="deleteEmployee('${e.getEmployeeCode()}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
+
 
                 <!-- Pagination -->
                 <div class="pagination">
@@ -106,33 +102,71 @@
             </div>
         </div>
         <script>
-            function deleteEmployee(employeeCode) {
-                if (confirm("Are you sure you want to delete employee " + employeeCode + "?")) {
-                    // Gửi yêu cầu DELETE đến Servlet
-                    fetch("delete-employee?employeeCode=" + employeeCode, {method: "GET"})
-                            .then(response => {
-                                if (response.ok) {
-                                    return response.text();
-                                }
-                                throw new Error('Network response was not ok');
-                            })
-                            .then(data => {
-                                alert(data); // Hiển thị thông báo xóa thành công/thất bại
-                                // Tải lại trang để cập nhật danh sách
-                                location.reload();
-                            })
-                            .catch(error => {
-                                console.error("Error:", error);
-                                alert("Có lỗi xảy ra khi xóa nhân viên");
-                            });
+            //delete
+            if (typeof deleteMode === 'undefined') {
+                var deleteMode = false;
+            }
+
+            function toggleDeleteMode() {
+                deleteMode = !deleteMode;
+
+                let checkboxes = document.querySelectorAll('.rowCheckbox');
+                let selectAll = document.getElementById('selectAll');
+
+                if (deleteMode) {
+                    checkboxes.forEach(cb => cb.style.display = 'inline');
+                    selectAll.style.display = 'inline';
+                    document.getElementById('deleteButton').textContent = 'Confirm Delete';
+                } else {
+                    let selectedIds = [];
+                    checkboxes.forEach(cb => {
+                        if (cb.checked) {
+                            selectedIds.push(cb.value);
+                        }
+                    });
+
+                    if (selectedIds.length > 0) {
+                        if (confirm("Are you sure you want to delete these employees?")) {
+                            fetch("delete-employee?employeeCode=" + selectedIds.join(','), {method: "GET"})
+                                    .then(response => {
+                                        if (response.ok) {
+                                            return response.text();
+                                        }
+                                        throw new Error('Network response was not ok');
+                                    })
+                                    .then(data => {
+                                        alert(data);
+                                        location.reload();
+                                    })
+                                    .catch(error => {
+                                        console.error("Error:", error);
+                                        alert("Có lỗi xảy ra khi xóa nhân viên");
+                                    });
+                        }
+                    }
+
+                    checkboxes.forEach(cb => {
+                        cb.style.display = 'none';
+                        cb.checked = false;
+                    });
+                    selectAll.style.display = 'none';
+                    document.getElementById('deleteButton').textContent = 'Delete';
                 }
             }
+
+            document.getElementById('selectAll').addEventListener('change', function () {
+                let checkboxes = document.querySelectorAll('.rowCheckbox');
+                checkboxes.forEach(cb => cb.checked = this.checked);
+            });
+
+
 
             function openPopup(id) {
                 document.getElementById(id).style.display = 'flex';
             }
 
-            function openViewPopup(id, employeeCode = null) {
+            function openViewPopup(id, employeeCode = null, event) {
+                event.preventDefault();
                 let popup = document.getElementById(id);
 
                 if (employeeCode && id === 'viewEmployeePopup') {
@@ -143,6 +177,7 @@
             }
 
             function openUpdatePopup(id, employeeCode = null) {
+                event.preventDefault();
                 let popup = document.getElementById(id);
 
                 if (employeeCode && id === 'updateEmployeePopup') {
@@ -152,31 +187,21 @@
                 popup.style.display = 'flex';
             }
 
-            function closePopup(id) {
-                document.getElementById(id).style.display = 'none';
-            }
-
             function closePopupAndReload(id) {
                 document.getElementById(id).style.display = 'none';
-                if (id === 'insertEmployeePopup' || id === 'updateEmployeePopup') {
-                    location.reload();
-                }
+                location.reload();
             }
 
-// Đóng popup khi bấm ra ngoài, chỉ reload nếu không phải popup View
             document.addEventListener('click', function (event) {
                 let popups = document.querySelectorAll('.popup');
 
                 popups.forEach(popup => {
                     if (event.target === popup) {
                         popup.style.display = 'none';
-                        if (popup.id === 'insertEmployeePopup' || popup.id === 'updateEmployeePopup') {
-                            location.reload();
-                        }
+                        location.reload();
                     }
                 });
             });
-
         </script>
     </body>
 </html>
