@@ -88,3 +88,39 @@ LEFT JOIN Employee e ON e.DepartmentID = d.DepartmentID and e.PositionID = 2
 ORDER BY d.DepartmentID 
 
 --delete department where departmentid = 1
+
+/*
+SELECT 
+	e.EmployeeCode, 
+	e.LastName + ' ' + e.FirstName AS Fullname, 
+	e.Tel, 
+    p.PositionName AS PositionName, 
+	COALESCE(d.DepartmentName, '') AS DepartmentName 
+FROM Employee e 
+JOIN Position p ON e.PositionID = p.PositionID 
+LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID
+ORDER BY e.EmployeeCode 
+OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
+*/
+
+/*
+SELECT 
+	e.EmployeeCode, 
+	e.LastName + ' ' + e.FirstName AS Fullname, 
+	e.Tel, 
+	e.Gender, 
+	e.BirthDate, 
+	e.[Address],
+	e.BasicSalary, 
+	p.PositionID, 
+	p.PositionName AS PositionName, 
+	COALESCE(d.DepartmentID, -1) AS DepartmentID,
+	COALESCE(d.DepartmentName, '') AS DepartmentName, 
+	a.Username, 
+	a.[Password]
+FROM Employee e
+JOIN Position p ON e.PositionID = p.PositionID
+LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID
+JOIN Account a ON e.EmployeeID = a.EmployeeID
+WHERE e.EmployeeCode = 'NV0011'
+*/

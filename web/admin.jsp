@@ -123,14 +123,32 @@
                 }
             });
 
-            document.addEventListener("DOMContentLoaded", function () {
-                const params = new URLSearchParams(window.location.search);
-                if (params.get("status") === "success") {
-                    alert("Thành công!");
-                } else if (params.get("status") === "failure") {
-                    alert("Thất bại!");
+            window.onload = function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const successMsg = urlParams.get('successMsg');
+                const errorMsg = urlParams.get('errorMsg');
+
+                if (successMsg) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: successMsg,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
                 }
-            });
+
+                if (errorMsg) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thất bại!',
+                        text: errorMsg,
+                        showConfirmButton: true
+                    });
+                }
+            };
+
+
         </script>
 
     </body>

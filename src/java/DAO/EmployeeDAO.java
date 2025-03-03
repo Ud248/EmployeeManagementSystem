@@ -61,12 +61,16 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
     public List<EmployeeDTO> selectEmployeesByPage(int page, int itemsPerPage) {
         List<EmployeeDTO> result = new ArrayList<>();
-        String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, "
-                + "p.PositionName AS PositionName, d.DepartmentName AS DepartmentName "
-                + "FROM Employee e "
-                + "JOIN Position p ON e.PositionID = p.PositionID "
-                + "JOIN Department d ON e.DepartmentID = d.DepartmentID "
-                + "ORDER BY e.EmployeeCode "
+        String sql = "SELECT \n"
+                + "	e.EmployeeCode, \n"
+                + "	e.LastName + ' ' + e.FirstName AS Fullname, \n"
+                + "	e.Tel, \n"
+                + "    p.PositionName AS PositionName, \n"
+                + "	COALESCE(d.DepartmentName, '') AS DepartmentName \n"
+                + "FROM Employee e \n"
+                + "JOIN Position p ON e.PositionID = p.PositionID \n"
+                + "LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID \n"
+                + "ORDER BY e.EmployeeCode \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
@@ -149,10 +153,23 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             Connection con = JDBCUtil.getConnection();
 
             // B2: Tạo ra đối tượng PreparedStatement
-            String sql = "SELECT e.EmployeeCode, e.LastName + ' ' + e.FirstName AS Fullname, e.Tel, e.Gender, e.BirthDate, e.Address ,e.BasicSalary , p.PositionID, p.PositionName AS PositionName, d.DepartmentID,d.DepartmentName AS DepartmentName, a.Username, a.Password\n"
+            String sql = "SELECT \n"
+                    + "	e.EmployeeCode, \n"
+                    + "	e.LastName + ' ' + e.FirstName AS Fullname, \n"
+                    + "	e.Tel, \n"
+                    + "	e.Gender, \n"
+                    + "	e.BirthDate, \n"
+                    + "	e.[Address],\n"
+                    + "	e.BasicSalary, \n"
+                    + "	p.PositionID, \n"
+                    + "	p.PositionName AS PositionName, \n"
+                    + "	COALESCE(d.DepartmentID, -1) AS DepartmentID,\n"
+                    + "	COALESCE(d.DepartmentName, '') AS DepartmentName, \n"
+                    + "	a.Username, \n"
+                    + "	a.[Password]\n"
                     + "FROM Employee e\n"
                     + "JOIN Position p ON e.PositionID = p.PositionID\n"
-                    + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
+                    + "LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
                     + "JOIN Account a ON e.EmployeeID = a.EmployeeID\n"
                     + "WHERE e.EmployeeCode = ?";
             PreparedStatement st = con.prepareStatement(sql);

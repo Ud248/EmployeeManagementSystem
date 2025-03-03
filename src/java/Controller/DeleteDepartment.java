@@ -6,6 +6,8 @@ package Controller;
 
 import DAO.DepartmentDAO;
 import DTO.DepartmentDTO;
+import DTO.EmployeeDTO;
+import Model.Department;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -33,10 +35,14 @@ public class DeleteDepartment extends HttpServlet {
         }
         if (deleteResult) {
             List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage();
+            List<Department> listDepartment = dDAO.selectAll();
+            List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
+            request.getServletContext().setAttribute("employees", employees);
             request.getServletContext().setAttribute("departments", departments);
-            response.sendRedirect("admin.jsp?status=success");
+            request.getServletContext().setAttribute("listDepartment", listDepartment);
+            response.sendRedirect("admin.jsp?successMsg=Department deleted successfully!");
         } else {
-            response.sendRedirect("admin.jsp?status=failure");
+            response.sendRedirect("admin.jsp?errorMsg=Failed to delete department. Please try again!");
         }
     }
 

@@ -30,10 +30,7 @@
             <div style="padding: 10px 20px 0px 20px">
                 <div class="d-flex">
                     <div class="toolbar">
-                        <input type="text" 
-                               class="search-box" 
-                               id="searchName" 
-                               placeholder="Search With FirstName">
+                        <input type="text" class="search-box" id="searchName" placeholder="Search With Department Name"/>
                     </div>
 
                     <button id="searchButton" class="search-btn">Search</button>
@@ -107,7 +104,9 @@
                 }
             }
 
-            let deleteMode = false;
+            if (typeof deleteMode === 'undefined') {
+                var deleteMode = false;
+            }
 
             function toggleDeleteMode() {
                 deleteMode = !deleteMode;
@@ -116,7 +115,6 @@
                 let selectAll = document.getElementById('selectAll');
 
                 if (deleteMode) {
-                    // Hiện checkbox
                     checkboxes.forEach(cb => cb.style.display = 'inline');
                     selectAll.style.display = 'inline';
                     document.getElementById('deleteButton').textContent = 'Confirm Delete';
@@ -130,12 +128,10 @@
 
                     if (selectedIds.length > 0) {
                         if (confirm("Are you sure you want to delete these departments?")) {
-                            // Gửi danh sách ID về server để xử lý xóa
                             window.location.href = "deletedepartment?departmentId=" + selectedIds.join(',');
                         }
                     }
 
-                    // Ẩn lại checkbox
                     checkboxes.forEach(cb => {
                         cb.style.display = 'none';
                         cb.checked = false;

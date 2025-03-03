@@ -28,9 +28,6 @@ public class UpdateDepartment extends HttpServlet {
     private String REGEX_TELEPHONE = "^\\d{10}$";
     private String REGEX_OPENTIME = "^([01]\\d|2[0-3]):[0-5]\\d - ([01]\\d|2[0-3]):[0-5]\\d$";
 
-//    private boolean isValidTime(String) {
-//
-//    }
     private boolean isEmptyDescription(String[] arrayDescription) {
         if (arrayDescription == null) {
             return true;
@@ -125,10 +122,10 @@ public class UpdateDepartment extends HttpServlet {
             errorDescriptionMsg = "Description must be not empty";
         }
         if (!telephone.matches(REGEX_TELEPHONE)) {
-            errorTelephoneMsg = "Invalid telephone's format";
+            errorTelephoneMsg = "Invalid telephone's format (10 characters contain number from 0 to 9)";
         }
         if (!openTime.matches(REGEX_OPENTIME)) {
-            errorOpenTimeMsg = "Invalid open time's format";
+            errorOpenTimeMsg = "Invalid open time's format (HH:mm - HH:mm)";
         } else {
             LocalTime[] localTimeArray = getStartAndEndTime(openTime);
             startTime = localTimeArray[0];
@@ -153,7 +150,9 @@ public class UpdateDepartment extends HttpServlet {
             if (updateResult) {
                 List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage();
                 request.getServletContext().setAttribute("departments", departments);
-                response.sendRedirect("viewdepartment?departmentId=" + departmentId);
+                response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&successMsg=Update successful!");
+            } else {
+                response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&errorMsg=Update failed. Please try again!");
             }
         }
     }

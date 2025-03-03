@@ -13,6 +13,7 @@
         <title>View Department</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <style>
             .detail{
@@ -107,6 +108,15 @@
                                 <span class="detail">${telephone}</span>
                             </div>
                         </div>
+
+                        <div class="row mb-2">
+                            <div class="col-md-4 text-end">
+                                <label class="form-label">Total Employee:</label>
+                            </div>
+                            <div class="col-md-8">
+                                <span class="detail">${totalEmployee}</span>
+                            </div>
+                        </div>
                     </div>
                     <br/>
 
@@ -145,6 +155,30 @@
                 let frame = window.parent.document.getElementById('viewDepartmentFrame');
                 frame.src = "updatedepartment?departmentId=" + departmentId;
             }
+
+            window.onload = function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const successMsg = urlParams.get('successMsg');
+
+                if (successMsg) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        text: successMsg,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+
+                if (errorMsg) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thất bại!',
+                        text: errorMsg,
+                        showConfirmButton: true
+                    });
+                }
+            };
         </script>
     </body>
 </html>
