@@ -11,6 +11,53 @@
     </head>
     <body>
 
+        <div class="content">
+            <div style="padding: 20px 20px 0px 20px">
+                <div class="d-flex">
+                    <div class="toolbar">
+                        <input type="text" class="search-box" id="searchName" placeholder="Search With Department Name"/>
+                    </div>
+
+                    <button id="searchButton" class="search-btn">Search</button>
+                </div>
+
+                <div class="action-btn">
+                    <button id="deleteButton" class="delete-btn" disabled="">Delete</button>
+                    <button class="new-employee-btn" onclick="openPopup('insertDepartmentPopup', null, event)">
+                        <i class="fas fa-plus"></i> New Employee
+                    </button> 
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>ID</th>
+                            <th>Department Name</th>
+                            <th>Open Time</th>
+                            <th>Manager</th>
+                            <th>Telephone</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <c:forEach var="d" items="${applicationScope.departments}">
+                            <tr>
+                                <td style="text-align: center;">
+                                    <input type="checkbox" class="rowCheckbox" value="${d.getDepartmentId()}" onchange="toggleDeleteMode()">
+                                </td>
+                                <td style="text-align: center;">${d.getDepartmentId()}</td>
+                                <td><a onclick="openPopup('viewDepartmentPopup', ${d.getDepartmentId()}, event)">${d.getDepartmentName()}</a></td>
+                                <td style="text-align: center">${d.getOpenTime()}</td>
+                                <td>${d.getManagerName()}</td>
+                                <td style="text-align: center">${d.getTelephone()}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <div id="insertDepartmentPopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopup('insertDepartmentPopup')">&times;</span>
@@ -24,54 +71,7 @@
                 <iframe id="viewDepartmentFrame"></iframe>
             </div>
         </div>
-
-
-        <div class="content">
-            <div style="padding: 20px 20px 0px 20px">
-                <div class="d-flex">
-                    <div class="toolbar">
-                        <input type="text" class="search-box" id="searchName" placeholder="Search With Department Name"/>
-                    </div>
-
-                    <button id="searchButton" class="search-btn">Search</button>
-                </div>
-
-                <div class="action-btn">
-                    <button id="deleteButton" class="delete-btn" onclick="toggleDeleteMode()">Delete</button>
-                    <button class="new-employee-btn" onclick="openPopup('insertDepartmentPopup', null, event)">
-                        <i class="fas fa-plus"></i> New Employee
-                    </button> 
-                </div>
-
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" id="selectAll" style="display: none;"></th>
-                            <th>ID</th>
-                            <th>Department Name</th>
-                            <th>Open Time</th>
-                            <th>Manager</th>
-                            <th>Telephone</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <c:forEach var="d" items="${applicationScope.departments}">
-                            <tr>
-                                <td style="text-align: center;">
-                                    <input type="checkbox" class="rowCheckbox" value="${d.getDepartmentId()}" style="display: none;">
-                                </td>
-                                <td style="text-align: center;">${d.getDepartmentId()}</td>
-                                <td><a onclick="openPopup('viewDepartmentPopup', ${d.getDepartmentId()}, event)">${d.getDepartmentName()}</a></td>
-                                <td style="text-align: center">${d.getOpenTime()}</td>
-                                <td>${d.getManagerName()}</td>
-                                <td style="text-align: center">${d.getTelephone()}</td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        
         <script>
             function openPopup(id, departmentId = null, event) {
                 event.preventDefault();
@@ -91,43 +91,51 @@
                 location.reload();
             }
 
-            if (typeof deleteMode === 'undefined') {
-                var deleteMode = false;
-            }
-
             function toggleDeleteMode() {
-                deleteMode = !deleteMode;
-                let checkboxes = document.querySelectorAll('.rowCheckbox');
-                let selectAll = document.getElementById('selectAll');
-                if (deleteMode) {
-                    checkboxes.forEach(cb => cb.style.display = 'inline');
-                    selectAll.style.display = 'inline';
-                    document.getElementById('deleteButton').textContent = 'Confirm Delete';
-                } else {
-                    let selectedIds = [];
-                    checkboxes.forEach(cb => {
-                        if (cb.checked) {
-                            selectedIds.push(cb.value);
-                        }
-                    });
-                    if (selectedIds.length > 0) {
-                        if (confirm("Are you sure you want to delete these departments?")) {
-                            window.location.href = "deletedepartment?departmentId=" + selectedIds.join(',');
-                        }
-                    }
-                    checkboxes.forEach(cb => {
-                        cb.style.display = 'none';
-                        cb.checked = false;
-                    });
-                    selectAll.style.display = 'none';
-                    document.getElementById('deleteButton').textContent = 'Delete';
-                }
+                let checkboxes = document.querySelectorAll(".rowCheckbox");
+                let deleteButton = document.getElementById("deleteButton");
+                let activeDeleteButton = Array.from(checkboxes).some(cb => cb.checked);
+                deleteButton.disabled = !activeDeleteButton;
             }
 
             document.getElementById('selectAll').addEventListener('change', function () {
                 let checkboxes = document.querySelectorAll('.rowCheckbox');
                 checkboxes.forEach(cb => cb.checked = this.checked);
+                if (!this.checked) {
+                    deleteButton.disabled = true;
+                } else {
+                    deleteButton.disabled = false;
+                }
             });
+
+            function getValueChecked() {
+                let checkboxes = document.querySelectorAll(".rowCheckbox:checked");
+                let selectedIds = [];
+                checkboxes.forEach(cb => {
+                    selectedIds.push(cb.value);
+                });
+                return selectedIds;
+            }
+
+
+            document.getElementById("deleteButton").addEventListener("click", function () {
+                Swal.fire({
+                    title: "Bạn có chắc chắn muốn xóa?",
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Xóa",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let selectedIds = getValueChecked().join(",");
+                        window.location.href = "deletedepartment?departmentId=" + selectedIds;
+                    }
+                });
+            });
+
         </script>
     </body>
 </html>

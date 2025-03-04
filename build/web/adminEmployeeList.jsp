@@ -17,26 +17,6 @@
     </head>
 
     <body>
-        <div id="insertEmployeePopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('insertEmployeePopup')">&times;</span>
-                <iframe id="insertEmployeeFrame" src="insertEmployee.jsp"></iframe>
-            </div>
-        </div>
-
-        <div id="viewEmployeePopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
-                <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
-            </div>
-        </div>
-
-        <div id="updateEmployeePopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
-                <iframe id="updateEmployeeFrame" src="updateEmployee.jsp"></iframe>
-            </div>
-        </div>
 
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
@@ -45,7 +25,7 @@
                 </div>
 
                 <div class="action-btn">
-                    <button id="deleteButton" class="delete-btn" onclick="toggleDeleteMode()">Delete</button>
+                    <button id="deleteButton" class="delete-btn" disabled="">Delete</button>
                     <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup')">
                         <i class="fas fa-plus"></i> New Employee
                     </button> 
@@ -54,7 +34,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="select-column"><input type="checkbox" id="selectAll" style="display: none;"></th>
+                            <th class="select-column"><input type="checkbox" id="selectAll" onchange="toggleDeleteMode()"></th>
                             <th>Employee Code</th>
                             <th>Full Name</th>
                             <th>Telephone</th>
@@ -66,7 +46,7 @@
                         <c:forEach var="e" items="${applicationScope.employees}">
                             <tr>
                                 <td class="select-column" style="text-align: center;">
-                                    <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}" style="display: none;">
+                                    <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}" onchange="toggleDeleteMode()">
                                 </td>
                                 <td><a href="#" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getEmployeeCode()}</a></td>
                                 <td>${e.getFullname()}</td>
@@ -101,48 +81,45 @@
                 </div>
             </div>
         </div>
+
+        <div id="insertEmployeePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopupAndReload('insertEmployeePopup')">&times;</span>
+                <iframe id="insertEmployeeFrame" src="insertEmployee.jsp"></iframe>
+            </div>
+        </div>
+
+        <div id="viewEmployeePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
+                <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
+            </div>
+        </div>
+
+        <div id="updateEmployeePopup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
+                <iframe id="updateEmployeeFrame" src="updateEmployee.jsp"></iframe>
+            </div>
+        </div>
+                
         <script>
-            //delete 
-            if (typeof deleteMode === 'undefined') {
-                var deleteMode = false;
-            }
 
             function toggleDeleteMode() {
-                deleteMode = !deleteMode;
-
-                let checkboxes = document.querySelectorAll('.rowCheckbox');
-                let selectAll = document.getElementById('selectAll');
-
-                if (deleteMode) {
-                    checkboxes.forEach(cb => cb.style.display = 'inline');
-                    selectAll.style.display = 'inline';
-                    document.getElementById('deleteButton').textContent = 'Confirm Delete';
-                } else {
-                    let selectedIds = [];
-                    checkboxes.forEach(cb => {
-                        if (cb.checked) {
-                            selectedIds.push(cb.value);
-                        }
-                    });
-
-                    if (selectedIds.length > 0) {
-                        if (confirm("Are you sure you want to delete these employees?")) {
-                            window.location.href = "delete-employee?employeeCode=" + selectedIds.join(',');
-                        }
-                    }
-
-                    checkboxes.forEach(cb => {
-                        cb.style.display = 'none';
-                        cb.checked = false;
-                    });
-                    selectAll.style.display = 'none';
-                    document.getElementById('deleteButton').textContent = 'Delete';
-                }
+                let checkboxes = document.querySelectorAll(".rowCheckbox");
+                let deleteButton = document.getElementById("deleteButton");
+                let activeDeleteButton = Array.from(checkboxes).some(cb => cb.checked);
+                deleteButton.disabled = !activeDeleteButton;
             }
 
             document.getElementById('selectAll').addEventListener('change', function () {
                 let checkboxes = document.querySelectorAll('.rowCheckbox');
                 checkboxes.forEach(cb => cb.checked = this.checked);
+                if (!this.checked) {
+                    deleteButton.disabled = true;
+                } else {
+                    deleteButton.disabled = false;
+                }
             });
 
             function openPopup(id) {
@@ -183,6 +160,34 @@
                     if (event.target === popup) {
                         popup.style.display = 'none';
                         location.reload();
+                    }
+                });
+            });
+
+            function getValueChecked() {
+                let checkboxes = document.querySelectorAll(".rowCheckbox:checked");
+                let selectedIds = [];
+                checkboxes.forEach(cb => {
+                    selectedIds.push(cb.value);
+                });
+                return selectedIds;
+            }
+
+
+            document.getElementById("deleteButton").addEventListener("click", function () {
+                Swal.fire({
+                    title: "Bạn có chắc chắn muốn xóa?",
+                    text: "Hành động này không thể hoàn tác!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Xóa",
+                    cancelButtonText: "Hủy"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let selectedIds = getValueChecked().join(",");
+                        window.location.href = "delete-employee?employeeCode=" + selectedIds;
                     }
                 });
             });

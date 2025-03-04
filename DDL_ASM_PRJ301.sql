@@ -33,7 +33,7 @@ CREATE TABLE Employee(
 	[Address] NVARCHAR(MAX) NOT NULL,
 	PositionID INT,
 	DepartmentID INT,
-	BasicSalary INT NOT NULL DEFAULT 0,
+	BasicSalary INT NOT NULL CHECK(BasicSalary > 0),
 	FOREIGN KEY (PositionID) REFERENCES Position(PositionID) ON UPDATE CASCADE ON DELETE SET NULL,
 	FOREIGN KEY (DepartmentID) REFERENCES Department(DepartmentID) ON UPDATE CASCADE ON DELETE SET NULL
 )

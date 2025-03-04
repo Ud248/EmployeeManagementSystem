@@ -153,14 +153,20 @@ td a:hover {
 }
 
 .delete-btn {
-    background-color: #dc3545; /* Màu đỏ */
+    background-color: #dc3545;
     color: white;
     padding: 8px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    transition: background 0.3s;
+    transition: background 0.3s, opacity 0.3s;
+}
+
+.delete-btn:disabled {
+    background-color: #a1a1a1 !important; /* Màu xám */
+    cursor: not-allowed;
+    opacity: 0.6; /* Làm mờ nút */
 }
 
 .delete-btn:hover {
@@ -168,7 +174,6 @@ td a:hover {
 }
 
 .rowCheckbox, #selectAll {
-    display: none;
 }
 
 .action-btn{
