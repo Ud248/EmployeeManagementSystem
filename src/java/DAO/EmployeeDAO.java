@@ -398,4 +398,42 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return isExist;
     }
 
+    public boolean isExistPhoneNumber(String tel) {
+        String sql = "SELECT COUNT(*) FROM Employee WHERE Tel = ?";
+        boolean isExist = false;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, tel);
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                isExist = true;
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isExist;
+    }
+    
+    public boolean isExistPhoneNumberForUpdate(String tel, String employeeCode) {
+        String sql = "SELECT COUNT(*) FROM Employee WHERE Tel = ? AND EmployeeCode != ?";
+        boolean isExist = false;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, tel);
+            st.setString(2, employeeCode);
+            System.out.println(sql);
+            ResultSet rs = st.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                isExist = true;
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isExist;
+    }
 }

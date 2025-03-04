@@ -27,14 +27,19 @@ public class DeleteEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String employeeCode = request.getParameter("employeeCode");
+        String employeeCodeParam = request.getParameter("employeeCode");
+        String[] employeeCode = employeeCodeParam.split(",");
         EmployeeDAO eDao = new EmployeeDAO();
-
-        boolean success = eDao.delete(new Employee(employeeCode));
+        boolean deleteResult = true;
+        for (String eCode : employeeCode) {
+            if (!eDao.delete(new Employee(eCode))) {
+                deleteResult = false;
+            }
+        }
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
-        if (success) {
+        if (deleteResult) {
             //Update list employee
             int currentPage = 1;
             int itemsPerPage = 10;
@@ -63,9 +68,11 @@ public class DeleteEmployee extends HttpServlet {
             HttpSession session = request.getSession();
             request.getServletContext().setAttribute("employees", employees);
             session.setAttribute("totalEmployees", totalEmployees);
-            response.getWriter().write("Employee " + employeeCode + " deleted successfully!");
+            request.setAttribute("successMsg", "Employee deleted successfully!");
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
         } else {
-            response.getWriter().write("Failed to delete employee " + employeeCode + "!");
+            request.setAttribute("errorMsg", "Failed to delete employee. Please try again!");
+            request.getRequestDispatcher("admin.jsp").forward(request, response);
         }
     }
 

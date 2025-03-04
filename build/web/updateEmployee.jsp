@@ -13,80 +13,6 @@
     }
 %>
 
-<style>
-    body{
-        height: 100vh;
-        background-color: #EFEFEF;
-    }
-
-    .form-label {
-        text-align: left;
-        font-weight: bold;
-        padding-left: 15px;
-        width: 170px; /* Thay đổi từ min-width thành width cố định */
-        display: inline-block;
-        margin-right: 25px;
-        vertical-align: top;
-    }
-
-    /* Normal text for details instead of bold */
-    .detail {
-        font-weight: normal;
-        display: inline-block;
-        vertical-align: top;
-        width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
-
-    }
-
-    /* Bold section headers */
-    .section-header {
-        font-weight: bold;
-        color: green;
-        margin-bottom: 15px;
-    }
-
-    /* Horizontal divider */
-    .section-divider {
-        height: 1px;
-        background-color: #dee2e6;
-        margin: 25px 0;
-    }
-
-    /* CSS cho nút Edit */
-    .submit-button {
-        background-color: #28a745; /* Xanh lá */
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background 0.3s, transform 0.2s;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        margin-left: 45%;
-        margin-top: 20px;
-    }
-
-    /* Hiệu ứng hover */
-    .submit-button:hover {
-        background-color: #218838; /* Màu tối hơn khi hover */
-        transform: scale(1.05);
-    }
-
-    /* Add spacing between info groups */
-    .info-group {
-        margin-bottom: 15px;
-    }
-
-    /* Field container styling */
-    .field-container {
-        display: flex;
-        align-items: flex-start;
-        margin-bottom: 10px;
-        padding-right: 15px;
-    }
-</style>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -96,6 +22,84 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </head>
+
+    <style>
+        body{
+            height: 100vh;
+            background-color: #EFEFEF;
+        }
+
+        .form-label {
+            text-align: left;
+            font-weight: bold;
+            padding-left: 15px;
+            width: 220px; /* Thay đổi từ min-width thành width cố định */
+            display: inline-block;
+            margin-right: 25px;
+            vertical-align: top;
+        }
+
+        /* Normal text for details instead of bold */
+        .detail {
+            font-weight: normal;
+            display: inline-block;
+            vertical-align: top;
+            width: 74%; /* Chiều rộng cố định tính toán từ width của label + margin */
+        }
+
+        /* Bold section headers */
+        .section-header {
+            font-weight: bold;
+            color: green;
+            margin-bottom: 15px;
+        }
+
+        /* Horizontal divider */
+        .section-divider {
+            height: 1px;
+            background-color: #dee2e6;
+            margin: 25px 0;
+        }
+
+        /* CSS cho nút Edit */
+        .submit-button {
+            background-color: #28a745; /* Xanh lá */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin-left: 45%;
+        }
+
+        /* Hiệu ứng hover */
+        .submit-button:hover {
+            background-color: #218838; /* Màu tối hơn khi hover */
+            transform: scale(1.05);
+        }
+
+        /* Add spacing between info groups */
+        .info-group {
+            margin-bottom: 15px;
+        }
+
+        /* Field container styling */
+        .field-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            padding-right: 15px;
+        }
+
+        .field-container span{
+            width: 75%;
+        }
+
+
+    </style>
 
     <body>
         <div class="container">
@@ -119,12 +123,12 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Full Name:</label>
-                                        <input type="text" class="form-control" value="${empty fullname ? '' : fullname}" name="fullname">
+                                        <input type="text" class="form-control detail" value="${empty fullname ? '' : fullname}" name="fullname">
                                     </div>
 
                                     <div class="field-container">
                                         <label class="form-label">Birth Date:</label>
-                                        <input type="date" class="form-control" value="${empty birthDate ? '' : birthDate}" name="birthdate">
+                                        <input type="date" class="form-control detail" value="${empty birthdate ? '' : birthdate}" name="birthdate">
                                     </div>
                                 </div>
 
@@ -132,7 +136,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Gender:</label>
-                                        <select class="form-select" id="gender" name="gender">
+                                        <select class="form-select detail" id="gender" name="gender">
                                             <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
                                             <option value="Nữ" ${gender == 'Nữ ' ? 'selected="selected"' : ''}>Nữ</option>
                                         </select>
@@ -140,12 +144,14 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Telephone:</label>
-                                        <input type="text" class="form-control" value="${empty tel ? '' : tel}" name="tel">
+                                        <input type="tel" class="form-control detail" id="tel" name="tel" required 
+                                               pattern="0[0-9]{9}" title="Telephone must start with 0 and have 10 digits." 
+                                               value="${empty tel ? '' : tel}">
                                     </div>
 
                                     <div class="field-container">
                                         <label class="form-label">Address:</label>
-                                        <textarea class="form-control" name="address" rows="3">${empty address ? '' : address}</textarea>
+                                        <textarea class="form-control detail" name="address" rows="3">${empty address ? '' : address}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -161,7 +167,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Position Name:</label>
-                                        <select class="form-select" id="positionId" name="positionId" required>
+                                        <select class="form-select detail" id="positionId" name="positionId" required>
                                             <c:forEach var="position" items="${applicationScope.listPosition}">
                                                 <option value="${position.positionId}" ${positionId == position.positionId ? 'selected="selected"' : ''}>
                                                     ${position.positionName}
@@ -172,7 +178,7 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Department Name:</label>
-                                        <select class="form-select" id="departmentId" name="departmentId" required>
+                                        <select class="form-select detail" id="departmentId" name="departmentId" required>
                                             <c:forEach var="department" items="${applicationScope.listDepartment}">
                                                 <option value="${department.departmentId}" ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
                                                     ${department.departmentName}
@@ -186,7 +192,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Basic Salary:</label>
-                                        <input type="text" class="form-control" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary">
+                                        <input type="text" class="form-control detail" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary">
                                     </div>
                                 </div>
                             </div>
@@ -217,7 +223,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="submit-button">Update</button>  
+
                         <c:if test="${not empty error}">
                             <div class="alert alert-danger mt-3">
                                 ${error}
@@ -229,6 +235,9 @@
                                 ${successMsg}
                             </div>
                         </c:if>
+
+                        <button type="submit" class="submit-button">Update</button>  
+
                     </form>     
                 </div>
             </div>

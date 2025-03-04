@@ -88,7 +88,6 @@
             transition: background 0.3s, transform 0.2s;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             margin-left: 45%;
-            margin-top: 20px;
         }
 
         /* Hiệu ứng hover */
@@ -113,7 +112,7 @@
 
     <body>
         <div class="container">
-            <div class="modal-content p-4">
+            <div class="modal-content" style="padding: 1.5rem 1.5rem 1rem 1.5rem">
                 <div class="modal-header" style="padding-bottom: 15px">
                     <h3 class="modal-title mx-auto">VIEW EMPLOYEE DETAILS</h3>
                 </div>

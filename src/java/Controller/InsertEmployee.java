@@ -62,7 +62,12 @@ public class InsertEmployee extends HttpServlet {
 
         if (tel == null || tel.trim().isEmpty()) {
             error += "Telephone is required.<br>";
+        } else if (!tel.matches("^0\\d{9}$")) {
+            error += "Telephone must have 10 digits and start with 0.<br>";
+        } else if (eDao.isExistPhoneNumber(tel)) {
+            error += "This phone number is already registered.<br>";
         }
+        
         if (address == null || address.trim().isEmpty()) {
             error += "Address is required.<br>";
         }
@@ -83,9 +88,9 @@ public class InsertEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please input a valid basic salary.<br>";
         }
-        if (eDao.isExistManagerInDepartment(departmentId)) {
-            error += "Selected Department already has manager. One Department can have only one manager.";
-        }
+//        if (eDao.isExistManagerInDepartment(departmentId)) {
+//            error += "Selected Department already has manager. One Department can have only one manager.";
+//        }
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
             request.setAttribute("fullname", fullname);
@@ -150,4 +155,3 @@ public class InsertEmployee extends HttpServlet {
         }
     }
 }
-

@@ -54,7 +54,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th class="select-column"><input type="checkbox" id="selectAll"></th>
+                            <th class="select-column"><input type="checkbox" id="selectAll" style="display: none;"></th>
                             <th>Employee Code</th>
                             <th>Full Name</th>
                             <th>Telephone</th>
@@ -66,7 +66,7 @@
                         <c:forEach var="e" items="${applicationScope.employees}">
                             <tr>
                                 <td class="select-column" style="text-align: center;">
-                                    <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}">
+                                    <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}" style="display: none;">
                                 </td>
                                 <td><a href="#" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getEmployeeCode()}</a></td>
                                 <td>${e.getFullname()}</td>
@@ -102,7 +102,7 @@
             </div>
         </div>
         <script>
-            //delete
+            //delete 
             if (typeof deleteMode === 'undefined') {
                 var deleteMode = false;
             }
@@ -127,21 +127,7 @@
 
                     if (selectedIds.length > 0) {
                         if (confirm("Are you sure you want to delete these employees?")) {
-                            fetch("delete-employee?employeeCode=" + selectedIds.join(','), {method: "GET"})
-                                    .then(response => {
-                                        if (response.ok) {
-                                            return response.text();
-                                        }
-                                        throw new Error('Network response was not ok');
-                                    })
-                                    .then(data => {
-                                        alert(data);
-                                        location.reload();
-                                    })
-                                    .catch(error => {
-                                        console.error("Error:", error);
-                                        alert("Có lỗi xảy ra khi xóa nhân viên");
-                                    });
+                            window.location.href = "delete-employee?employeeCode=" + selectedIds.join(',');
                         }
                     }
 
@@ -158,8 +144,6 @@
                 let checkboxes = document.querySelectorAll('.rowCheckbox');
                 checkboxes.forEach(cb => cb.checked = this.checked);
             });
-
-
 
             function openPopup(id) {
                 document.getElementById(id).style.display = 'flex';

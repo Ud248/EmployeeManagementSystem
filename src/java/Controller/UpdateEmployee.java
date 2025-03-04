@@ -37,7 +37,7 @@ public class UpdateEmployee extends HttpServlet {
 
         request.setAttribute("employeeCode", e.getEmployeeCode());
         request.setAttribute("fullname", e.getFullname());
-        request.setAttribute("birthDate", e.getBirthDate());
+        request.setAttribute("birthdate", e.getBirthDate());
         request.setAttribute("gender", e.getGender());
         request.setAttribute("tel", e.getTel());
         request.setAttribute("address", e.getAddress());
@@ -72,6 +72,8 @@ public class UpdateEmployee extends HttpServlet {
         String password = request.getParameter("password");
         int positionId = 0, departmentId = 0, basicSalary = 0;
 
+        EmployeeDAO eDao = new EmployeeDAO();
+
         // Kiểm tra các trường bắt buộc
         if (fullname == null || fullname.trim().isEmpty()) {
             error += "Fullname name is required.<br>";
@@ -97,7 +99,12 @@ public class UpdateEmployee extends HttpServlet {
 
         if (tel == null || tel.trim().isEmpty()) {
             error += "Telephone is required.<br>";
+        } else if (!tel.matches("^0\\d{9}$")) {
+            error += "Telephone must have 10 digits and start with 0.<br>";
+        } else if (eDao.isExistPhoneNumberForUpdate(tel, employeeCode)) {
+            error += "This phone number is already registered.<br>";
         }
+
         if (address == null || address.trim().isEmpty()) {
             error += "Address is required.<br>";
         }
@@ -122,7 +129,7 @@ public class UpdateEmployee extends HttpServlet {
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
             request.setAttribute("fullname", fullname);
-            request.setAttribute("birthdateStr", birthdateStr);
+            request.setAttribute("birthdate", birthdateStr);
             request.setAttribute("gender", gender);
             request.setAttribute("tel", tel);
             request.setAttribute("address", address);
@@ -134,9 +141,7 @@ public class UpdateEmployee extends HttpServlet {
             request.setAttribute("password", password);
             request.getRequestDispatcher("updateEmployee.jsp").forward(request, response);
         } else {
-            EmployeeDAO eDao = new EmployeeDAO();
             boolean success = eDao.update(new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
-
             if (success) {
                 int currentPage = 1;
                 int itemsPerPage = 10;
@@ -170,7 +175,7 @@ public class UpdateEmployee extends HttpServlet {
             } else {
                 request.setAttribute("error", "Failed to update employee. Please try again.");
                 request.setAttribute("fullname", fullname);
-                request.setAttribute("birthdateStr", birthdateStr);
+                request.setAttribute("birthdate", birthdateStr);
                 request.setAttribute("gender", gender);
                 request.setAttribute("tel", tel);
                 request.setAttribute("address", address);

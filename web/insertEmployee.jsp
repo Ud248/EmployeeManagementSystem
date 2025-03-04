@@ -79,7 +79,6 @@
             display: inline-block;
             vertical-align: top;
             width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
-
         }
 
         /* Bold section headers */
@@ -97,7 +96,7 @@
         }
 
         /* CSS cho nút Edit */
-        .edit-button {
+        .insert-button {
             background-color: #28a745; /* Xanh lá */
             color: white;
             padding: 10px 20px;
@@ -108,11 +107,10 @@
             transition: background 0.3s, transform 0.2s;
             box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
             margin-left: 45%;
-            margin-top: 20px;
         }
 
         /* Hiệu ứng hover */
-        .edit-button:hover {
+        .insert-button:hover {
             background-color: #218838; /* Màu tối hơn khi hover */
             transform: scale(1.05);
         }
@@ -133,9 +131,9 @@
 
     <body>
         <div style="max-width: 1030px;">
-            <div class="modal-content p-4">
+            <div class="modal-content">
                 <div class="modal-header" style="padding-bottom: 15px">
-                    <h3 class="modal-title mx-auto">INSERT NEW EMPLOYEE</h3>
+                    <h3 class="modal-title mx-auto" style="font-weight: 600;">INSERT NEW EMPLOYEE</h3>
                 </div>
                 <form id="employeeForm" action="insert-employee" method="post">
                     <div class="modal-body">
@@ -157,7 +155,9 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Telephone:</label>
-                                        <input type="tel" class="form-control detail" id="telephone" name="telephone" required value="<%=tel%>">
+                                        <input type="tel" class="form-control detail" id="telephone" name="telephone" required 
+                                               pattern="0[0-9]{9}" title="Telephone must start with 0 and have 10 digits." 
+                                               value="<%=tel%>">
                                     </div>
                                 </div>
 
@@ -166,7 +166,7 @@
                                     <div class="field-container">
                                         <label class="form-label">Gender:</label>
                                         <select class="form-select detail" name="gender">
-                                            <option value="None">--Select gender--</option>
+                                            <option value="None">Select gender</option>
                                             <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
                                             <option value="Nữ" ${gender == 'Nữ' ? 'selected="selected"' : ''}>Nữ</option>
                                         </select>
@@ -191,7 +191,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Position Name:</label>
-                                        <select class="form-select detail" id="position" name="position" required>
+                                        <select class="form-select detail" id="position" name="position" required autocomplete="off">
                                             <option selected value="None">Select Employee Position</option>
                                             <c:forEach var="position" items="${applicationScope.listPosition}">
                                                 <option value="${position.positionId}" 
@@ -204,7 +204,7 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Department Name:</label>
-                                        <select class="form-select detail" id="department" name="department" required>
+                                        <select class="form-select detail" id="department" name="department" required autocomplete="off">
                                             <option selected value="None">Select Employee Department</option>
                                             <c:forEach var="department" items="${applicationScope.listDepartment}">
                                                 <option value="${department.departmentId}" 
@@ -224,17 +224,24 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
 
-                        <br>
-                        <div class="modal-footer justify-content-center">
-                            <button type="submit" class="btn btn-primary">Insert</button>
-                        </div>
+                        <div class="text-center">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger mt-3">
+                                    ${error}
+                                </div>
+                            </c:if>
 
-                        <div class="text-center mt-3">
-                            <span style="color:red"><%=error%></span>
-                            <span style="color:green"><%=successMsg%></span>
-                            <br>
+                            <c:if test="${not empty successMsg}">
+                                <div class="alert alert-success mt-3">
+                                    ${successMsg}
+                                </div>
+                            </c:if>
+                        </div>
+                                    
+                        <div>
+                            <button type="submit" class="insert-button">Insert</button>
                         </div>
                     </div>
                 </form>
