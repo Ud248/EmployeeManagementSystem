@@ -171,21 +171,9 @@ public class UpdateEmployee extends HttpServlet {
                 request.getServletContext().setAttribute("employees", employees);
                 session.setAttribute("totalEmployees", totalEmployees);
 
-                response.sendRedirect("update-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");
+                response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");
             } else {
-                request.setAttribute("error", "Failed to update employee. Please try again.");
-                request.setAttribute("fullname", fullname);
-                request.setAttribute("birthdate", birthdateStr);
-                request.setAttribute("gender", gender);
-                request.setAttribute("tel", tel);
-                request.setAttribute("address", address);
-                request.setAttribute("positionId", positionId);
-                request.setAttribute("departmentId", departmentId);
-                request.setAttribute("basicSalary", basicSalary);
-                request.setAttribute("employeeCode", employeeCode);
-                request.setAttribute("username", username);
-                request.setAttribute("password", password);
-                request.getRequestDispatcher("updateEmployee.jsp").forward(request, response);
+                response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&errorMsg=Update failed. Please try again!");
             }
         }
     }
