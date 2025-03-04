@@ -125,7 +125,15 @@ public class UpdateEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please input a valid basic salary.<br>";
         }
+        
+        if (basicSalary <= 0) {
+            error += "Basic salary must be greater than 0.<br>";
+        }
 
+        if (eDao.isExistManagerInDepartment(departmentId) && positionId == 2) {
+            error += "Selected Department already has manager. One Department can have only one manager.";
+        }
+        
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
             request.setAttribute("fullname", fullname);

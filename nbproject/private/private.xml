@@ -3,14 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/web/admin.jsp</file>
             <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/src/java/Controller/DeleteEmployee.java</file>
+            <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/web/admin.jsp</file>
             <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/web/adminEmployeeList.jsp</file>
-=======
-            <file>file:/C:/Users/anhnn/OneDrive/Desktop/FPT%20UNIVERSITY/Kì%204/PRJ301/ASM/EmployeeManagementSystem/src/java/DAO/DepartmentDAO.java</file>
-            <file>file:/C:/Users/anhnn/OneDrive/Desktop/FPT%20UNIVERSITY/Kì%204/PRJ301/ASM/EmployeeManagementSystem/src/java/Controller/InsertDepartment.java</file>
->>>>>>> 6e110a0c70ba385c5dac132c6c7cbe5038dd89da
+            <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/src/java/Controller/Attendance.java</file>
+            <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/src/java/Controller/AddWorkSchedule.java</file>
+            <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/src/java/Controller/ChangePassword.java</file>
         </group>
     </open-files>
 </project-private>

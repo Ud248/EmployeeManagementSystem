@@ -24,6 +24,7 @@
     </head>
 
     <style>
+        
         body{
             height: 100vh;
             background-color: #EFEFEF;
@@ -97,8 +98,6 @@
         .field-container span{
             width: 75%;
         }
-
-
     </style>
 
     <body>
@@ -151,13 +150,13 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Address:</label>
-                                        <textarea class="form-control detail" name="address" rows="3">${empty address ? '' : address}</textarea>
+                                        <input type="text" class="form-control detail" value="${empty address ? '' : address}" name="address">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="section-divider"></div>
+                        <!--<div class="section-divider"></div>-->
 
                         <!-- EMPLOYMENT INFORMATION SECTION -->
                         <div class="mb-3">
@@ -198,7 +197,7 @@
                             </div>
                         </div>
 
-                        <div class="section-divider"></div>
+                        <!--<div class="section-divider"></div>-->
 
                         <!-- ACCOUNT INFORMATION SECTION -->
                         <div class="mb-3">

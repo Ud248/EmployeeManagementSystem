@@ -436,4 +436,9 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return isExist;
     }
+    
+    public static void main(String[] args) {
+        EmployeeDAO eDao = new EmployeeDAO();
+        System.out.println(eDao.isExistManagerInDepartment(6));
+    }
 }
