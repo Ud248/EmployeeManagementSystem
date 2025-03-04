@@ -4,6 +4,10 @@
         <servlet-name>AddWorkSchedule</servlet-name>
         <servlet-class>Controller.AddWorkSchedule</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertDepartment</servlet-name>
+        <servlet-class>Controller.InsertDepartment</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Attendance</servlet-name>
         <url-pattern>/attendance</url-pattern>
@@ -11,6 +15,10 @@
     <servlet-mapping>
         <servlet-name>AddWorkSchedule</servlet-name>
         <url-pattern>/addWorkSchedule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertDepartment</servlet-name>
+        <url-pattern>/insert-department</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

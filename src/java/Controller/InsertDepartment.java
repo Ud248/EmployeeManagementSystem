@@ -6,65 +6,29 @@ package Controller;
 
 import DAO.DepartmentDAO;
 import DTO.DepartmentDTO;
+import Model.Department;
+import Utils.DepartmentUtil;
 import java.io.IOException;
+import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.text.DecimalFormat;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import Model.Department;
-import Utils.DepartmentUtil;
 import java.util.List;
 
 /**
  *
  * @author anhnn
  */
-public class UpdateDepartment extends HttpServlet {
+public class InsertDepartment extends HttpServlet {
 
     private final String REGEX_TELEPHONE = "^\\d{10}$";
     private final String REGEX_OPENTIME = "^([01]\\d|2[0-3]):[0-5]\\d - ([01]\\d|2[0-3]):[0-5]\\d$";
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String departmentId = request.getParameter("departmentId");
-        int index = Integer.parseInt(departmentId) - 1;
-
-        HttpSession session = request.getSession();
-        DepartmentDTO dep = ((ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments")).get(index);
-        String departmentName = dep.getDepartmentName();
-        String description = dep.getDescription();
-        String openTime = dep.getOpenTime();
-        String managerName = dep.getManagerName();
-        String telephone = dep.getTelephone();
-        String totalEmployee = dep.getTotalEmployee() + "";
-        String[] descriptionArray = description.split("\\.");
-        for (int i = 0; i < descriptionArray.length; i++) {
-            descriptionArray[i] = descriptionArray[i].trim() + ".";
-        }
-        DecimalFormat df = new DecimalFormat("#,###.##");
-        String costPerMonth = df.format(dep.getCostPerMonth());
-
-        request.setAttribute("departmentId", departmentId);
-        request.setAttribute("departmentName", departmentName);
-        request.setAttribute("description", description);
-        request.setAttribute("openTime", openTime);
-        request.setAttribute("managerName", managerName);
-        request.setAttribute("telephone", telephone);
-        request.setAttribute("costPerMonth", costPerMonth);
-        request.setAttribute("totalEmployee", totalEmployee);
-        request.setAttribute("descriptionArray", descriptionArray);
-        request.getRequestDispatcher("adminDepartmentUpdate.jsp").forward(request, response);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int departmentId = Integer.parseInt(request.getParameter("departmentId"));
         String departmentName = request.getParameter("departmentName");
         String telephone = request.getParameter("telephone");
         String openTime = request.getParameter("openTime");
@@ -107,21 +71,22 @@ public class UpdateDepartment extends HttpServlet {
             request.setAttribute("errorTelephoneMsg", errorTelephoneMsg);
             request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
             request.setAttribute("errorOpenTimeMsg", errorOpenTimeMsg);
-            request.setAttribute("departmentId", departmentId);
             request.setAttribute("departmentName", departmentName);
             request.setAttribute("telephone", telephone);
             request.setAttribute("openTime", openTime);
             request.setAttribute("descriptionArray", descriptionArray);
-            request.getRequestDispatcher("adminDepartmentUpdate.jsp").forward(request, response);
+            request.getRequestDispatcher("adminDepartmentInsert.jsp").forward(request, response);
         } else {
             description = DepartmentUtil.getDescription(descriptionArray);
-            boolean updateResult = new DepartmentDAO().update(new Department(departmentId, departmentName, description, startTime, endTime, telephone));
-            if (updateResult) {
+            String insertMsg = "";
+            boolean insertResult = new DepartmentDAO().insert(new Department(departmentName, description, startTime, endTime, telephone));
+            if (insertResult) {
+                insertMsg = "Add new department ";
                 List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage();
                 request.getServletContext().setAttribute("departments", departments);
-                response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&successMsg=Update successful!");
+                response.sendRedirect("admin.jsp?successMsg=Update successful!");
             } else {
-                response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&errorMsg=Update failed. Please try again!");
+                response.sendRedirect("admin.jsp?errorMsg=Update failed. Please try again!");
             }
         }
     }
