@@ -39,8 +39,8 @@
                 text-align: center;
             }
 
-            .update-button {
-                background-color: #28a745; /* Xanh lá */
+            .insert-button {
+                background-color: #0d6efd; 
                 color: white;
                 padding: 10px 20px;
                 border: none;
@@ -53,7 +53,7 @@
             }
 
             /* Hiệu ứng hover */
-            .update-button:hover {
+            .insert-button:hover {
                 background-color: #218838; /* Màu tối hơn khi hover */
                 transform: scale(1.05);
             }
@@ -93,24 +93,20 @@
 
         <div class="container   ">
             <div class="modal-content p-4">
-                <div class="modal-header d-flex align-items-center justify-content-between w-100">
-                    <button onclick="goBack(${departmentId})" class="btn btn-secondary">Back</button>
-                    <h3 class="modal-title mx-auto">UPDATE DEPARTMENT DETAIL</h3>
-                </div>
+                <h3 class="modal-title mx-auto">INSERT NEW DEPARTMENT</h3>
                 <br/>
                 <div class="modal-body">
-                    <form action="updatedepartment" method="post">
+                    <form action="insert-department" method="post">
                         <div class="mb-3">
                             <h5 class="section-header">GENERAL INFORMATION</h5>
-                            <div class="row mb-3 align-items-center">
+<!--                            <div class="row mb-3 align-items-center">
                                 <div class="col-md-4 text-end">
                                     <label class="form-label">Department ID:</label>
                                 </div>                                
                                 <div class="col-md-8">
-                                    <span class="detail">${departmentId}</span>
-                                    <input type="hidden" name="departmentId" value="${departmentId}"/>
+                                    <span class="detail"></span>
                                 </div>
-                            </div>
+                            </div>-->
 
                             <div class="row mb-3"> 
                                 <div class="col-md-4 text-end">
@@ -137,15 +133,6 @@
                                 <div class="error">${errorOpenTimeMsg}</div>
                             </div>
 
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Manager:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${managerName}</span>
-                                </div>
-                            </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-4 text-end">
                                     <label class="form-label">Telephone:</label>
@@ -156,14 +143,6 @@
                                 <div class="error">${errorTelephoneMsg}</div>
                             </div>     
 
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Total Employee:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${totalEmployee}</span>
-                                </div>
-                            </div>
                         </div>
 
                         <div class="section-divider"></div>
@@ -175,15 +154,26 @@
                                     <label class="form-label">Description:</label>
                                 </div>                                
                                 <div class="col-md-8" id="description-container">
-                                    <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
-                                        <div class="d-flex mb-2">
-                                            <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
-                                            <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
-                                                <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                    </c:forEach>
-
+                                    <c:choose>
+                                        <c:when test="${empty descriptionArray}">
+                                            <div class="d-flex mb-2">
+                                                <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
+                                                <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
+                                                <div class="d-flex mb-2">
+                                                    <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
+                                                    <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
+                                                        <i class="fa fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </c:forEach>
+                                        </c:otherwise>
+                                    </c:choose>
                                     <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
                                         <i class="fa fa-plus"></i>
                                     </button>
@@ -191,16 +181,8 @@
                                 </div>
                             </div>
 
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Cost Per Month:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${costPerMonth}</span>
-                                </div>
-                            </div>
                         </div>
-                        <input type="submit" class="update-button" value="Update"/>
+                        <input type="submit" class="insert-button" value="Insert"/>
                     </form>
                 </div>
             </div>

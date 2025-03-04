@@ -4,8 +4,8 @@
  */
 package DTO;
 
+import Utils.DepartmentUtil;
 import java.time.LocalTime;
-import Utils.FormatTimeUtil;
 
 /**
  *
@@ -26,7 +26,7 @@ public class DepartmentDTO {
         this.departmentId = departmentId;
         this.departmentName = departmentName;
         this.description = description;
-        this.openTime = FormatTimeUtil.formatOpenTime(startTime, endTime);
+        this.openTime = DepartmentUtil.formatOpenTime(startTime, endTime);
         this.managerName = managerName;
         this.telephone = telephone;
         this.totalEmployee = totalEmployee;

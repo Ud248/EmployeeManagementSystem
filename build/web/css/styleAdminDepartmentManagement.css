@@ -170,3 +170,7 @@ td a:hover {
 .rowCheckbox, #selectAll {
     display: none;
 }
+
+.action-btn{
+    padding-bottom: 20px;
+}

@@ -13,9 +13,6 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
-            .detail{
-                font-weight: bolder;
-            }
 
             /* CSS cho nút Edit */
             .edit-button {
@@ -35,14 +32,6 @@
             .edit-button:hover {
                 background-color: #218838; /* Màu tối hơn khi hover */
                 transform: scale(1.05);
-            }
-
-            .detail {
-                font-weight: bolder;
-            }
-
-            .mb-3 {
-                margin-bottom: 0px !important;
             }
 
             .error{
@@ -69,6 +58,35 @@
                 transform: scale(1.05);
             }
 
+            .form-label {
+                text-align: left;
+                font-weight: bold;
+                padding-left: 15px;
+                width: 170px; /* Thay đổi từ min-width thành width cố định */
+                display: inline-block;
+                margin-right: 25px;
+                vertical-align: top;
+            }
+
+            .detail {
+                font-weight: normal;
+                display: inline-block;
+                vertical-align: top;
+                width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
+            }
+
+            .section-header {
+                font-weight: bold;
+                color: green;
+                margin-bottom: 15px;
+            }
+
+            .section-divider {
+                height: 1px;
+                background-color: #dee2e6;
+                margin: 25px 0;
+            }
+
         </style>
     </head>
     <body>
@@ -83,9 +101,11 @@
                 <div class="modal-body">
                     <form action="updatedepartment" method="post">
                         <div class="mb-3">
-                            <h5 style="color: green">General Information</h5>
+                            <h5 class="section-header">GENERAL INFORMATION</h5>
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4 col-form-label text-md-end">Department ID:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Department ID:</label>
+                                </div>                                
                                 <div class="col-md-8">
                                     <span class="detail">${departmentId}</span>
                                     <input type="hidden" name="departmentId" value="${departmentId}"/>
@@ -93,19 +113,24 @@
                             </div>
 
                             <div class="row mb-3"> 
-                                <label class="col-md-4 col-form-label text-md-end">Department Name:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Department Name:</label>
+                                </div>                                
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="departmentName" value="${departmentName}" required>
                                 </div>
                                 <div class="error">${errorNameMsg}</div>
                             </div>
                         </div>
-                        <br/>
+
+                        <div class="section-divider"></div>
 
                         <div class="mb-3">
-                            <h5 style="color: green">Work Information</h5>
+                            <h5 class="section-header">WORK INFORMATION</h5>
                             <div class="row mb-3">
-                                <label class="col-md-4 col-form-label text-md-end">Open Time:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Open Time:</label>
+                                </div>                               
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="openTime" value="${openTime}" required>
                                 </div>
@@ -113,14 +138,18 @@
                             </div>
 
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4 col-form-label text-md-end">Manager:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Manager:</label>
+                                </div>                                
                                 <div class="col-md-8">
                                     <span class="detail">${managerName}</span>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label class="col-md-4 col-form-label text-md-end">Telephone:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Telephone:</label>
+                                </div>                                
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="telephone" value="${telephone}" required>
                                 </div>
@@ -128,18 +157,23 @@
                             </div>     
 
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4 col-form-label text-md-end">Total Employee:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Total Employee:</label>
+                                </div>                                
                                 <div class="col-md-8">
                                     <span class="detail">${totalEmployee}</span>
                                 </div>
                             </div>
                         </div>
-                        <br/>
+
+                        <div class="section-divider"></div>
 
                         <div class="mb-3">
-                            <h5 style="color: green">Other Information</h5>
+                            <h5 class="section-header">OTHER INFORMATION</h5>
                             <div class="row mb-3">
-                                <label class="col-md-4 col-form-label text-md-end">Description</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Description:</label>
+                                </div>                                
                                 <div class="col-md-8" id="description-container">
                                     <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
                                         <div class="d-flex mb-2">
@@ -158,7 +192,9 @@
                             </div>
 
                             <div class="row mb-3 align-items-center">
-                                <label class="col-md-4 col-form-label text-md-end">Cost Per Month:</label>
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Cost Per Month:</label>
+                                </div>                                
                                 <div class="col-md-8">
                                     <span class="detail">${costPerMonth}</span>
                                 </div>
@@ -171,10 +207,6 @@
         </div>
 
         <script>
-            function goBack() {
-                window.location.href = "admin.jsp";
-            }
-
             function addInputTag() {
                 let container = document.getElementById("description-container");
                 let btn = document.getElementById("btn-add-description");

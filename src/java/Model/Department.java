@@ -31,6 +31,14 @@ public class Department {
         this.telephone = telephone;
     }
 
+    public Department(String departmentName, String description, LocalTime startTime, LocalTime endTime, String telephone) {
+        this.departmentName = departmentName;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.telephone = telephone;
+    }
+
     public String getDepartmentName() {
         return departmentName;
     }

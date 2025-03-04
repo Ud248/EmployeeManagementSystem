@@ -41,11 +41,32 @@
             }
 
             .form-label {
-                text-align: right;
+                text-align: left;
+                font-weight: bold;
+                padding-left: 15px;
+                width: 170px; /* Thay đổi từ min-width thành width cố định */
+                display: inline-block;
+                margin-right: 25px;
+                vertical-align: top;
             }
 
             .detail {
-                font-weight: bolder;
+                font-weight: normal;
+                display: inline-block;
+                vertical-align: top;
+                width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
+            }
+
+            .section-header {
+                font-weight: bold;
+                color: green;
+                margin-bottom: 15px;
+            }
+
+            .section-divider {
+                height: 1px;
+                background-color: #dee2e6;
+                margin: 25px 0;
             }
 
         </style>
@@ -59,7 +80,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <h5 style="color: green">General Information</h5>
+                        <h5 class="section-header">GENERAL INFORMATION</h5>
                         <div class="row mb-2">
                             <div class="col-md-4 text-end">
                                 <label class="form-label">Department ID:</label>
@@ -78,10 +99,11 @@
                             </div>
                         </div>
                     </div>
-                    <br/>
+
+                    <div class="section-divider"></div>
 
                     <div class="mb-3">
-                        <h5 style="color: green">Work Information</h5>
+                        <h5 class="section-header">WORK INFORMATION</h5>
                         <div class="row mb-2">
                             <div class="col-md-4 text-end">
                                 <label class="form-label">Open Time:</label>
@@ -118,16 +140,17 @@
                             </div>
                         </div>
                     </div>
-                    <br/>
+
+                    <div class="section-divider"></div>
 
                     <div class="mb-3">
-                        <h5 style="color: green">Other Information</h5>
+                        <h5 class="section-header">OTHER INFORMATION</h5>
                         <div class="row mb-2">
                             <div class="col-md-4 text-end">
                                 <label class="form-label">Description:</label>
                             </div>
                             <div class="col-md-8">
-                                <ul style="margin: 0; padding-left: 20px; font-weight: bolder">
+                                <ul style="margin: 0; padding-left: 20px;">
                                     <c:forEach var="sub" items="${descriptionArray}">
                                         <li>${sub}</li>
                                         </c:forEach>

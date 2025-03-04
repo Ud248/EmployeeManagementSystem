@@ -11,10 +11,10 @@
     </head>
     <body>
 
-        <div id="insertEmployeePopup" class="popup">
+        <div id="insertDepartmentPopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('insertEmployeePopup')">&times;</span>
-                <iframe id="insertEmployeeFrame"></iframe>
+                <span class="close-btn" onclick="closePopup('insertDepartmentPopup')">&times;</span>
+                <iframe id="insertDepartmentFrame"></iframe>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
 
 
         <div class="content">
-            <div style="padding: 10px 20px 0px 20px">
+            <div style="padding: 20px 20px 0px 20px">
                 <div class="d-flex">
                     <div class="toolbar">
                         <input type="text" class="search-box" id="searchName" placeholder="Search With Department Name"/>
@@ -36,8 +36,12 @@
                     <button id="searchButton" class="search-btn">Search</button>
                 </div>
 
-                <button id="deleteButton" class="delete-btn" onclick="toggleDeleteMode()">Delete</button>
-                <br/>
+                <div class="action-btn">
+                    <button id="deleteButton" class="delete-btn" onclick="toggleDeleteMode()">Delete</button>
+                    <button class="new-employee-btn" onclick="openPopup('insertDepartmentPopup', null, event)">
+                        <i class="fas fa-plus"></i> New Employee
+                    </button> 
+                </div>
 
                 <table class="table">
                     <thead>
@@ -58,7 +62,7 @@
                                     <input type="checkbox" class="rowCheckbox" value="${d.getDepartmentId()}" style="display: none;">
                                 </td>
                                 <td style="text-align: center;">${d.getDepartmentId()}</td>
-                                <td><a onclick="openViewPopup('viewDepartmentPopup', ${d.getDepartmentId()}, event)">${d.getDepartmentName()}</a></td>
+                                <td><a onclick="openPopup('viewDepartmentPopup', ${d.getDepartmentId()}, event)">${d.getDepartmentName()}</a></td>
                                 <td style="text-align: center">${d.getOpenTime()}</td>
                                 <td>${d.getManagerName()}</td>
                                 <td style="text-align: center">${d.getTelephone()}</td>
@@ -69,24 +73,14 @@
             </div>
         </div>
         <script>
-            function submitFormByAction(action, departmentId, method) {
-                let form = document.getElementById("formHidden_" + departmentId);
-                if (action === "deletedepartment") {
-                    if (!confirm("Are you sure you want to delete department " + departmentId + "?")) {
-                        return;
-                    }
-                }
-                form.action = action;
-                form.method = method;
-                form.submit();
-            }
-
-            function openViewPopup(id, departmentId = null, event) {
+            function openPopup(id, departmentId = null, event) {
                 event.preventDefault();
                 let popup = document.getElementById(id);
 
                 if (departmentId && id === 'viewDepartmentPopup') {
                     document.getElementById('viewDepartmentFrame').src = "viewdepartment?departmentId=" + departmentId;
+                } else if (id === 'insertDepartmentPopup') {
+                    document.getElementById('insertDepartmentFrame').src = 'adminDepartmentInsert.jsp';
                 }
 
                 popup.style.display = 'flex';
@@ -97,23 +91,14 @@
                 location.reload();
             }
 
-            function closePopupAndReload(id) {
-                document.getElementById(id).style.display = 'none';
-                if (id === 'insertEmployeePopup' || id === 'updateEmployeePopup') {
-                    location.reload();
-                }
-            }
-
             if (typeof deleteMode === 'undefined') {
                 var deleteMode = false;
             }
 
             function toggleDeleteMode() {
                 deleteMode = !deleteMode;
-
                 let checkboxes = document.querySelectorAll('.rowCheckbox');
                 let selectAll = document.getElementById('selectAll');
-
                 if (deleteMode) {
                     checkboxes.forEach(cb => cb.style.display = 'inline');
                     selectAll.style.display = 'inline';
@@ -125,13 +110,11 @@
                             selectedIds.push(cb.value);
                         }
                     });
-
                     if (selectedIds.length > 0) {
                         if (confirm("Are you sure you want to delete these departments?")) {
                             window.location.href = "deletedepartment?departmentId=" + selectedIds.join(',');
                         }
                     }
-
                     checkboxes.forEach(cb => {
                         cb.style.display = 'none';
                         cb.checked = false;
