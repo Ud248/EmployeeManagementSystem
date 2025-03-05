@@ -33,15 +33,15 @@
             <div class="hero-section">
                 <h1>Welcome to Employee & Department Management System</h1>
                 <p>Effortless, efficient, and professional employee management</p>
-                <a hhref="javascript:void(0);" onclick="loadContent('adminEmployeeList')" class="btn btn-primary btn-lg">Start now</a>
+                <a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')" class="btn btn-primary btn-lg">Start now</a>
             </div>
 
             <div class="row mt-5">
                 <div class="col-md-5">
-                    <img src="image/EmployeePoster.jpg" class="img-fluid rounded" alt="Teamwork" style="width: 100%; height: 452px">
+                    <img src="image/EmployeePoster.jpg" class="img-fluid rounded" alt="Teamwork" style="width: 100%; height: 360px">
                 </div>
                 <div class="col-md-7">
-                    <h2 style="text-align: center">About the Employee & Department Management System</h2>
+                    <h2 style="text-align: center; font-size: 24px; font-weight: bold;">About the Employee & Department Management System</h2>
                     <div class="description">
                         <p>Employee & Department Management System is an optimal solution that helps businesses organize and oversee their workforce professionally. 
                             With a user-friendly interface, the system supports employee management, account authorization, performance tracking, and detailed reporting.</p>
