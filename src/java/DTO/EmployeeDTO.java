@@ -149,8 +149,17 @@ public class EmployeeDTO {
         return departmentId;
     }
 
+    public String getFirstName() {
+        String firstName = "";
+        String[] fullnameArray = fullname.split("\\s+");
+        for (int i = 1; i < fullnameArray.length; i++) {
+            firstName += fullnameArray[i] + " ";
+        }
+        return firstName.trim();
+    }
+
     @Override
     public String toString() {
         return "EmployeeDTO{" + "employeeCode=" + employeeCode + ", fullname=" + fullname + ", birthDate=" + birthDate + ", gender=" + gender + ", tel=" + tel + ", address=" + address + ", positionName=" + positionName + ", departmentName=" + departmentName + ", positionId=" + positionId + ", departmentId=" + departmentId + ", basicSalary=" + basicSalary + ", username=" + username + ", password=" + password + '}';
-    }   
+    }
 }

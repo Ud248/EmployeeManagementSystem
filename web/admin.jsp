@@ -38,7 +38,7 @@
                 <ul class="menu">
                     <li>
                         <a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')">
-                            <i class="ph-bold ph-list"></i>
+                            <i class="ph ph-user-list"></i>
                             <span class="text">Employee List</span>
                         </a>
                     </li>
@@ -135,7 +135,7 @@
             $(document).ready(function () {
                 let savedPage = sessionStorage.getItem('currentPage');
                 if (!savedPage) {
-                    $('#main-content').html('<p>Hello</p>');
+                    loadContent('welcome');
                 } else {
                     loadContent(savedPage);
                 }
