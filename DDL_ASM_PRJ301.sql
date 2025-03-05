@@ -157,3 +157,79 @@ BEGIN
     SET @Result = REPLACE(@Result, N'é', 'e');
     SET @Result = REPLACE(@Result, N'è', 'e');
     SET @Result = REPLACE(@Result, N'ẻ', 'e');
+    SET @Result = REPLACE(@Result, N'ẽ', 'e');
+    SET @Result = REPLACE(@Result, N'ẹ', 'e');
+    SET @Result = REPLACE(@Result, N'ê', 'e');
+    SET @Result = REPLACE(@Result, N'ế', 'e');
+    SET @Result = REPLACE(@Result, N'ề', 'e');
+    SET @Result = REPLACE(@Result, N'ể', 'e');
+    SET @Result = REPLACE(@Result, N'ễ', 'e');
+    SET @Result = REPLACE(@Result, N'ệ', 'e');
+    SET @Result = REPLACE(@Result, N'í', 'i');
+    SET @Result = REPLACE(@Result, N'ì', 'i');
+    SET @Result = REPLACE(@Result, N'ỉ', 'i');
+    SET @Result = REPLACE(@Result, N'ĩ', 'i');
+    SET @Result = REPLACE(@Result, N'ị', 'i');
+    SET @Result = REPLACE(@Result, N'ó', 'o');
+    SET @Result = REPLACE(@Result, N'ò', 'o');
+    SET @Result = REPLACE(@Result, N'ỏ', 'o');
+    SET @Result = REPLACE(@Result, N'õ', 'o');
+    SET @Result = REPLACE(@Result, N'ọ', 'o');
+    SET @Result = REPLACE(@Result, N'ô', 'o');
+    SET @Result = REPLACE(@Result, N'ố', 'o');
+    SET @Result = REPLACE(@Result, N'ồ', 'o');
+    SET @Result = REPLACE(@Result, N'ổ', 'o');
+    SET @Result = REPLACE(@Result, N'ỗ', 'o');
+    SET @Result = REPLACE(@Result, N'ộ', 'o');
+    SET @Result = REPLACE(@Result, N'ơ', 'o');
+    SET @Result = REPLACE(@Result, N'ớ', 'o');
+    SET @Result = REPLACE(@Result, N'ờ', 'o');
+    SET @Result = REPLACE(@Result, N'ở', 'o');
+    SET @Result = REPLACE(@Result, N'ỡ', 'o');
+    SET @Result = REPLACE(@Result, N'ợ', 'o');
+    SET @Result = REPLACE(@Result, N'ú', 'u');
+    SET @Result = REPLACE(@Result, N'ù', 'u');
+    SET @Result = REPLACE(@Result, N'ủ', 'u');
+    SET @Result = REPLACE(@Result, N'ũ', 'u');
+    SET @Result = REPLACE(@Result, N'ụ', 'u');
+    SET @Result = REPLACE(@Result, N'ư', 'u');
+    SET @Result = REPLACE(@Result, N'ứ', 'u');
+    SET @Result = REPLACE(@Result, N'ừ', 'u');
+    SET @Result = REPLACE(@Result, N'ử', 'u');
+    SET @Result = REPLACE(@Result, N'ữ', 'u');
+    SET @Result = REPLACE(@Result, N'ự', 'u');
+    SET @Result = REPLACE(@Result, N'ý', 'y');
+    SET @Result = REPLACE(@Result, N'ỳ', 'y');
+    SET @Result = REPLACE(@Result, N'ỷ', 'y');
+    SET @Result = REPLACE(@Result, N'ỹ', 'y');
+    SET @Result = REPLACE(@Result, N'ỵ', 'y');
+
+
+    RETURN @Result
+END
+
+GO
+
+CREATE TRIGGER tr_AI_Employee
+ON Employee
+AFTER INSERT
+AS
+BEGIN
+    UPDATE e
+    SET e.EmployeeCode = CONCAT(p.PositionCode, FORMAT(i.EmployeeID, '0000'))
+    FROM INSERTED i
+    JOIN Position p ON i.PositionID = p.PositionID
+    JOIN Employee e ON e.EmployeeID = i.EmployeeID;
+
+    INSERT INTO Account(EmployeeID, Username)  
+	SELECT 
+		e.EmployeeID,
+		CONCAT(
+			dbo.ConvertToASCII(RIGHT(i.FirstName, CHARINDEX(' ', REVERSE(i.FirstName) + ' ') - 1)), 
+			dbo.ConvertToASCII(LEFT(i.LastName, 1)),
+			dbo.ConvertToASCII(LEFT(i.FirstName, 1)),
+			LOWER(e.EmployeeCode)
+		)
+	FROM INSERTED i 
+	JOIN Employee e ON i.Tel = e.Tel
+END
