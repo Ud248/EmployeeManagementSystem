@@ -14,112 +14,108 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
 
-            /* CSS cho nút Edit */
-            .edit-button {
-                background-color: #28a745; /* Xanh lá */
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s, transform 0.2s;
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-                margin-left: 45%;
-            }
-
-            /* Hiệu ứng hover */
-            .edit-button:hover {
-                background-color: #218838; /* Màu tối hơn khi hover */
-                transform: scale(1.05);
-            }
-
-            .error{
-                color: red;
-                text-align: center;
-            }
-
-            .update-button {
-                background-color: #28a745; /* Xanh lá */
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 16px;
-                transition: background 0.3s, transform 0.2s;
-                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-                margin-left: 45%;
-            }
-
-            /* Hiệu ứng hover */
-            .update-button:hover {
-                background-color: #218838; /* Màu tối hơn khi hover */
-                transform: scale(1.05);
+            body{
+                height: 100vh;
+                background-color: #EFEFEF;
             }
 
             .form-label {
                 text-align: left;
                 font-weight: bold;
                 padding-left: 15px;
-                width: 170px; /* Thay đổi từ min-width thành width cố định */
+                width: 220px; /* Thay đổi từ min-width thành width cố định */
                 display: inline-block;
                 margin-right: 25px;
                 vertical-align: top;
             }
 
+            /* Normal text for details instead of bold */
             .detail {
                 font-weight: normal;
                 display: inline-block;
                 vertical-align: top;
-                width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
+                width: 74%; /* Chiều rộng cố định tính toán từ width của label + margin */
             }
 
+            /* Bold section headers */
             .section-header {
                 font-weight: bold;
                 color: green;
                 margin-bottom: 15px;
             }
 
+            /* Horizontal divider */
             .section-divider {
                 height: 1px;
                 background-color: #dee2e6;
                 margin: 25px 0;
             }
 
+            /* CSS cho nút Edit */
+            .submit-button {
+                background-color: #28a745; /* Xanh lá */
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background 0.3s, transform 0.2s;
+                box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+                margin-left: 45%;
+            }
+
+            /* Hiệu ứng hover */
+            .submit-button:hover {
+                background-color: #218838; /* Màu tối hơn khi hover */
+                transform: scale(1.05);
+            }
+
+            /* Add spacing between info groups */
+            .info-group {
+                margin-bottom: 15px;
+            }
+
+            /* Field container styling */
+            .field-container {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                padding-right: 15px;
+            }
+
+            .field-container span{
+                width: 75%;
+            }
+
         </style>
     </head>
     <body>
 
-        <div class="container   ">
-            <div class="modal-content p-4">
-                <div class="modal-header d-flex align-items-center justify-content-between w-100">
-                    <button onclick="goBack(${departmentId})" class="btn btn-secondary">Back</button>
-                    <h3 class="modal-title mx-auto">UPDATE DEPARTMENT DETAIL</h3>
+        <div class="container">
+            <div class="modal-content" style="padding: 1.5rem 1.5rem 1rem 1.5rem">
+                <div class="modal-header" style="padding-bottom: 15px">
+                    <h4 class="modal-title mx-auto">UPDATE DEPARTMENT DETAIL</h4>
                 </div>
-                <br/>
                 <div class="modal-body">
                     <form action="updatedepartment" method="post">
                         <div class="mb-3">
                             <h5 class="section-header">GENERAL INFORMATION</h5>
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Department ID:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${departmentId}</span>
-                                    <input type="hidden" name="departmentId" value="${departmentId}"/>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Department ID:</label>
+                                        <span class="detail">${departmentId}</span>
+                                        <input type="hidden" name="departmentId" value="${departmentId}"/>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <div class="row mb-3"> 
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Department Name:</label>
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Department Name:</label>
+                                        <input type="text" class="form-control detail" name="departmentName" value="${departmentName}" required>
+                                        <div class="error">${errorNameMsg}</div>
+                                    </div>
                                 </div>                                
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" name="departmentName" value="${departmentName}" required>
-                                </div>
-                                <div class="error">${errorNameMsg}</div>
                             </div>
                         </div>
 
@@ -127,41 +123,30 @@
 
                         <div class="mb-3">
                             <h5 class="section-header">WORK INFORMATION</h5>
-                            <div class="row mb-3">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Open Time:</label>
-                                </div>                               
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" name="openTime" value="${openTime}" required>
-                                </div>
-                                <div class="error">${errorOpenTimeMsg}</div>
-                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Open Time:</label>
+                                        <input type="text" class="form-control detail" name="openTime" value="${openTime}" required>
+                                        <div class="error">${errorOpenTimeMsg}</div>
+                                    </div>
 
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Manager:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${managerName}</span>
+                                    <div class="field-container">
+                                        <label class="form-label">Manager:</label>
+                                        <span class="detail">${manager}</span>
+                                    </div>
                                 </div>
-                            </div>
+                                <div class="col-md-6">
+                                    <div class="field-container">
+                                        <label class="form-label">Telephone:</label>
+                                        <input type="text" class="form-control" name="telephone" value="${telephone}" required>
+                                        <div class="error">${errorTelephoneMsg}</div>
+                                    </div>
 
-                            <div class="row mb-3">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Telephone:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" name="telephone" value="${telephone}" required>
-                                </div>
-                                <div class="error">${errorTelephoneMsg}</div>
-                            </div>     
-
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Total Employee:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${totalEmployee}</span>
+                                    <div class="field-container">
+                                        <label class="form-label">Total Employee:</label>
+                                        <span class="detail">${totalEmployee}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -200,7 +185,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input type="submit" class="update-button" value="Update"/>
+                        <input type="submit" class="submit-button" value="Update"/>
                     </form>
                 </div>
             </div>

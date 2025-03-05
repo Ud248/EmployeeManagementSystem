@@ -45,10 +45,9 @@ public class LoadData extends HttpServlet {
         if (isAdmin) {
             url = "admin.jsp";
             EmployeeDAO eDao = new EmployeeDAO();
-
+            DepartmentDAO dDAO = new DepartmentDAO();
             int currentPage = 1;
             int itemsPerPage = 10;
-
             try {
                 String pageParam = request.getParameter("page");
                 if (pageParam != null && !pageParam.isEmpty()) {
@@ -57,20 +56,42 @@ public class LoadData extends HttpServlet {
             } catch (NumberFormatException e) {
                 // Use default value
             }
-
             int totalEmployees = eDao.getTotalEmployees();
             int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
-
             if (currentPage < 1) {
                 currentPage = 1;
             }
             if (currentPage > totalPages) {
                 currentPage = totalPages;
             }
-            List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(currentPage, itemsPerPage);
+
+            //phân trang dep
+            int currentPageDep = 1;
+            try {
+                String pageParam = request.getParameter("pageDep");
+                if (pageParam != null && !pageParam.isEmpty()) {
+                    currentPageDep = Integer.parseInt(pageParam);
+                }
+            } catch (NumberFormatException e) {
+                // Use default value
+            }
+            int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment");
+            int totalPagesDep = (int) Math.ceil((double) totalDepartment / itemsPerPage);
+            if (currentPageDep < 1) {
+                currentPageDep = 1;
+            }
+            if (currentPageDep > totalPagesDep) {
+                currentPageDep = totalPagesDep;
+            }
+
+            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(currentPageDep, itemsPerPage);
             request.getServletContext().setAttribute("employees", employees);
+            request.getServletContext().setAttribute("departments", departments);
             session.setAttribute("currentPage", currentPage);
             session.setAttribute("totalPages", totalPages);
+            session.setAttribute("totalPagesDep", totalPagesDep);
+            session.setAttribute("currentPageDep", currentPageDep);
             session.setAttribute("itemsPerPage", itemsPerPage);
             session.setAttribute("totalEmployees", totalEmployees);
         } else {

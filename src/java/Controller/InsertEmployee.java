@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.List;
 
 @WebServlet(name = "InsertEmployee", urlPatterns = {"/insert-employee"})
@@ -31,6 +32,8 @@ public class InsertEmployee extends HttpServlet {
         String tel = request.getParameter("telephone");
         String address = request.getParameter("address");
         int positionId = 0, departmentId = 0, basicSalary = 0;
+        HttpSession session = request.getSession();
+        String insertMsg = "";
 
         // Kiểm tra các trường bắt buộc
         String firstName = "", lastName = "";
@@ -83,7 +86,7 @@ public class InsertEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please select a valid department.<br>";
         }
-        
+
         try {
             basicSalary = Integer.parseInt(request.getParameter("basicSalary"));
         } catch (NumberFormatException e) {
@@ -111,8 +114,6 @@ public class InsertEmployee extends HttpServlet {
         } else {
             boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
-                request.setAttribute("successMsg", "Add employee " + fullname + " successfully!");
-
                 //Update list employee
                 int currentPage = 1;
                 int itemsPerPage = 10;
@@ -138,26 +139,22 @@ public class InsertEmployee extends HttpServlet {
                     currentPage = totalPages;
                 }
                 List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
-                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage();
-                HttpSession session = request.getSession();
+                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
                 request.getServletContext().setAttribute("employees", employees);
                 request.getServletContext().setAttribute("departments", departments);
                 session.setAttribute("totalEmployees", totalEmployees);
-                request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
+
+                insertMsg = "Add new employee " + fullname + " successfully!";
             } else {
-                request.setAttribute("fullname", fullname);
-                request.setAttribute("birthdateStr", birthdateStr);
-                request.setAttribute("gender", gender);
-                request.setAttribute("tel", tel);
-                request.setAttribute("address", address);
-                request.setAttribute("positionId", positionId);
-                request.setAttribute("departmentId", departmentId);
-                request.setAttribute("basicSalary", basicSalary);
-
-                request.setAttribute("error", "Failed to insert employee. Please try again.");
-
-                request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
+                insertMsg = "Add new employee " + fullname + " failed! Please try again!";
             }
+            session.setAttribute("actionMsg", insertMsg);
+            PrintWriter out = response.getWriter();
+            out.println("<script>");
+            out.println("window.parent.location.reload();");
+            out.println("window.close();");
+            out.println("</script>");
+            out.close();
         }
     }
 }

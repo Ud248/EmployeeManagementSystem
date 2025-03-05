@@ -13,6 +13,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -28,22 +30,36 @@ public class DeleteDepartment extends HttpServlet {
         String[] departmentId = departmentIdParam.split(",");
         DepartmentDAO dDAO = new DepartmentDAO();
         boolean deleteResult = true;
+        String deleteMsg = "";
+        HttpSession session = request.getSession();
+
         for (String id : departmentId) {
             if (!dDAO.delete(Integer.parseInt(id))) {
                 deleteResult = false;
             }
         }
         if (deleteResult) {
-            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage();
+            int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") - departmentId.length;
+            int totalPagesDep = (int) Math.ceil((double) totalDepartment / 10);
+
+            session.setAttribute("currentPageDep", 1);
+            session.setAttribute("totalPagesDep", totalPagesDep);
+
+            deleteMsg = "Delete department " + String.join(", ", departmentId) + " successfully!";
+
+            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(1, 10);
             List<Department> listDepartment = dDAO.selectAll();
             List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
             request.getServletContext().setAttribute("employees", employees);
             request.getServletContext().setAttribute("departments", departments);
             request.getServletContext().setAttribute("listDepartment", listDepartment);
-            response.sendRedirect("admin.jsp?successMsg=Department deleted successfully!");
+
         } else {
-            response.sendRedirect("admin.jsp?errorMsg=Failed to delete department. Please try again!");
+            deleteMsg = "Delete department " + String.join(", ", departmentId) + " failed! Please try again!";
         }
+        session.setAttribute("actionMsg", deleteMsg);
+        response.sendRedirect("admin.jsp");
+
     }
 
     @Override

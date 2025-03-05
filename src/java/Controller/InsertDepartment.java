@@ -14,6 +14,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.Session;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -79,15 +81,33 @@ public class InsertDepartment extends HttpServlet {
         } else {
             description = DepartmentUtil.getDescription(descriptionArray);
             String insertMsg = "";
+            HttpSession session = request.getSession();
             boolean insertResult = new DepartmentDAO().insert(new Department(departmentName, description, startTime, endTime, telephone));
             if (insertResult) {
-                insertMsg = "Add new department ";
-                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage();
+                int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") + 1;
+                request.getServletContext().setAttribute("totalDepartment", totalDepartment);
+
+                int totalPagesDep = (int) Math.ceil((double) totalDepartment / 10);
+
+                session.setAttribute("totalPagesDep", totalPagesDep);
+                session.setAttribute("currentPageDep", 1);
+
+                insertMsg = "Add new department " + departmentName + " successfully!";
+
+                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
                 request.getServletContext().setAttribute("departments", departments);
-                response.sendRedirect("admin.jsp?successMsg=Update successful!");
+
             } else {
-                response.sendRedirect("admin.jsp?errorMsg=Update failed. Please try again!");
+                insertMsg = "Add new department " + departmentName + " failed. Please try again!";
+
             }
+            session.setAttribute("actionMsg", insertMsg);
+            PrintWriter out = response.getWriter();
+            out.println("<script>");
+            out.println("window.parent.location.reload();"); 
+            out.println("window.close();"); 
+            out.println("</script>");
+            out.close();
         }
     }
 

@@ -24,7 +24,7 @@
                 <div class="action-btn">
                     <button id="deleteButton" class="delete-btn" disabled="">Delete</button>
                     <button class="new-employee-btn" onclick="openPopup('insertDepartmentPopup', null, event)">
-                        <i class="fas fa-plus"></i> New Employee
+                        <i class="fas fa-plus"></i> New Department
                     </button> 
                 </div>
 
@@ -55,6 +55,26 @@
                         </c:forEach>
                     </tbody>
                 </table>
+
+                <div class="pagination">
+                    <c:if test="${currentPageDep > 1}">
+                        <a href="load-data?pageDep=${currentPageDep - 1}">&laquo; Previous</a>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${totalPagesDep}" var="i">
+                        <a href="load-data?pageDep=${i}" 
+                           class="${i == currentPageDep ? 'active' : ''}">${i}</a>
+                    </c:forEach>
+
+                    <c:if test="${currentPageDep < totalPagesDep}">
+                        <a href="load-data?pageDep=${currentPageDep + 1}">Next &raquo;</a>
+                    </c:if>
+                </div>
+
+                <div class="page-info">
+                    Showing page ${currentPageDep} of ${totalPagesDep}
+                    (Total: ${applicationScope.totalDepartment} departments)
+                </div>
             </div>
         </div>
 
@@ -71,7 +91,7 @@
                 <iframe id="viewDepartmentFrame"></iframe>
             </div>
         </div>
-        
+
         <script>
             function openPopup(id, departmentId = null, event) {
                 event.preventDefault();

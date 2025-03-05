@@ -36,6 +36,8 @@ public class DeleteEmployee extends HttpServlet {
                 deleteResult = false;
             }
         }
+        HttpSession session = request.getSession();
+        String deleteMsg = "";
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
@@ -65,15 +67,15 @@ public class DeleteEmployee extends HttpServlet {
                 currentPage = totalPages;
             }
             List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
-            HttpSession session = request.getSession();
             request.getServletContext().setAttribute("employees", employees);
             session.setAttribute("totalEmployees", totalEmployees);
-            request.setAttribute("successMsg", "Employee deleted successfully!");
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
+            deleteMsg = "Delete employee " + String.join(", ", employeeCode) + " successfully!";
+
         } else {
-            request.setAttribute("errorMsg", "Failed to delete employee. Please try again!");
-            request.getRequestDispatcher("admin.jsp").forward(request, response);
+            deleteMsg = "Delete employee " + String.join(", ", employeeCode) + " failed! Please try again!";
         }
+        session.setAttribute("actionMsg", deleteMsg);
+        response.sendRedirect("admin.jsp");
     }
 
     @Override

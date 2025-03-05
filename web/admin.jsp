@@ -84,6 +84,24 @@
 
         </div>
 
+        <% 
+        String actionMsg = (String) session.getAttribute("actionMsg");
+        if (actionMsg != null) {
+            session.removeAttribute("actionMsg"); // Xóa thông báo sau khi hiển thị
+        %>
+        <script>
+            Swal.fire({
+                icon: "<%= actionMsg.contains("successfully") ? "success" : "error" %>",
+                title: "Notification",
+                text: "<%= actionMsg %>",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+        <%
+            }
+        %>
+
         <script>
             document.addEventListener("DOMContentLoaded", function () {
                 // Lấy tất cả các mục menu
@@ -123,30 +141,6 @@
                 }
             });
 
-            window.onload = function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const successMsg = urlParams.get('successMsg');
-                const errorMsg = urlParams.get('errorMsg');
-
-                if (successMsg) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công!',
-                        text: successMsg,
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-
-                if (errorMsg) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Thất bại!',
-                        text: errorMsg,
-                        showConfirmButton: true
-                    });
-                }
-            };
         </script>
 
     </body>

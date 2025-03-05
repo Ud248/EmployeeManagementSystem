@@ -166,7 +166,6 @@ public class DepartmentDAO implements DAOInterface<Department> {
         return result > 0;
     }
 
-
     @Override
     public boolean update(Department t) {
         int result = 0;
@@ -201,7 +200,7 @@ public class DepartmentDAO implements DAOInterface<Department> {
         return result > 0;
     }
 
-    public List<DepartmentDTO> selectDepartmentsByPage() {
+    public List<DepartmentDTO> selectDepartmentsByPage(int page, int itemsPerPage) {
         List<DepartmentDTO> result = new ArrayList<>();
         String sql = "SELECT \n"
                 + "	d.DepartmentID, \n"
@@ -215,9 +214,12 @@ public class DepartmentDAO implements DAOInterface<Department> {
                 + "	COALESCE((SELECT SUM(BasicSalary) FROM Employee e WHERE e.DepartmentID = d.DepartmentID), 0) as CostPerMonth\n"
                 + "FROM Department d \n"
                 + "LEFT JOIN Employee e ON e.DepartmentID = d.DepartmentID and e.PositionID = 2\n"
-                + "ORDER BY d.DepartmentID ";
+                + "ORDER BY d.DepartmentID "
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setInt(1, (page - 1) * itemsPerPage);
+            st.setInt(2, itemsPerPage);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 result.add(new DepartmentDTO(
@@ -236,6 +238,19 @@ public class DepartmentDAO implements DAOInterface<Department> {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public int getTotalDepartments() {
+        String sql = "SELECT COUNT(*) AS total FROM Department";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

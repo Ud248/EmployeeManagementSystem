@@ -16,8 +16,42 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <style>
-            .detail{
-                font-weight: bolder;
+            body{
+                height: 100vh;
+                background-color: #EFEFEF;
+            }
+
+            .form-label {
+                text-align: left;
+                font-weight: bold;
+                padding-left: 15px;
+                width: 170px; /* Thay đổi từ min-width thành width cố định */
+                display: inline-block;
+                margin-right: 25px;
+                vertical-align: top;
+            }
+
+            /* Normal text for details instead of bold */
+            .detail {
+                font-weight: normal;
+                display: inline-block;
+                vertical-align: top;
+                width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
+
+            }
+
+            /* Bold section headers */
+            .section-header {
+                font-weight: bold;
+                color: green;
+                margin-bottom: 15px;
+            }
+
+            /* Horizontal divider */
+            .section-divider {
+                height: 1px;
+                background-color: #dee2e6;
+                margin: 25px 0;
             }
 
             /* CSS cho nút Edit */
@@ -40,62 +74,45 @@
                 transform: scale(1.05);
             }
 
-            .form-label {
-                text-align: left;
-                font-weight: bold;
-                padding-left: 15px;
-                width: 170px; /* Thay đổi từ min-width thành width cố định */
-                display: inline-block;
-                margin-right: 25px;
-                vertical-align: top;
-            }
-
-            .detail {
-                font-weight: normal;
-                display: inline-block;
-                vertical-align: top;
-                width: calc(100% - 175px); /* Chiều rộng cố định tính toán từ width của label + margin */
-            }
-
-            .section-header {
-                font-weight: bold;
-                color: green;
+            /* Add spacing between info groups */
+            .info-group {
                 margin-bottom: 15px;
             }
 
-            .section-divider {
-                height: 1px;
-                background-color: #dee2e6;
-                margin: 25px 0;
+            /* Field container styling */
+            .field-container {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                padding-right: 15px;
             }
-
         </style>
     </head>
     <body>
 
-        <div class="container   ">
-            <div class="modal-content p-4">
+        <div class="container">
+            <div class="modal-content" style="padding: 1.5rem 1.5rem 1rem 1.5rem">
                 <div class="modal-header" style="padding-bottom: 15px">
-                    <h3 class="modal-title mx-auto">VIEW DEPARTMENT DETAIL</h3>
+                    <h3 class="modal-title mx-auto">VIEW DEPARTMENT DETAILS</h3>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <h5 class="section-header">GENERAL INFORMATION</h5>
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Department ID:</label>
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-5">
+                                <div class="field-container">
+                                    <label class="form-label">Department ID:</label>
+                                    <span class="detail">${departmentId}</span>
+                                </div>
                             </div>
-                            <div class="col-md-8">
-                                <span class="detail">${departmentId}</span>
-                            </div>
-                        </div>
 
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Department Name:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <span class="detail">${departmentName}</span>
+                            <!-- Right Column -->
+                            <div class="col-md-7">
+                                <div class="field-container">
+                                    <label class="form-label">Department Name:</label>
+                                    <span class="detail">${departmentName}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,39 +121,32 @@
 
                     <div class="mb-3">
                         <h5 class="section-header">WORK INFORMATION</h5>
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Open Time:</label>
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-5">
+                                <div class="field-container">
+                                    <label class="form-label">Manager:</label>
+                                    <span class="detail">${managerName}</span>
+                                </div>
+                                <div class="field-container">
+                                    <label class="form-label">Total Employee:</label>
+                                    <span class="detail">${totalEmployee}</span>
+                                </div>
                             </div>
-                            <div class="col-md-8">
-                                <span class="detail">${openTime}</span>
-                            </div>
-                        </div>
 
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Manager:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <span class="detail">${managerName}</span>
-                            </div>
-                        </div>
+                            <!-- Right Column -->
+                            <div class="col-md-7">
+                                <div class="field-container">
+                                    <label class="form-label">Open Time:</label>
+                                    <span class="detail">${openTime}</span>
+                                </div>
 
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Telephone:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <span class="detail">${telephone}</span>
-                            </div>
-                        </div>
+                                <div class="field-container">
+                                    <label class="form-label">Telephone:</label>
+                                    <span class="detail">${telephone}</span>
+                                </div>
 
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Total Employee:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <span class="detail">${totalEmployee}</span>
+
                             </div>
                         </div>
                     </div>
@@ -145,25 +155,27 @@
 
                     <div class="mb-3">
                         <h5 class="section-header">OTHER INFORMATION</h5>
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Description:</label>
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-12">
+                                <div class="field-container">
+                                    <label class="form-label">Description:</label>
+                                    <div class="detail" >
+                                        <ul>
+                                            <c:forEach var="d" items="${descriptionArray}">
+                                                <li>${d}</li>
+                                                </c:forEach>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-8">
-                                <ul style="margin: 0; padding-left: 20px;">
-                                    <c:forEach var="sub" items="${descriptionArray}">
-                                        <li>${sub}</li>
-                                        </c:forEach>
-                                </ul>
-                            </div>
-                        </div>
 
-                        <div class="row mb-2">
-                            <div class="col-md-4 text-end">
-                                <label class="form-label">Cost Per Month:</label>
-                            </div>
-                            <div class="col-md-8">
-                                <span class="detail">${costPerMonth}</span>
+                            <!-- Right Column -->
+                            <div class="col-md-12">
+                                <div class="field-container">
+                                    <label class="form-label">Cost Per Month:</label>
+                                    <span class="detail">${costPerMonth}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
