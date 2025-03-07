@@ -63,6 +63,15 @@ INSERT INTO [Shift](ShiftName, StartTime, EndTime) VALUES
 (N'Ca Chiều', '12:00', '17:00'),
 (N'Ca Tối', '17:00', '22:00')
 
+INSERT INTO Project (ProjectName, [Description], Completion, StartDate, EndDate, Budget, Profit, DepartmentID)
+VALUES
+(N'Hệ Thống Quản Lý Nhân Sự', N'Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.', 80, '2024-01-01', '2024-06-30', 500000000, 150000000, 1),
+(N'Ứng Dụng Bán Hàng Trực Tuyến', N'Phát triển ứng dụng thương mại điện tử với tính năng mua sắm online.', 60, '2023-10-15', '2024-07-01', 800000000, 200000000, 2),
+(N'Phần Mềm Kế Toán', N'Tạo phần mềm hỗ trợ kế toán doanh nghiệp vừa và nhỏ.', 90, '2023-05-01', '2024-04-30', 300000000, 120000000, 3),
+(N'Website Dịch Vụ Đặt Phòng', N'Website giúp khách hàng đặt phòng khách sạn và homestay.', 75, '2023-08-10', '2024-05-20', 450000000, 180000000, 4),
+(N'Hệ Thống Quản Lý Bệnh Viện', N'Phát triển phần mềm quản lý hồ sơ bệnh nhân.', 50, '2024-02-01', '2025-02-01', 700000000, 250000000, 5),
+(N'Ứng Dụng Theo Dõi Sức Khỏe', N'Phát triển app giúp người dùng theo dõi sức khỏe cá nhân.', 40, '2024-03-15', '2025-02-01', 600000000, 170000000, 1);
+
 
 SELECT * FROM Employee
 
@@ -71,6 +80,8 @@ SELECT * FROM Account
 SELECT * FROM POSITION
 
 SELECT * FROM DEPARTMENT	
+
+SELECT * FROM Project	
 
 /*
 SELECT 

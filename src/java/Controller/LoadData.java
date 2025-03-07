@@ -7,12 +7,15 @@ package Controller;
 import DAO.AccountDAO;
 import DAO.DepartmentDAO;
 import DAO.EmployeeDAO;
+import DAO.ProjectDAO;
 import DAO.WorkDAO;
 import DTO.DepartmentDTO;
 import DTO.EmployeeDTO;
+import DTO.ProjectDTO;
 import Model.Department;
 import Model.Employee;
 import Model.Position;
+import Model.Project;
 import Model.Work;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -46,6 +49,7 @@ public class LoadData extends HttpServlet {
             url = "admin.jsp";
             EmployeeDAO eDao = new EmployeeDAO();
             DepartmentDAO dDAO = new DepartmentDAO();
+            ProjectDAO pDAO = new ProjectDAO();
             int currentPage = 1;
             int itemsPerPage = 10;
             try {
@@ -84,16 +88,45 @@ public class LoadData extends HttpServlet {
                 currentPageDep = totalPagesDep;
             }
 
+            //phân trang project
+            int currentPagePro = 1;
+            try {
+                String pageParam = request.getParameter("pagePro");
+                if (pageParam != null && !pageParam.isEmpty()) {
+                    currentPagePro = Integer.parseInt(pageParam);
+                }
+            } catch (NumberFormatException e) {
+                // Use default value
+            }
+            int totalProject = (int) request.getServletContext().getAttribute("totalProject");
+            int totalPagesPro = (int) Math.ceil((double) totalProject / itemsPerPage);
+            if (currentPagePro < 1) {
+                currentPagePro = 1;
+            }
+            if (currentPagePro > totalPagesPro) {
+                currentPagePro = totalPagesPro;
+            }
+            
             List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
             List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(currentPageDep, itemsPerPage);
+            List<ProjectDTO> projects = pDAO.selectAllProjectDTO(currentPagePro, itemsPerPage);
+
             request.getServletContext().setAttribute("employees", employees);
             request.getServletContext().setAttribute("departments", departments);
+            request.getServletContext().setAttribute("projects", projects);
+
             session.setAttribute("currentPage", currentPage);
             session.setAttribute("totalPages", totalPages);
+            session.setAttribute("totalEmployees", totalEmployees);
+
             session.setAttribute("totalPagesDep", totalPagesDep);
             session.setAttribute("currentPageDep", currentPageDep);
+
+            session.setAttribute("currentPagePro", currentPagePro);
+            session.setAttribute("totalPagesPro", totalPagesPro);
+
             session.setAttribute("itemsPerPage", itemsPerPage);
-            session.setAttribute("totalEmployees", totalEmployees);
+
         } else {
             url = "employee.jsp";
             WorkDAO w = new WorkDAO();
@@ -107,7 +140,5 @@ public class LoadData extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         doGet(request, response);
-        
-        
     }
 }

@@ -55,9 +55,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="loadContent('attendanceReport')">
+                        <a href="javascript:void(0);" onclick="loadContent('adminProjectManagement')">
                             <i class="ph-bold ph-clipboard-text"></i>
-                            <span class="text">Attendance Report</span>
+                            <span class="text">Project</span>
                         </a>
                     </li>
                 </ul>

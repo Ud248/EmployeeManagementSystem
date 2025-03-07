@@ -9,6 +9,7 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import DTO.DepartmentDTO;
 import DTO.EmployeeDTO;
+import DTO.ProjectDTO;
 import Model.Department;
 import Model.Position;
 import java.util.List;
@@ -22,12 +23,20 @@ public class InitProjectData implements ServletContextListener {
         List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
         List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
         List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
+        List<ProjectDTO> projects = new DAO.ProjectDAO().selectAllProjectDTO(1, 10);
+
         int totalDepartment = new DAO.DepartmentDAO().getTotalDepartments();
+        int totalProject = new DAO.ProjectDAO().getTotalProjects();
+
         sce.getServletContext().setAttribute("listPosition", listPosition);
         sce.getServletContext().setAttribute("listDepartment", listDepartment);
+
         sce.getServletContext().setAttribute("employees", employees);
         sce.getServletContext().setAttribute("departments", departments);
+        sce.getServletContext().setAttribute("projects", projects);
+
         sce.getServletContext().setAttribute("totalDepartment", totalDepartment);
+        sce.getServletContext().setAttribute("totalProject", totalProject);
     }
 
     @Override
