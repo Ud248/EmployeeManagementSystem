@@ -47,7 +47,7 @@
                                     <input type="checkbox" class="rowCheckbox" value="${d.getDepartmentId()}" onchange="toggleDeleteMode()">
                                 </td>
                                 <td style="text-align: center;">${st.count}</td>
-                                <td><a onclick="openPopup('viewDepartmentPopup', ${d.getDepartmentId()}, event)">${d.getDepartmentName()}</a></td>
+                                <td><a onclick="openPopup('viewDepartmentPopup', ${st.count}, event)">${d.getDepartmentName()}</a></td>
                                 <td style="text-align: center">${d.getOpenTime()}</td>
                                 <td>${d.getManagerName()}</td>
                                 <td style="text-align: center">${d.getTelephone()}</td>
@@ -152,6 +152,17 @@
                     if (result.isConfirmed) {
                         let selectedIds = getValueChecked().join(",");
                         window.location.href = "deletedepartment?departmentId=" + selectedIds;
+                    }
+                });
+            });
+
+            document.addEventListener('click', function (event) {
+                let popups = document.querySelectorAll('.popup');
+
+                popups.forEach(popup => {
+                    if (event.target === popup) {
+                        popup.style.display = 'none';
+                        location.reload();
                     }
                 });
             });

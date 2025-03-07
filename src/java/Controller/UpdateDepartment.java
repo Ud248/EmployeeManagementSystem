@@ -122,6 +122,7 @@ public class UpdateDepartment extends HttpServlet {
                 List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(currentPageDep, 10);
                 request.getServletContext().setAttribute("departments", departments);
                 response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&successMsg=Update successful!");
+                session.setAttribute("updateDepSuccess", true);
             } else {
                 response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&errorMsg=Update failed. Please try again!");
             }
