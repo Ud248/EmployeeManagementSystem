@@ -47,29 +47,32 @@ public class LoadData extends HttpServlet {
         String url = "";
         if (isAdmin) {
             url = "admin.jsp";
+
             EmployeeDAO eDao = new EmployeeDAO();
             DepartmentDAO dDAO = new DepartmentDAO();
             ProjectDAO pDAO = new ProjectDAO();
-            int currentPage = 1;
             int itemsPerPage = 10;
+
+//phan trang employee
+            int currentPageEmployee = 1;
             try {
-                String pageParam = request.getParameter("page");
+                String pageParam = request.getParameter("pageEmployee");
                 if (pageParam != null && !pageParam.isEmpty()) {
-                    currentPage = Integer.parseInt(pageParam);
+                    currentPageEmployee = Integer.parseInt(pageParam);
                 }
             } catch (NumberFormatException e) {
                 // Use default value
             }
-            int totalEmployees = eDao.getTotalEmployees();
-            int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
-            if (currentPage < 1) {
-                currentPage = 1;
+            int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee");
+            int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / itemsPerPage);
+            if (currentPageEmployee < 1) {
+                currentPageEmployee = 1;
             }
-            if (currentPage > totalPages) {
-                currentPage = totalPages;
+            if (currentPageEmployee > totalPagesEmployee) {
+                currentPageEmployee = totalPagesEmployee;
             }
 
-            //phân trang dep
+//phân trang dep
             int currentPageDep = 1;
             try {
                 String pageParam = request.getParameter("pageDep");
@@ -88,7 +91,7 @@ public class LoadData extends HttpServlet {
                 currentPageDep = totalPagesDep;
             }
 
-            //phân trang project
+//phân trang project
             int currentPagePro = 1;
             try {
                 String pageParam = request.getParameter("pagePro");
@@ -106,8 +109,8 @@ public class LoadData extends HttpServlet {
             if (currentPagePro > totalPagesPro) {
                 currentPagePro = totalPagesPro;
             }
-            
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+
+            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPageEmployee, itemsPerPage);
             List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(currentPageDep, itemsPerPage);
             List<ProjectDTO> projects = pDAO.selectAllProjectDTO(currentPagePro, itemsPerPage);
 
@@ -115,9 +118,9 @@ public class LoadData extends HttpServlet {
             request.getServletContext().setAttribute("departments", departments);
             request.getServletContext().setAttribute("projects", projects);
 
-            session.setAttribute("currentPage", currentPage);
-            session.setAttribute("totalPages", totalPages);
-            session.setAttribute("totalEmployees", totalEmployees);
+            session.setAttribute("currentPageEmployee", currentPageEmployee);
+            session.setAttribute("totalPagesEmployee", totalPagesEmployee);
+            session.setAttribute("totalEmployee", totalEmployee);
 
             session.setAttribute("totalPagesDep", totalPagesDep);
             session.setAttribute("currentPageDep", currentPageDep);

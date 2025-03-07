@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="action-btn">
-                    <button id="deleteButton" class="delete-btn" disabled="">Delete</button>
+                    <button id="deleteButton" class="delete-btn" disabled=""><i class="ph ph-trash"></i>Delete</button>
                     <button class="new-employee-btn" onclick="openPopup('insertDepartmentPopup', null, event)">
                         <i class="fas fa-plus"></i> New Department
                     </button> 

@@ -5,6 +5,7 @@
 package Controller;
 
 import DAO.EmployeeDAO;
+import DTO.DepartmentDTO;
 import DTO.EmployeeDTO;
 import Model.Department;
 import Model.Employee;
@@ -53,7 +54,7 @@ public class UpdateEmployee extends HttpServlet {
             request.setAttribute("successMsg", successMsg);
         }
 
-        request.getRequestDispatcher("updateEmployee.jsp").forward(request, response);
+        request.getRequestDispatcher("adminEmployeeUpdate.jsp").forward(request, response);
     }
 
     @Override
@@ -61,6 +62,7 @@ public class UpdateEmployee extends HttpServlet {
             throws ServletException, IOException {
         String error = "";
         String url = "";
+        HttpSession session = request.getSession();
 
         String fullname = request.getParameter("fullname");
         String birthdateStr = request.getParameter("birthdate");
@@ -125,15 +127,15 @@ public class UpdateEmployee extends HttpServlet {
         } catch (NumberFormatException e) {
             error += "Please input a valid basic salary.<br>";
         }
-        
+
         if (basicSalary <= 0) {
             error += "Basic salary must be greater than 0.<br>";
         }
 
-        if (eDao.isExistManagerInDepartment(departmentId) && positionId == 2) {
+        if (eDao.isExistManagerInDepartmentForUpdate(departmentId, employeeCode) && positionId == 2) {
             error += "Selected Department already has manager. One Department can have only one manager.";
         }
-        
+
         if (!error.isEmpty()) {
             request.setAttribute("error", error);
             request.setAttribute("fullname", fullname);
@@ -147,37 +149,18 @@ public class UpdateEmployee extends HttpServlet {
             request.setAttribute("employeeCode", employeeCode);
             request.setAttribute("username", username);
             request.setAttribute("password", password);
-            request.getRequestDispatcher("updateEmployee.jsp").forward(request, response);
+            request.getRequestDispatcher("adminEmployeeUpdate.jsp").forward(request, response);
         } else {
             boolean success = eDao.update(new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
-                int currentPage = 1;
-                int itemsPerPage = 10;
+                int currentPageEmployee = (int) session.getAttribute("currentPageEmployee");
+                int currentPageDep = (int) session.getAttribute("currentPageDep");
 
-                try {
-                    String pageParam = request.getParameter("page");
-                    if (pageParam != null && !pageParam.isEmpty()) {
-                        currentPage = Integer.parseInt(pageParam);
-                    }
-                } catch (NumberFormatException e) {
-                    // Use default value
-                }
+                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPageEmployee, 10);
+                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(currentPageDep, 10);
 
-                // Calculate pagination values
-                int totalEmployees = eDao.getTotalEmployees();
-                int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
-
-                // Ensure currentPage is within valid range
-                if (currentPage < 1) {
-                    currentPage = 1;
-                }
-                if (currentPage > totalPages) {
-                    currentPage = totalPages;
-                }
-                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
-                HttpSession session = request.getSession();
                 request.getServletContext().setAttribute("employees", employees);
-                session.setAttribute("totalEmployees", totalEmployees);
+                request.getServletContext().setAttribute("departments", departments);
 
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");
             } else {

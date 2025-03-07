@@ -44,7 +44,7 @@ public class ViewEmployee extends HttpServlet {
         request.setAttribute("username", e.getUsername());
         request.setAttribute("password", e.getPassword());
         
-        request.getRequestDispatcher("viewEmployee.jsp").forward(request, response);
+        request.getRequestDispatcher("adminEmployeeView.jsp").forward(request, response);
     } 
 
     @Override

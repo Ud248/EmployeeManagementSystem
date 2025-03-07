@@ -21,11 +21,11 @@
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
                 <div class="toolbar">
-                    <h3 class="title_table">Employee List</h3>
+                    <h1 class="title_table">Employee List</h1>
                 </div>
 
                 <div class="action-btn">
-                    <button id="deleteButton" class="delete-btn" disabled="">Delete</button>
+                    <button id="deleteButton" class="delete-btn" disabled=""><i class="ph ph-trash"></i>Delete</button>
                     <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup')">
                         <i class="fas fa-plus"></i> New Employee
                     </button> 
@@ -61,23 +61,23 @@
 
                 <!-- Pagination -->
                 <div class="pagination">
-                    <c:if test="${currentPage > 1}">
-                        <a href="load-data?page=${currentPage - 1}">&laquo; Previous</a>
+                    <c:if test="${currentPageEmployee > 1}">
+                        <a href="load-data?pageEmployee=${currentPageEmployee - 1}">&laquo; Previous</a>
                     </c:if>
 
-                    <c:forEach begin="1" end="${totalPages}" var="i">
-                        <a href="load-data?page=${i}" 
-                           class="${i == currentPage ? 'active' : ''}">${i}</a>
+                    <c:forEach begin="1" end="${totalPagesEmployee}" var="i">
+                        <a href="load-data?pageEmployee=${i}" 
+                           class="${i == currentPageEmployee ? 'active' : ''}">${i}</a>
                     </c:forEach>
 
-                    <c:if test="${currentPage < totalPages}">
-                        <a href="load-data?page=${currentPage + 1}">Next &raquo;</a>
+                    <c:if test="${currentPageEmployee < totalPagesEmployee}">
+                        <a href="load-data?pageEmployee=${currentPageEmployee + 1}">Next &raquo;</a>
                     </c:if>
                 </div>
 
                 <div class="page-info">
-                    Showing page ${currentPage} of ${totalPages}
-                    (Total: ${totalEmployees} employees)
+                    Showing page ${currentPageEmployee} of ${totalPagesEmployee}
+                    (Total: ${applicationScope.totalEmployee} employees)
                 </div>
             </div>
         </div>
@@ -85,21 +85,21 @@
         <div id="insertEmployeePopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopupAndReload('insertEmployeePopup')">&times;</span>
-                <iframe id="insertEmployeeFrame" src="insertEmployee.jsp"></iframe>
+                <iframe id="insertEmployeeFrame" src="adminEmployeeInsert.jsp"></iframe>
             </div>
         </div>
 
         <div id="viewEmployeePopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
-                <iframe id="viewEmployeeFrame" src="viewEmployee.jsp"></iframe>
+                <iframe id="viewEmployeeFrame" src="adminEmployeeView.jsp"></iframe>
             </div>
         </div>
 
         <div id="updateEmployeePopup" class="popup">
             <div class="popup-content">
                 <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
-                <iframe id="updateEmployeeFrame" src="updateEmployee.jsp"></iframe>
+                <iframe id="updateEmployeeFrame" src="adminEmployeeUpdate.jsp"></iframe>
             </div>
         </div>
                 

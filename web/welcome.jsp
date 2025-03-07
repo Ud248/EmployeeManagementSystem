@@ -20,20 +20,13 @@
         </style>
     </head>
 
-    <%
-        EmployeeDAO eDao = new EmployeeDAO();
-        DepartmentDAO dDao = new DepartmentDAO();
-        int totalEmployees = eDao.getTotalEmployees();
-        int totalDepartments = dDao.getTotalDepartments();  
-    %>
-
     <body>
         <div class="container-fluid container-fluid-custom">
             <!-- Hero Section -->
             <div class="hero-section">
                 <h1>Welcome to Employee & Department Management System</h1>
                 <p>Effortless, efficient, and professional employee management</p>
-                <a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')" class="btn btn-primary btn-lg">Start now</a>
+                <a href="javascript:void(0);" onclick="loadContent('adminEmployeeManagement')" class="btn btn-primary btn-lg">Start now</a>
             </div>
 
             <div class="row mt-5">

@@ -23,7 +23,6 @@ public class InsertEmployee extends HttpServlet {
             throws ServletException, IOException {
 
         String error = "";
-        String url = "";
         EmployeeDAO eDao = new EmployeeDAO();
 
         String fullname = request.getParameter("fullname");
@@ -110,39 +109,22 @@ public class InsertEmployee extends HttpServlet {
             request.setAttribute("positionId", positionId);
             request.setAttribute("departmentId", departmentId);
             request.setAttribute("basicSalary", basicSalary);
-            request.getRequestDispatcher("insertEmployee.jsp").forward(request, response);
+            request.getRequestDispatcher("adminEmployeeInsert.jsp").forward(request, response);
         } else {
             boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
-                //Update list employee
-                int currentPage = 1;
-                int itemsPerPage = 10;
+                int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee") + 1;
+                request.getServletContext().setAttribute("totalEmployee", totalEmployee);
 
-                try {
-                    String pageParam = request.getParameter("page");
-                    if (pageParam != null && !pageParam.isEmpty()) {
-                        currentPage = Integer.parseInt(pageParam);
-                    }
-                } catch (NumberFormatException e) {
-                    // Use default value
-                }
+                int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / 10);
 
-                // Calculate pagination values
-                int totalEmployees = eDao.getTotalEmployees();
-                int totalPages = (int) Math.ceil((double) totalEmployees / itemsPerPage);
+                session.setAttribute("totalPagesEmployee", totalPagesEmployee);
+                session.setAttribute("currentPageEmployee", 1);
 
-                // Ensure currentPage is within valid range
-                if (currentPage < 1) {
-                    currentPage = 1;
-                }
-                if (currentPage > totalPages) {
-                    currentPage = totalPages;
-                }
-                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPage, itemsPerPage);
+                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(1, 10);
                 List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
                 request.getServletContext().setAttribute("employees", employees);
                 request.getServletContext().setAttribute("departments", departments);
-                session.setAttribute("totalEmployees", totalEmployees);
 
                 insertMsg = "Add new employee " + fullname + " successfully!";
             } else {

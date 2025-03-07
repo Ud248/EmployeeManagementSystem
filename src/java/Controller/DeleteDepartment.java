@@ -50,6 +50,7 @@ public class DeleteDepartment extends HttpServlet {
             List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(1, 10);
             List<Department> listDepartment = dDAO.selectAll();
             List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
+            request.getServletContext().setAttribute("totalDepartment", totalDepartment);
             request.getServletContext().setAttribute("employees", employees);
             request.getServletContext().setAttribute("departments", departments);
             request.getServletContext().setAttribute("listDepartment", listDepartment);

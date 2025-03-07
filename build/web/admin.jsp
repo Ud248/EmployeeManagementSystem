@@ -37,7 +37,7 @@
                 <h4 class="title-side-bar">Main</h4>
                 <ul class="menu">
                     <li>
-                        <a href="javascript:void(0);" onclick="loadContent('adminEmployeeList')">
+                        <a href="javascript:void(0);" onclick="loadContent('adminEmployeeManagement')">
                             <i class="ph ph-user-list"></i>
                             <span class="text">Employee List</span>
                         </a>

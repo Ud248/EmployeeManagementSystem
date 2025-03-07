@@ -397,6 +397,28 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return isExist;
     }
+    
+    public boolean isExistManagerInDepartmentForUpdate(int departmentId, String employeeCode) {
+        String sql = "SELECT 1\n"
+                + "FROM Employee \n"
+                + "WHERE DepartmentID = ? and PositionID = 2 AND EmployeeCode != ?";
+        boolean isExist = false;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, departmentId);
+            st.setString(2, employeeCode);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                isExist = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            JDBCUtil.closeConnection(con);
+        }
+        return isExist;
+    }
 
     public boolean isExistPhoneNumber(String tel) {
         String sql = "SELECT COUNT(*) FROM Employee WHERE Tel = ?";
