@@ -7,6 +7,7 @@ package Controller;
 import DTO.ProjectDTO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
  *
  * @author nongt
  */
+@WebServlet(name = "ViewProject", urlPatterns = {"/view-project"})
+
 public class ViewProject extends HttpServlet {
 
     @Override
@@ -24,18 +27,21 @@ public class ViewProject extends HttpServlet {
             throws ServletException, IOException {
         String projectId = request.getParameter("projectId");
         int index = Integer.parseInt(projectId) - 1;
+
         ArrayList<ProjectDTO> projects = (ArrayList<ProjectDTO>) request.getServletContext().getAttribute("projects");
         ProjectDTO project = projects.get(index);
-        DecimalFormat df = new DecimalFormat("#,###.##");
+
+        DecimalFormat df = new DecimalFormat("#,###.###");
+
         request.setAttribute("projectId", projectId);
         request.setAttribute("projectName", project.getProjectName());
+        request.setAttribute("departmentName", project.getDepartmentName());
         request.setAttribute("description", project.getDescription());
-        request.setAttribute("completion", project.getCompletion() + "%");
         request.setAttribute("startDate", project.getStartDate());
         request.setAttribute("endDate", project.getEndDate());
+        request.setAttribute("completion", project.getCompletion() + "%");
         request.setAttribute("budget", df.format(project.getBudget()) + " VND");
         request.setAttribute("profit", df.format(project.getProfit()) + " VND");
-        request.setAttribute("departmentId", project.getDepartmentId());
         request.getRequestDispatcher("adminProjectView.jsp").forward(request, response);
     }
 

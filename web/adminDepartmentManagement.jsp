@@ -41,12 +41,12 @@
                     </thead>
 
                     <tbody>
-                        <c:forEach var="d" items="${applicationScope.departments}">
+                        <c:forEach var="d" items="${applicationScope.departments}" varStatus="st">
                             <tr>
                                 <td style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${d.getDepartmentId()}" onchange="toggleDeleteMode()">
                                 </td>
-                                <td style="text-align: center;">${d.getDepartmentId()}</td>
+                                <td style="text-align: center;">${st.count}</td>
                                 <td><a onclick="openPopup('viewDepartmentPopup', ${d.getDepartmentId()}, event)">${d.getDepartmentName()}</a></td>
                                 <td style="text-align: center">${d.getOpenTime()}</td>
                                 <td>${d.getManagerName()}</td>

@@ -12,7 +12,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,16 @@ public class ProjectDAO implements DAOInterface<Project> {
 
     public ArrayList<ProjectDTO> selectAllProjectDTO(int page, int itemsPerPage) {
         ArrayList<ProjectDTO> result = new ArrayList<>();
-        String sql = "select p.ProjectID, p.ProjectName, d.DepartmentName, p.StartDate\n"
+        String sql = "select\n"
+                + "p.ProjectID,\n"
+                + "p.ProjectName,\n"
+                + "p.Description,\n"
+                + "COALESCE(d.DepartmentName, '') AS DepartmentName,\n"
+                + "p.StartDate,\n"
+                + "p.EndDate,\n"
+                + "p.Completion,\n"
+                + "p.Budget,\n"
+                + "p.Profit\n"
                 + "from Project p\n"
                 + "left join Department d on p.DepartmentID = d.DepartmentID\n"
                 + "ORDER BY p.ProjectID\n"
@@ -67,10 +75,21 @@ public class ProjectDAO implements DAOInterface<Project> {
             ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
-                result.add(new ProjectDTO(rs.getInt("ProjectID"),
-                        rs.getString("ProjectName"),
-                        rs.getString("DepartmentName"),
-                        rs.getDate("StartDate").toLocalDate()));
+                ProjectDTO project = new ProjectDTO();
+
+                project.setProjectId(rs.getInt("ProjectID"));
+                project.setProjectName(rs.getString("ProjectName"));
+                project.setDescription(rs.getString("Description"));
+                project.setDepartmentName(rs.getString("DepartmentName"));
+                project.setStartDate(rs.getDate("StartDate").toLocalDate());
+                Date endDate = rs.getDate("EndDate");
+                if (endDate != null) {
+                    project.setEndDate(endDate.toLocalDate());
+                }
+                project.setCompletion(rs.getInt("Completion"));
+                project.setBudget(rs.getDouble("Budget"));
+                project.setProfit(rs.getDouble("Profit"));
+                result.add(project);
             }
 
             JDBCUtil.closeConnection(conn);
