@@ -5,6 +5,10 @@
         <group>
             <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder%20(2)/EmployeeManagementSystem/web/adminProjectManagement.jsp</file>
             <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder%20(2)/EmployeeManagementSystem/src/java/Controller/LoadData.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder%20(2)/EmployeeManagementSystem/src/java/Controller/DeleteDepartment.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder%20(2)/EmployeeManagementSystem/src/java/Controller/DeleteProject.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder%20(2)/EmployeeManagementSystem/src/java/Controller/InsertProject.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder%20(2)/EmployeeManagementSystem/web/adminDepartmentManagement.jsp</file>
         </group>
     </open-files>
 </project-private>

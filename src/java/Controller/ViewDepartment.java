@@ -28,6 +28,7 @@ public class ViewDepartment extends HttpServlet {
         int index = Integer.parseInt(departmentId) - 1;
 
         DepartmentDTO dep = ((ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments")).get(index);
+
         String departmentName = dep.getDepartmentName();
         String description = dep.getDescription();
         String openTime = dep.getOpenTime();

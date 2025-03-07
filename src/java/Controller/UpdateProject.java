@@ -9,6 +9,7 @@ import DTO.ProjectDTO;
 import Model.Project;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,6 +22,8 @@ import java.util.List;
  *
  * @author nongt
  */
+@WebServlet(name = "UpdateProject", urlPatterns = {"/update-project"})
+
 public class UpdateProject extends HttpServlet {
 
     @Override
@@ -42,7 +45,6 @@ public class UpdateProject extends HttpServlet {
         request.setAttribute("endDate", proj.getEndDate());
         request.setAttribute("budget", df.format(proj.getBudget()));
         request.setAttribute("profit", df.format(proj.getProfit()));
-        request.setAttribute("departmentId", proj.getDepartmentId());
 
         request.getRequestDispatcher("adminProjectUpdate.jsp").forward(request, response);
     }
@@ -104,12 +106,12 @@ public class UpdateProject extends HttpServlet {
                     projectId, projectName, description, completion, startDate, endDate, budget, profit, departmentId));
 
             if (updateResult) {
-                session.setAttribute("currentPageProj", 1);
-                List<ProjectDTO> projects = new ProjectDAO().selectProjectsByPage(1, 10);
+                session.setAttribute("currentPagePro", 1);
+                List<ProjectDTO> projects = new ProjectDAO().selectAllProjectDTO(1, 10);
                 request.getServletContext().setAttribute("projects", projects);
-                response.sendRedirect("viewproject?projectId=" + projectId + "&successMsg=Update successful!");
+                response.sendRedirect("view-project?projectId=" + projectId + "&successMsg=Update successful!");
             } else {
-                response.sendRedirect("viewproject?projectId=" + projectId + "&errorMsg=Update failed. Please try again!");
+                response.sendRedirect("view-project?projectId=" + projectId + "&errorMsg=Update failed. Please try again!");
             }
         }
     }

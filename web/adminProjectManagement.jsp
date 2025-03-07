@@ -38,12 +38,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="p" items="${applicationScope.projects}">
+                        <c:forEach var="p" items="${applicationScope.projects}" varStatus="st">
                             <tr>
                                 <td style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${p.getProjectId()}" onchange="toggleDeleteMode()">
                                 </td>
-                                <td style="text-align: center;">${p.getProjectId()}</td>
+                                <td style="text-align: center;">${st.count}</td>
                                 <td><a onclick="openPopup('viewProjectPopup', ${p.getProjectId()}, event)">${p.getProjectName()}</a></td>
                                 <td>${p.getDepartmentName()}</td>
                                 <td style="text-align: center">${p.getStartDate()}</td>
@@ -56,14 +56,16 @@
                         <a href="load-data?page=${currentPagePro - 1}">&laquo; Previous</a>
                     </c:if>
                     <c:forEach begin="1" end="${totalPagesPro}" var="i">
-                        <a href="load-data?page=${i}" class="${i == currentPagePro ? 'active' : ''}">${i}</a>
+                        <a href="load-data?page=${i}" 
+                           class="${i == currentPagePro ? 'active' : ''}">${i}</a>
                     </c:forEach>
                     <c:if test="${currentPagePro < totalPagesPro}">
                         <a href="load-data?page=${currentPagePro + 1}">Next &raquo;</a>
                     </c:if>
                 </div>
                 <div class="page-info">
-                    Showing page ${currentPagePro} of ${totalPagesPro} (Total: ${applicationScope.totalProject} projects)
+                    Showing page ${currentPagePro} of ${totalPagesPro} 
+                    (Total: ${applicationScope.totalProject} projects)
                 </div>
             </div>
         </div>
@@ -84,7 +86,7 @@
                 event.preventDefault();
                 let popup = document.getElementById(id);
                 if (projectId && id === 'viewProjectPopup') {
-                    document.getElementById('viewProjectFrame').src = "viewproject?id=" + projectId;
+                    document.getElementById('viewProjectFrame').src = "view-project?projectId=" + projectId;
                 } else if (id === 'insertProjectPopup') {
                     document.getElementById('insertProjectFrame').src = 'adminProjectInsert.jsp';
                 }
@@ -122,7 +124,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         let selectedIds = getValueChecked().join(",");
-                        window.location.href = "deleteproject?id=" + selectedIds;
+                        window.location.href = "delete-project?projectId=" + selectedIds;
                     }
                 });
             });

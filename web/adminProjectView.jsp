@@ -60,12 +60,21 @@
                 background-color: #218838;
                 transform: scale(1.05);
             }
+            .info-group {
+                margin-bottom: 15px;
+            }
+            .field-container {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 10px;
+                padding-right: 15px;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <div class="modal-content p-4">
-                <div class="modal-header">
+            <div class="modal-content" style="padding: 1.5rem 1.5rem 1rem 1.5rem">
+                <div class="modal-header" style="padding-bottom: 15px">
                     <h3 class="modal-title mx-auto">VIEW PROJECT DETAILS</h3>
                 </div>
                 <div class="modal-body">
@@ -123,7 +132,7 @@
                                         <ul>
                                             <c:forEach var="desc" items="${descriptionArray}">
                                                 <li>${desc}</li>
-                                            </c:forEach>
+                                                </c:forEach>
                                         </ul>
                                     </div>
                                 </div>
@@ -137,11 +146,13 @@
         <script>
             function switchToUpdatePopup(projectId) {
                 let frame = window.parent.document.getElementById('viewProjectFrame');
-                frame.src = "updateproject?projectId=" + projectId;
+                frame.src = "update-project?projectId=" + projectId;
             }
             window.onload = function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 const successMsg = urlParams.get('successMsg');
+                const errorMsg = urlParams.get('errorMsg');
+
                 if (successMsg) {
                     Swal.fire({
                         icon: 'success',
@@ -149,6 +160,15 @@
                         text: successMsg,
                         showConfirmButton: false,
                         timer: 1500
+                    });
+                }
+
+                if (errorMsg) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        text: errorMsg,
+                        showConfirmButton: true
                     });
                 }
             };

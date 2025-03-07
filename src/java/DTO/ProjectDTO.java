@@ -21,12 +21,11 @@ public class ProjectDTO {
     private LocalDate endDate;
     private double budget;
     private double profit;
-    private int departmentId;
 
     public ProjectDTO() {
     }
 
-    public ProjectDTO(int projectId, String projectName, String description, String departmentName, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit, int departmentId) {
+    public ProjectDTO(int projectId, String projectName, String description, String departmentName, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit) {
         this.projectId = projectId;
         this.projectName = projectName;
         this.description = description;
@@ -36,7 +35,6 @@ public class ProjectDTO {
         this.endDate = endDate;
         this.budget = budget;
         this.profit = profit;
-        this.departmentId = departmentId;
     }
 
     public ProjectDTO(int projectId, String projectName, String departmentName, LocalDate startDate) {
@@ -116,14 +114,6 @@ public class ProjectDTO {
 
     public void setProfit(double profit) {
         this.profit = profit;
-    }
-
-    public int getDepartmentId() {
-        return departmentId;
-    }
-
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
     }
 
 }
