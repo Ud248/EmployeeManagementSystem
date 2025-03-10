@@ -4,7 +4,9 @@
  */
 package Controller;
 
+import DAO.ProjectDAO;
 import DTO.ProjectDTO;
+import Model.Project;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -12,41 +14,54 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  *
  * @author nongt
  */
 @WebServlet(name = "ViewProject", urlPatterns = {"/view-project"})
-
 public class ViewProject extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String projectId = request.getParameter("projectId");
-        int index = Integer.parseInt(projectId) - 1;
+        String projectCode = request.getParameter("projectCode");
 
-        ArrayList<ProjectDTO> projects = (ArrayList<ProjectDTO>) request.getServletContext().getAttribute("projects");
-        ProjectDTO project = projects.get(index);
+        ProjectDAO pDao = new ProjectDAO();
+        ProjectDTO project = pDao.selectByProjectCode(new Project(projectCode));
 
-        DecimalFormat df = new DecimalFormat("#,###.###");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String formattedStartDate = project.getStartDate().format(formatter);
+        String formattedEndDate = project.getEndDate().format(formatter);
+        String completion = project.getCompletion() + "%";
+        String description = project.getDescription();
+        String[] descriptionArray = description.split("\\.");
+        for (int i = 0; i < descriptionArray.length; i++) {
+            descriptionArray[i] = descriptionArray[i].trim() + ".";
+        }
+        DecimalFormat df = new DecimalFormat("#,###.##");
+        String budget = df.format(project.getBudget());
+        String profit = df.format(project.getProfit());
 
-        request.setAttribute("projectId", projectId);
+        request.setAttribute("projectCode", project.getProjectCode());
         request.setAttribute("projectName", project.getProjectName());
         request.setAttribute("departmentName", project.getDepartmentName());
-        request.setAttribute("description", project.getDescription());
-        request.setAttribute("startDate", project.getStartDate());
-        request.setAttribute("endDate", project.getEndDate());
-        request.setAttribute("completion", project.getCompletion() + "%");
-        request.setAttribute("budget", df.format(project.getBudget()) + " VND");
-        request.setAttribute("profit", df.format(project.getProfit()) + " VND");
+        request.setAttribute("description", description);
+        request.setAttribute("startDate", formattedStartDate);
+        request.setAttribute("endDate", formattedEndDate);
+        request.setAttribute("completion", completion);
+        request.setAttribute("budget", budget);
+        request.setAttribute("profit", profit);
+        request.setAttribute("descriptionArray", descriptionArray);
+
         request.getRequestDispatcher("adminProjectView.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
     }
 }

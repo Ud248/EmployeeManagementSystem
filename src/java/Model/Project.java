@@ -13,6 +13,7 @@ import java.time.LocalDate;
 public class Project {
 
     private int projectId;
+    private String projectCode;
     private String projectName;
     private String description;
     private int completion;
@@ -25,8 +26,13 @@ public class Project {
     public Project() {
     }
 
-    public Project(int projectId, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit, int departmentId) {
+    public Project(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public Project(int projectId, String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit, int departmentId) {
         this.projectId = projectId;
+        this.projectCode = projectCode;
         this.projectName = projectName;
         this.description = description;
         this.completion = completion;
@@ -37,10 +43,25 @@ public class Project {
         this.departmentId = departmentId;
     }
 
-    public Project(String projectName, LocalDate startDate, double budget) {
+    //insert
+    public Project(String projectName, String description, LocalDate startDate, double budget, int departmentId) {
         this.projectName = projectName;
+        this.description = description;
         this.startDate = startDate;
         this.budget = budget;
+        this.departmentId = departmentId;
+    }
+
+    //update
+    public Project(String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit) {
+        this.projectCode = projectCode;
+        this.projectName = projectName;
+        this.description = description;
+        this.completion = completion;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.budget = budget;
+        this.profit = profit;
     }
 
     public int getProjectId() {
@@ -49,6 +70,14 @@ public class Project {
 
     public void setProjectId(int projectId) {
         this.projectId = projectId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getProjectName() {

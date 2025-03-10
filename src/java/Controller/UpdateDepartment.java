@@ -28,14 +28,23 @@ public class UpdateDepartment extends HttpServlet {
     private final String REGEX_TELEPHONE = "^\\d{10}$";
     private final String REGEX_OPENTIME = "^([01]\\d|2[0-3]):[0-5]\\d - ([01]\\d|2[0-3]):[0-5]\\d$";
 
+    private DepartmentDTO getDepartmentDTOById(ArrayList<DepartmentDTO> departments, int id) {
+        for (DepartmentDTO department : departments) {
+            if (department.getDepartmentId() == id) {
+                return department;
+            }
+        }
+        return null;
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String departmentId = request.getParameter("departmentId");
-        int index = Integer.parseInt(departmentId) - 1;
 
         HttpSession session = request.getSession();
-        DepartmentDTO dep = ((ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments")).get(index);
+        ArrayList<DepartmentDTO> departments = (ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments");
+        DepartmentDTO dep = getDepartmentDTOById(departments, Integer.parseInt(departmentId));
         String departmentName = dep.getDepartmentName();
         String description = dep.getDescription();
         String openTime = dep.getOpenTime();

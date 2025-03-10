@@ -1,6 +1,7 @@
 package Controller;
 
 import DAO.ProjectDAO;
+import DTO.DepartmentDTO;
 import DTO.ProjectDTO;
 import Model.Project;
 import java.io.IOException;
@@ -23,53 +24,36 @@ public class DeleteProject extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String projectIdParam = request.getParameter("projectId");
-        String[] projectIds = projectIdParam.split(",");
+        String projectCodeParam = request.getParameter("projectCode");
+        String[] projectCode = projectCodeParam.split(",");
         ProjectDAO pDAO = new ProjectDAO();
         boolean deleteResult = true;
-        String deleteMsg = "";
-        HttpSession session = request.getSession();
-
-        for (String id : projectIds) {
-            if (!pDAO.delete(new Project(Integer.parseInt(id), "", "", 0, null, null, 0, 0, 0))) {
+        for (String pCode : projectCode) {
+            if (!pDAO.delete(new Project(pCode))) {
                 deleteResult = false;
             }
         }
-
+        HttpSession session = request.getSession();
+        String deleteMsg = "";
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
         if (deleteResult) {
-            int currentPage = 1;
-            int itemsPerPage = 10;
+            int totalProject = (int) request.getServletContext().getAttribute("totalProject") - projectCode.length;
+            request.getServletContext().setAttribute("totalProject", totalProject);
 
-            try {
-                String pageParam = request.getParameter("page");
-                if (pageParam != null && !pageParam.isEmpty()) {
-                    currentPage = Integer.parseInt(pageParam);
-                }
-            } catch (NumberFormatException e) {
-                // Use default value
-            }
+            int totalPagesPro = (int) Math.ceil((double) totalProject / 10);
 
-            int totalProjects = (int) request.getServletContext().getAttribute("totalProject") - projectIds.length;
-            int totalPagesProject = (int) Math.ceil((double) totalProjects / 10);
+            session.setAttribute("totalPagesPro", totalPagesPro);
+            session.setAttribute("currentPagePro", 1);
 
-            if (currentPage < 1) {
-                currentPage = 1;
-            }
-            if (currentPage > totalPagesProject) {
-                currentPage = totalPagesProject;
-            }
-
-//            session.setAttribute("currentPagePro", 1);
-//            session.setAttribute("totalPagesPro", totalPagesProject);
-            List<ProjectDTO> projects = pDAO.selectAllProjectDTO(currentPage, itemsPerPage);
-            // List<Project> listProject = pDAO.selectAll();
+            List<ProjectDTO> projects = pDAO.selectAllProjectDTO(1, 10);
+            List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
             request.getServletContext().setAttribute("projects", projects);
-            //request.getServletContext().setAttribute("listProject", listProject);
-            session.setAttribute("totalPagesPro", totalPagesProject);
-            deleteMsg = "Delete project " + String.join(", ", projectIds) + " successfully!";
+            request.getServletContext().setAttribute("departments", departments);
 
+            deleteMsg = "Delete project " + String.join(", ", projectCode) + " successfully!";
         } else {
-            deleteMsg = "Delete project " + String.join(", ", projectIds) + " failed! Please try again!";
+            deleteMsg = "Delete project " + String.join(", ", projectCode) + " failed! Please try again!";
         }
 
         session.setAttribute("actionMsg", deleteMsg);

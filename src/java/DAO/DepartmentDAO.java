@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -251,6 +253,22 @@ public class DepartmentDAO implements DAOInterface<Department> {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public String getDepartmentNameById(int id) {
+        String sql = "SELECT DepartmentName FROM Department WHERE DepartmentID = ?";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            String departmentName = rs.getString("DepartmentName");
+            JDBCUtil.closeConnection(con);
+            return departmentName;
+        } catch (SQLException ex) {
+            Logger.getLogger(DepartmentDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

@@ -23,7 +23,7 @@
                 text-align: left;
                 font-weight: bold;
                 padding-left: 15px;
-                width: 170px;
+                width: 200px;
                 display: inline-block;
                 margin-right: 25px;
                 vertical-align: top;
@@ -92,6 +92,10 @@
                                     <label class="form-label">Project Name:</label>
                                     <span class="detail">${projectName}</span>
                                 </div>
+                                <div class="field-container">
+                                    <label class="form-label">Department Name:</label>
+                                    <span class="detail">${departmentName}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -115,8 +119,12 @@
                                     <span class="detail">${budget}</span>
                                 </div>
                                 <div class="field-container">
-                                    <label class="form-label">Project Manager:</label>
-                                    <span class="detail">${manager}</span>
+                                    <label class="form-label">Profit:</label>
+                                    <span class="detail">${profit}</span>
+                                </div>
+                                <div class="field-container">
+                                    <label class="form-label">Percent Completion:</label>
+                                    <span class="detail">${completion}</span>
                                 </div>
                             </div>
                         </div>
@@ -139,15 +147,17 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="edit-button" onclick="switchToUpdatePopup(${projectId})">Edit</button>
+                    <button type="button" class="edit-button" onclick="switchToUpdatePopup('${projectCode}')">Edit</button>
                 </div>
             </div>
         </div>
         <script>
-            function switchToUpdatePopup(projectId) {
+            function switchToUpdatePopup(projectCode) {
                 let frame = window.parent.document.getElementById('viewProjectFrame');
-                frame.src = "update-project?projectId=" + projectId;
+                console.log("ok");
+                frame.src = "update-project?projectCode=" + projectCode;
             }
+            
             window.onload = function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 const successMsg = urlParams.get('successMsg');

@@ -145,8 +145,6 @@
                                     <label class="form-label">Telephone:</label>
                                     <span class="detail">${telephone}</span>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>

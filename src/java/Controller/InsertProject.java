@@ -30,6 +30,9 @@ public class InsertProject extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        ProjectDAO pDAO = new ProjectDAO();
+
         String projectName = request.getParameter("projectName");
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
@@ -87,18 +90,13 @@ public class InsertProject extends HttpServlet {
             request.setAttribute("startDate", startDate);
             request.setAttribute("budget", budgetStr);
             request.setAttribute("descriptionArray", descriptionArray);
+            request.setAttribute("departmentId", departmentId);
             request.getRequestDispatcher("adminProjectInsert.jsp").forward(request, response);
         } else {
             description = ProjectUtil.getDescription(descriptionArray);
             String insertMsg = "";
             HttpSession session = request.getSession();
-            Project pr = new Project();
-            pr.setProjectName(projectName);
-            pr.setDepartmentId(departmentId);
-            pr.setStartDate(startDate);
-            pr.setBudget(budget);
-            pr.setDescription(description);
-            boolean insertResult = new ProjectDAO().insert(pr);
+            boolean insertResult = pDAO.insert(new Project(projectName, description, startDate, budget, departmentId));
             if (insertResult) {
                 int totalProject = (int) request.getServletContext().getAttribute("totalProject") + 1;
                 request.getServletContext().setAttribute("totalProject", totalProject);

@@ -118,6 +118,7 @@ CREATE TABLE Work(
 
 CREATE TABLE Project(
 	ProjectID INT NOT NULL PRIMARY KEY IDENTITY,
+	ProjectCode CHAR(7) DEFAULT '',
 	ProjectName NVARCHAR(100) NOT NULL,
 	[Description] NVARCHAR(MAX),
 	Completion INT NOT NULL DEFAULT 0,
@@ -233,4 +234,16 @@ BEGIN
 		)
 	FROM INSERTED i 
 	JOIN Employee e ON i.Tel = e.Tel
+END
+
+GO
+CREATE TRIGGER tr_AI_Project
+ON Project
+AFTER INSERT
+AS
+BEGIN
+    UPDATE p
+    SET p.ProjectCode = CONCAT('PRJ', FORMAT(i.ProjectID, '0000'))
+    FROM INSERTED i
+    JOIN Project p ON i.ProjectID = p.ProjectID
 END

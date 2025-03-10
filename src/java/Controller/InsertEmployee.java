@@ -111,7 +111,8 @@ public class InsertEmployee extends HttpServlet {
             request.setAttribute("basicSalary", basicSalary);
             request.getRequestDispatcher("adminEmployeeInsert.jsp").forward(request, response);
         } else {
-            boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
+            boolean success = eDao.insert(new Employee(departmentId, gender, firstName, lastName,
+                    birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
                 int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee") + 1;
                 request.getServletContext().setAttribute("totalEmployee", totalEmployee);

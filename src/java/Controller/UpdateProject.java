@@ -1,12 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package Controller;
 
 import DAO.ProjectDAO;
 import DTO.ProjectDTO;
+import Model.Department;
 import Model.Project;
+import Utils.ProjectUtil;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -29,89 +28,124 @@ public class UpdateProject extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String projectId = request.getParameter("projectId");
-        int index = Integer.parseInt(projectId) - 1;
+        String projectCode = request.getParameter("projectCode");
 
-        HttpSession session = request.getSession();
-        ProjectDTO proj = ((List<ProjectDTO>) request.getServletContext().getAttribute("projects")).get(index);
+        ProjectDAO pDao = new ProjectDAO();
+        ProjectDTO project = pDao.selectByProjectCode(new Project(projectCode));
 
+        String startDate = project.getStartDate() + "";
+        String endDate = project.getEndDate() + "";
+        String completion = project.getCompletion() + "%";
+        String description = project.getDescription();
+        String[] descriptionArray = description.split("\\.");
+        for (int i = 0; i < descriptionArray.length; i++) {
+            descriptionArray[i] = descriptionArray[i].trim() + ".";
+        }
         DecimalFormat df = new DecimalFormat("#,###.##");
+        String budget = df.format(project.getBudget());
+        String profit = df.format(project.getProfit());
 
-        request.setAttribute("projectId", projectId);
-        request.setAttribute("projectName", proj.getProjectName());
-        request.setAttribute("description", proj.getDescription());
-        request.setAttribute("completion", proj.getCompletion());
-        request.setAttribute("startDate", proj.getStartDate());
-        request.setAttribute("endDate", proj.getEndDate());
-        request.setAttribute("budget", df.format(proj.getBudget()));
-        request.setAttribute("profit", df.format(proj.getProfit()));
+        request.setAttribute("projectCode", project.getProjectCode());
+        request.setAttribute("projectName", project.getProjectName());
+        request.setAttribute("departmentName", project.getDepartmentName());
+        request.setAttribute("description", description);
+        request.setAttribute("startDate", startDate);
+        request.setAttribute("endDate", endDate);
+        request.setAttribute("completion", completion);
+        request.setAttribute("budget", budget);
+        request.setAttribute("profit", profit);
+        request.setAttribute("descriptionArray", descriptionArray);
 
         request.getRequestDispatcher("adminProjectUpdate.jsp").forward(request, response);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int projectId = Integer.parseInt(request.getParameter("projectId"));
+        String projectCode = request.getParameter("projectCode");
         String projectName = request.getParameter("projectName");
-        String description = request.getParameter("description");
+        String[] descriptionArray = request.getParameterValues("description");
+        String description = "";
         int completion = Integer.parseInt(request.getParameter("completion"));
         LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
         LocalDate endDate = request.getParameter("endDate") != null && !request.getParameter("endDate").isEmpty()
                 ? LocalDate.parse(request.getParameter("endDate"))
                 : null;
-        double budget = Double.parseDouble(request.getParameter("budget"));
-        double profit = Double.parseDouble(request.getParameter("profit"));
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
+        String departmentName = new DAO.DepartmentDAO().getDepartmentNameById(departmentId);
 
         HttpSession session = request.getSession();
 
         String errorNameMsg = "";
+        String errorDescriptionMsg = "";
         String errorCompletionMsg = "";
         String errorBudgetMsg = "";
         String errorDateMsg = "";
+        String errorProfitMsg = "";
 
         if (projectName.trim().isEmpty()) {
             errorNameMsg = "Project Name must not be empty.";
         }
+        if (ProjectUtil.isEmptyDescription(descriptionArray)) {
+            errorDescriptionMsg = "Description must not be empty.";
+        }
         if (completion < 0 || completion > 100) {
             errorCompletionMsg = "Completion must be between 0 and 100.";
         }
+        double budget = 0, profit = 0;
+        try {
+            budget = Double.parseDouble(request.getParameter("budget"));
+        } catch (NumberFormatException e) {
+            errorBudgetMsg = "Budget must be a valid number.";
+        }
+
+        try {
+            profit = Double.parseDouble(request.getParameter("profit"));
+        } catch (NumberFormatException e) {
+            errorProfitMsg = "Profit must be a valid number.";
+        }
+
         if (budget < 0) {
             errorBudgetMsg = "Budget must be a positive number.";
+        }
+        if (profit < 0) {
+            errorProfitMsg = "Profit must be a positive number.";
         }
         if (endDate != null && endDate.isBefore(startDate)) {
             errorDateMsg = "End Date must be after Start Date.";
         }
 
-        if (!errorNameMsg.isEmpty() || !errorCompletionMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorDateMsg.isEmpty()) {
+        if (!errorNameMsg.isEmpty() || !errorDescriptionMsg.isEmpty() || !errorCompletionMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorProfitMsg.isEmpty() || !errorDateMsg.isEmpty()) {
             request.setAttribute("errorNameMsg", errorNameMsg);
+            request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
             request.setAttribute("errorCompletionMsg", errorCompletionMsg);
             request.setAttribute("errorBudgetMsg", errorBudgetMsg);
             request.setAttribute("errorDateMsg", errorDateMsg);
+            request.setAttribute("errorProfitMsg", errorProfitMsg);
 
-            request.setAttribute("projectId", projectId);
+            request.setAttribute("projectCode", projectCode);
             request.setAttribute("projectName", projectName);
-            request.setAttribute("description", description);
+            request.setAttribute("descriptionArray", descriptionArray);
             request.setAttribute("completion", completion);
             request.setAttribute("startDate", startDate);
             request.setAttribute("endDate", endDate);
             request.setAttribute("budget", budget);
             request.setAttribute("profit", profit);
             request.setAttribute("departmentId", departmentId);
+            request.setAttribute("departmentName", departmentName);
 
             request.getRequestDispatcher("adminProjectUpdate.jsp").forward(request, response);
         } else {
-            boolean updateResult = new ProjectDAO().update(new Project(
-                    projectId, projectName, description, completion, startDate, endDate, budget, profit, departmentId));
-
+            description = ProjectUtil.getDescription(descriptionArray);
+            boolean updateResult = new ProjectDAO().update(new Project(projectCode, projectName, description, completion, startDate, endDate, budget, profit));
             if (updateResult) {
                 session.setAttribute("currentPagePro", 1);
                 List<ProjectDTO> projects = new ProjectDAO().selectAllProjectDTO(1, 10);
                 request.getServletContext().setAttribute("projects", projects);
-                response.sendRedirect("view-project?projectId=" + projectId + "&successMsg=Update successful!");
+                response.sendRedirect("view-project?projectCode=" + projectCode + "&successMsg=Update successful!");
             } else {
-                response.sendRedirect("view-project?projectId=" + projectId + "&errorMsg=Update failed. Please try again!");
+                response.sendRedirect("view-project?projectCode=" + projectCode + "&errorMsg=Update failed. Please try again!");
             }
         }
     }

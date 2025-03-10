@@ -12,7 +12,7 @@ import java.time.LocalDate;
  */
 public class ProjectDTO {
 
-    private int projectId;
+    private String projectCode;
     private String projectName;
     private String description;
     private String departmentName;
@@ -25,8 +25,8 @@ public class ProjectDTO {
     public ProjectDTO() {
     }
 
-    public ProjectDTO(int projectId, String projectName, String description, String departmentName, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit) {
-        this.projectId = projectId;
+    public ProjectDTO(String projectCode, String projectName, String description, String departmentName, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit) {
+        this.projectCode = projectCode;
         this.projectName = projectName;
         this.description = description;
         this.departmentName = departmentName;
@@ -37,19 +37,19 @@ public class ProjectDTO {
         this.profit = profit;
     }
 
-    public ProjectDTO(int projectId, String projectName, String departmentName, LocalDate startDate) {
-        this.projectId = projectId;
+    public ProjectDTO(String projectCode, String projectName, String departmentName, LocalDate startDate) {
+        this.projectCode = projectCode;
         this.projectName = projectName;
         this.departmentName = departmentName;
         this.startDate = startDate;
     }
 
-    public int getProjectId() {
-        return projectId;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setProjectId(int projectId) {
-        this.projectId = projectId;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getProjectName() {
@@ -114,6 +114,11 @@ public class ProjectDTO {
 
     public void setProfit(double profit) {
         this.profit = profit;
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectDTO{" + "projectCode=" + projectCode + ", projectName=" + projectName + ", description=" + description + ", departmentName=" + departmentName + ", completion=" + completion + ", startDate=" + startDate + ", endDate=" + endDate + ", budget=" + budget + ", profit=" + profit + '}';
     }
 
 }

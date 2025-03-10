@@ -95,57 +95,75 @@
         <div class="container">
             <div class="modal-content" style="padding: 1.5rem 1.5rem 1rem 1.5rem">
                 <div class="modal-header" style="padding-bottom: 15px">
-                    <h4 class="modal-title mx-auto">UPDATE DEPARTMENT DETAIL</h4>
+                    <h3 class="modal-title mx-auto">UPDATE PROJECT DETAIL</h3>
                 </div>
                 <div class="modal-body">
-                    <form action="updatedepartment" method="post">
+                    <form action="update-project" method="post">
                         <div class="mb-3">
                             <h5 class="section-header">GENERAL INFORMATION</h5>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <div class="field-container">
-                                        <label class="form-label">Department ID:</label>
-                                        <span class="detail">${departmentId}</span>
-                                        <input type="hidden" name="departmentId" value="${departmentId}"/>
+                                        <label class="form-label">Project ID:</label>
+                                        <span class="detail">${projectId}</span>
+                                        <input type="hidden" name="projectId" value="${projectId}"/>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-7">
+                                    <div class="field-container">
+                                        <label class="form-label">Project Name:</label>
+                                        <input type="text" class="form-control detail" name="projectName" value="${projectName}" required>
+                                    </div>
+                                    <div class="error">${errorNameMsg}</div>
+
                                     <div class="field-container">
                                         <label class="form-label">Department Name:</label>
-                                        <input type="text" class="form-control detail" name="departmentName" value="${departmentName}" required>
-                                        <div class="error">${errorNameMsg}</div>
+                                        <select class="form-select detail" id="department" name="department" required autocomplete="off">
+                                            <option selected value="None">Select Employee Department</option>
+                                            <c:forEach var="department" items="${applicationScope.listDepartment}">
+                                                <option value="${department.departmentId}" 
+                                                        ${departmentId == department.departmentId ? 'selected' : ''}>
+                                                    ${department.departmentName}
+                                                </option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
-                                </div>                                
+                                </div>                               
                             </div>
                         </div>
 
                         <div class="section-divider"></div>
 
                         <div class="mb-3">
-                            <h5 class="section-header">WORK INFORMATION</h5>
+                            <h5 class="section-header">PROJECT INFORMATION</h5>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-5">
                                     <div class="field-container">
-                                        <label class="form-label">Open Time:</label>
-                                        <input type="text" class="form-control detail" name="openTime" value="${openTime}" required>
-                                        <div class="error">${errorOpenTimeMsg}</div>
+                                        <label class="form-label">Start Date:</label>
+                                        <input type="date" class="form-control detail" name="startDate" value="${startDate}" required>
+                                        <div class="error">${errorStartDateMsg}</div>
                                     </div>
-
                                     <div class="field-container">
-                                        <label class="form-label">Manager:</label>
-                                        <span class="detail">${manager}</span>
+                                        <label class="form-label">End Date:</label>
+                                        <input type="date" class="form-control detail" name="endDate" value="${endDate}" required>
+                                        <div class="error">${errorEndDateMsg}</div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-7">
                                     <div class="field-container">
-                                        <label class="form-label">Telephone:</label>
-                                        <input type="text" class="form-control" name="telephone" value="${telephone}" required>
-                                        <div class="error">${errorTelephoneMsg}</div>
+                                        <label class="form-label">Budget:</label>
+                                        <input type="text" class="form-control" name="budget" value="${budget}" required>
+                                        <div class="error">${errorBudgetMsg}</div>
                                     </div>
-
                                     <div class="field-container">
-                                        <label class="form-label">Total Employee:</label>
-                                        <span class="detail">${totalEmployee}</span>
+                                        <label class="form-label">Profit:</label>
+                                        <input type="text" class="form-control" name="profit" value="${profit}" required>
+                                        <div class="error">${errorProfitMsg}</div>
+                                    </div>
+                                    <div class="field-container">
+                                        <label class="form-label">Completion:</label>
+                                        <input type="text" class="form-control" name="completion" value="${completion}" required>
+                                        <div class="error">${errorCompletionMsg}</div>
                                     </div>
                                 </div>
                             </div>
@@ -173,15 +191,6 @@
                                         <i class="fa fa-plus"></i>
                                     </button>
                                     <div class="error">${errorDescriptionMsg}</div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Cost Per Month:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail">${costPerMonth}</span>
                                 </div>
                             </div>
                         </div>
@@ -232,9 +241,9 @@
                 saveToLocalStorage();
             }
 
-            function goBack(departmentId) {
-                let frame = window.parent.document.getElementById('viewDepartmentFrame');
-                frame.src = "viewdepartment?departmentId=" + departmentId;
+            function goBack(projectId) {
+                let frame = window.parent.document.getElementById('viewProjectFrame');
+                frame.src = "view-project?projectId=" + projectId;
             }
 
         </script>

@@ -106,7 +106,7 @@
                                 </div>                               
                                 <div class="col-md-8">
                                     <select class="form-select" id="department" name="department" required autocomplete="off">
-                                            <option selected value="None">Select Employee Department</option>
+                                            <option selected value="None">Select Project Department</option>
                                             <c:forEach var="department" items="${applicationScope.listDepartment}">
                                                 <option value="${department.departmentId}" 
                                                         ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
