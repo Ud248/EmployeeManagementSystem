@@ -74,8 +74,8 @@
                             <td class="select-column" style="text-align: center;">
                                 <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}" onchange="toggleDeleteMode()">
                             </td>
-                            <td><a href="#" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getEmployeeCode()}</a></td>
-                            <td>${e.getFullname()}</td>
+                            <td>${e.getEmployeeCode()}</td>
+                            <td><a href="#" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getFullname()}</a></td>
                             <td>${e.getTel()}</td>
                             <td>${e.getPositionName()}</td>
                             <td>${e.getDepartmentName()}</td>
