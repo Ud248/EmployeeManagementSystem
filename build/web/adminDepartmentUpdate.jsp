@@ -126,26 +126,24 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="field-container">
-                                        <label class="form-label">Open Time:</label>
-                                        <input type="text" class="form-control detail" name="openTime" value="${openTime}" required>
-                                        <div class="error">${errorOpenTimeMsg}</div>
-                                    </div>
-
-                                    <div class="field-container">
                                         <label class="form-label">Manager:</label>
                                         <span class="detail">${manager}</span>
+                                    </div>
+                                    <div class="field-container">
+                                        <label class="form-label">Total Employee:</label>
+                                        <span class="detail">${totalEmployee}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="field-container">
+                                        <label class="form-label">Open Time:</label>
+                                        <input type="text" class="form-control" name="openTime" value="${openTime}" required>
+                                        <div class="error">${errorOpenTimeMsg}</div>
+                                    </div>
+                                    <div class="field-container">
                                         <label class="form-label">Telephone:</label>
                                         <input type="text" class="form-control" name="telephone" value="${telephone}" required>
                                         <div class="error">${errorTelephoneMsg}</div>
-                                    </div>
-
-                                    <div class="field-container">
-                                        <label class="form-label">Total Employee:</label>
-                                        <span class="detail">${totalEmployee}</span>
                                     </div>
                                 </div>
                             </div>
