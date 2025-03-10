@@ -26,12 +26,13 @@ public class Employee {
     public Employee(String employeeCode) {
         this.employeeCode = employeeCode;
     }
-    
+
     //Use when insert Employee
-    public Employee(String firstName, String lastName, LocalDate birthDate, String tel, String address, int positionId, int departmentId, int basicSalary) {
+    public Employee(String firstName, String lastName, LocalDate birthDate, String gender, String tel, String address, int positionId, int departmentId, int basicSalary) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
+        this.gender = gender;
         this.tel = tel;
         this.address = address;
         this.positionId = positionId;
