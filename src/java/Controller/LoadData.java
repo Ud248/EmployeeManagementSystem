@@ -63,7 +63,34 @@ public class LoadData extends HttpServlet {
             } catch (NumberFormatException e) {
                 // Use default value
             }
-            int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee");
+
+            int positionIdFilter = 0, departmentIdFilter = 0;
+            if ("true".equals(request.getParameter("reset"))) {
+                session.removeAttribute("positionIdFilter");
+                session.removeAttribute("departmentIdFilter");
+            } else {
+                positionIdFilter = (session.getAttribute("positionIdFilter") != null) ? (int) session.getAttribute("positionIdFilter") : 0;
+                departmentIdFilter = (session.getAttribute("departmentIdFilter") != null) ? (int) session.getAttribute("departmentIdFilter") : 0;
+                String positionIdFilterParam = request.getParameter("position");
+                if (positionIdFilterParam != null && !positionIdFilterParam.isEmpty()) {
+                    try {
+                        positionIdFilter = Integer.parseInt(positionIdFilterParam);
+                    } catch (NumberFormatException e) {
+                        positionIdFilter = 0;
+                    }
+                }
+
+                String departmentIdFilterParam = request.getParameter("department");
+                if (departmentIdFilterParam != null && !departmentIdFilterParam.isEmpty()) {
+                    try {
+                        departmentIdFilter = Integer.parseInt(departmentIdFilterParam);
+                    } catch (NumberFormatException e) {
+                        departmentIdFilter = 0;
+                    }
+                }
+            }
+
+            int totalEmployee = eDao.getTotalEmployeesForFilter(departmentIdFilter, positionIdFilter);
             int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / itemsPerPage);
             if (currentPageEmployee < 1) {
                 currentPageEmployee = 1;
@@ -110,14 +137,16 @@ public class LoadData extends HttpServlet {
                 currentPagePro = totalPagesPro;
             }
 
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPageEmployee, itemsPerPage);
+            List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, itemsPerPage, departmentIdFilter, positionIdFilter);
             List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(currentPageDep, itemsPerPage);
             List<ProjectDTO> projects = pDAO.selectAllProjectDTO(currentPagePro, itemsPerPage);
 
-            request.getServletContext().setAttribute("employees", employees);
+            session.setAttribute("employees", employees);
             request.getServletContext().setAttribute("departments", departments);
             request.getServletContext().setAttribute("projects", projects);
 
+            session.setAttribute("positionIdFilter", positionIdFilter);
+            session.setAttribute("departmentIdFilter", departmentIdFilter);
             session.setAttribute("currentPageEmployee", currentPageEmployee);
             session.setAttribute("totalPagesEmployee", totalPagesEmployee);
             session.setAttribute("totalEmployee", totalEmployee);

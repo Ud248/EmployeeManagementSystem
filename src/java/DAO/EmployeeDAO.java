@@ -107,6 +107,86 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return 0;
     }
 
+    //Filter 
+    public List<EmployeeDTO> selectEmployeesByPageForFilter(int page, int itemsPerPage, int departmentId, int positionId) {
+        List<EmployeeDTO> result = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT \n"
+                + "    e.EmployeeCode, \n"
+                + "    e.LastName + ' ' + e.FirstName AS Fullname, \n"
+                + "    e.Tel, \n"
+                + "    p.PositionName AS PositionName, \n"
+                + "    COALESCE(d.DepartmentName, '') AS DepartmentName \n"
+                + "FROM Employee e \n"
+                + "JOIN Position p ON e.PositionID = p.PositionID \n"
+                + "LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID \n"
+                + "WHERE 1=1 ");
+
+        if (departmentId != 0) {
+            sql.append(" AND e.DepartmentID = ? ");
+        }
+        if (positionId != 0) {
+            sql.append(" AND e.PositionID = ? ");
+        }
+        sql.append("ORDER BY e.EmployeeCode \n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;");
+
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+
+            if (departmentId != 0) {
+                st.setInt(paramIndex++, departmentId);
+            }
+            if (positionId != 0) {
+                st.setInt(paramIndex++, positionId);
+            }
+            st.setInt(paramIndex++, (page - 1) * itemsPerPage);
+            st.setInt(paramIndex, itemsPerPage);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(new EmployeeDTO(
+                        rs.getString("EmployeeCode"),
+                        rs.getString("Fullname"),
+                        rs.getString("Tel"),
+                        rs.getString("PositionName"),
+                        rs.getString("DepartmentName")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int getTotalEmployeesForFilter(int departmentId, int positionId) {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) AS total FROM Employee WHERE 1=1 ");
+
+        if (departmentId != 0) {
+            sql.append(" AND DepartmentID = ? ");
+        }
+        if (positionId != 0) {
+            sql.append(" AND PositionID = ? ");
+        }
+
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+
+            if (departmentId != 0) {
+                st.setInt(paramIndex++, departmentId);
+            }
+            if (positionId != 0) {
+                st.setInt(paramIndex++, positionId);
+            }
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     @Override
     public Employee selectById(Employee t) {
         Employee result = null;
@@ -397,7 +477,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return isExist;
     }
-    
+
     public boolean isExistManagerInDepartmentForUpdate(int departmentId, String employeeCode) {
         String sql = "SELECT 1\n"
                 + "FROM Employee \n"
@@ -438,7 +518,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return isExist;
     }
-    
+
     public boolean isExistPhoneNumberForUpdate(String tel, String employeeCode) {
         String sql = "SELECT COUNT(*) FROM Employee WHERE Tel = ? AND EmployeeCode != ?";
         boolean isExist = false;
@@ -458,9 +538,14 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return isExist;
     }
-    
+
     public static void main(String[] args) {
         EmployeeDAO eDao = new EmployeeDAO();
-        System.out.println(eDao.isExistManagerInDepartment(6));
+        List<EmployeeDTO> list = eDao.selectEmployeesByPageForFilter(1, 100, 0, 3);
+        System.out.println(eDao.getTotalEmployeesForFilter(0, 3));
+        System.out.println(list.size());
+        for (EmployeeDTO employeeDTO : list) {
+            System.out.println(employeeDTO);
+        }
     }
 }

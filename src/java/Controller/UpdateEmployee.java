@@ -155,11 +155,13 @@ public class UpdateEmployee extends HttpServlet {
             if (success) {
                 int currentPageEmployee = (int) session.getAttribute("currentPageEmployee");
                 int currentPageDep = (int) session.getAttribute("currentPageDep");
+                int positionIdFilter = (int) session.getAttribute("positionIdFilter");
+                int departmentIdFilter = (int) session.getAttribute("departmentIdFilter");
 
-                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(currentPageEmployee, 10);
+                List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, 10, departmentIdFilter, positionIdFilter);
                 List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(currentPageDep, 10);
 
-                request.getServletContext().setAttribute("employees", employees);
+                session.setAttribute("employees", employees);
                 request.getServletContext().setAttribute("departments", departments);
 
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");

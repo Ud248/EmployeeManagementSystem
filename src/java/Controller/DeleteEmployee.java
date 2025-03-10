@@ -44,17 +44,18 @@ public class DeleteEmployee extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         if (deleteResult) {
-            int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee") - employeeCode.length;
-            request.getServletContext().setAttribute("totalEmployee", totalEmployee);
-            
+            int currentPageDep = (int) session.getAttribute("currentPageEmployee");
+            int positionIdFilter = (int) session.getAttribute("positionIdFilter");
+            int departmentIdFilter = (int) session.getAttribute("departmentIdFilter");
+            int totalEmployee = eDao.getTotalEmployeesForFilter(departmentIdFilter, positionIdFilter);
             int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / 10);
-
-            session.setAttribute("totalPagesEmployee", totalPagesEmployee);
-            session.setAttribute("currentPageEmployee", 1);
-
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPage(1, 10);
+            List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageDep, 10, departmentIdFilter, positionIdFilter);
             List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
-            request.getServletContext().setAttribute("employees", employees);
+
+            session.setAttribute("totalEmployee", totalEmployee);
+            session.setAttribute("totalPagesEmployee", totalPagesEmployee);
+            session.setAttribute("employees", employees);
+
             request.getServletContext().setAttribute("departments", departments);
 
             deleteMsg = "Delete employee " + String.join(", ", employeeCode) + " successfully!";

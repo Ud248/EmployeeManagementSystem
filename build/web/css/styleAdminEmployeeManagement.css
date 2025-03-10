@@ -55,7 +55,13 @@ body {
 .title_table {
     padding: 8px;
     margin: 10px 0;
-    width: 300px;
+    width: 100%;
+    font-size: 32px; /* Tăng kích thước chữ */
+    font-weight: bold; /* In đậm */
+    text-transform: uppercase; /* Viết hoa toàn bộ */
+    letter-spacing: 1.5px; /* Giãn chữ nhẹ */
+    color: #333; /* Màu chữ */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
 }
 
 .new-employee-btn {
@@ -98,8 +104,9 @@ body {
 .toolbar {
     margin: 20px 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .pagination {
@@ -217,4 +224,63 @@ td a:hover {
 
 .action-btn{
     padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.filter_form{
+    display: flex;
+    width: 50%;
+    margin-left: auto;
+    justify-content: flex-end;
+}
+
+.filter_form *{
+    margin-right: 5px;
+}
+
+.filter_form select {
+    display: block;
+    width: 30%;
+    padding: 6px 32px 6px 12px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    appearance: none;
+}
+
+.filter_form select:hover {
+    border-color: #888;
+}
+
+.filter_form select:focus {
+    border-color: #555;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.filter_form button{
+    width: 8%;
+    color: white;
+    border-radius: 5px;
+    border: 0px;
+    cursor: pointer;
+}
+
+.filter_btn{
+    background-color: #007bff;
+}
+
+.reset_btn{
+    background-color: #dc3545;
 }
