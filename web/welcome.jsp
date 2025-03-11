@@ -7,6 +7,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="DAO.DepartmentDAO" %>
 <%@ page import="DAO.EmployeeDAO" %>
+<%
+    if (session.getAttribute("employee") == null) {
+        response.sendRedirect("admin.jsp");
+        return;
+    }
+    else if(!(boolean)session.getAttribute("isAdmin")){
+        response.sendRedirect("403Error.jsp");
+        return;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>

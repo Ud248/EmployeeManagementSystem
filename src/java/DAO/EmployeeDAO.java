@@ -72,7 +72,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 + "FROM Employee e \n"
                 + "JOIN Position p ON e.PositionID = p.PositionID \n"
                 + "LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID \n"
-                + "ORDER BY e.EmployeeCode \n"
+                + "ORDER BY p.PositionID \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
@@ -127,7 +127,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         if (positionId != 0) {
             sql.append(" AND e.PositionID = ? ");
         }
-        sql.append("ORDER BY e.EmployeeCode \n"
+        sql.append("ORDER BY p.PositionID \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;");
 
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql.toString())) {

@@ -12,7 +12,7 @@
         <!-- CSS -->
         <link rel="stylesheet" href="css/styleLogin.css">
         <title>Login</title>
-        <link rel="icon" type="image/x-icon" href="image/logo.png">
+        <link rel="icon" type="image/x-icon" href="image/Logo.jpg">
     </head>
     <body>
         <% 

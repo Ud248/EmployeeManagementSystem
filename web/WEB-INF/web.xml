@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
-        <servlet-name>AddWorkSchedule</servlet-name>
-        <servlet-class>Controller.AddWorkSchedule</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>InsertDepartment</servlet-name>
         <servlet-class>Controller.InsertDepartment</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Attendance</servlet-name>
-        <url-pattern>/attendance</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AddWorkSchedule</servlet-name>
-        <url-pattern>/addWorkSchedule</url-pattern>
-    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>InsertDepartment</servlet-name>
         <url-pattern>/insert-department</url-pattern>
@@ -26,10 +14,6 @@
     <servlet>
         <servlet-name>login</servlet-name>
         <servlet-class>Controller.Login</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Attendance</servlet-name>
-        <servlet-class>Controller.Attendance</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>login</servlet-name>

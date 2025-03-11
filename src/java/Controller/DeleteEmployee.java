@@ -36,16 +36,20 @@ public class DeleteEmployee extends HttpServlet {
         String deleteMsg = "";
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
-        
+
         deleteResult = eDao.deleteAllByID(employeeCode);
 
         if (deleteResult) {
-            int currentPageDep = (int) session.getAttribute("currentPageEmployee");
+            int currentPageEmployee = (int) session.getAttribute("currentPageEmployee");
             int positionIdFilter = (int) session.getAttribute("positionIdFilter");
             int departmentIdFilter = (int) session.getAttribute("departmentIdFilter");
             int totalEmployee = eDao.getTotalEmployeesForFilter(departmentIdFilter, positionIdFilter);
             int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / 10);
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageDep, 10, departmentIdFilter, positionIdFilter);
+            if (currentPageEmployee > totalPagesEmployee) {
+                --currentPageEmployee;
+                session.setAttribute("currentPageEmployee", currentPageEmployee);
+            }
+            List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, 10, departmentIdFilter, positionIdFilter);
             List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
 
             session.setAttribute("totalEmployee", totalEmployee);

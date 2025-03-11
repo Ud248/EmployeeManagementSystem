@@ -43,6 +43,7 @@ public class Login extends HttpServlet {
             EmployeeDTO employee = employeeDao.selectDTOById(account.getEmployeeId());
             HttpSession session = request.getSession();
             session.setAttribute("employee", employee);
+            
             session.setAttribute("username", account.getUsername());
             url = "load-data";
         } else {
