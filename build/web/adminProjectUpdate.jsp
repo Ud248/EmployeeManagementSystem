@@ -104,9 +104,9 @@
                             <div class="row">
                                 <div class="col-md-5">
                                     <div class="field-container">
-                                        <label class="form-label">Project ID:</label>
-                                        <span class="detail">${projectId}</span>
-                                        <input type="hidden" name="projectId" value="${projectId}"/>
+                                        <label class="form-label">Project Code:</label>
+                                        <span class="detail">${projectCode}</span>
+                                        <input type="hidden" name="projectCode" value="${projectCode}"/>
                                     </div>
                                 </div>
                                 <div class="col-md-7">
@@ -118,11 +118,9 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Department Name:</label>
-                                        <select class="form-select detail" id="department" name="department" required autocomplete="off">
-                                            <option selected value="None">Select Employee Department</option>
+                                        <select class="form-select detail" id="departmentId" name="departmentId" required autocomplete="off">
                                             <c:forEach var="department" items="${applicationScope.listDepartment}">
-                                                <option value="${department.departmentId}" 
-                                                        ${departmentId == department.departmentId ? 'selected' : ''}>
+                                                <option value="${department.departmentId}" ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
                                                     ${department.departmentName}
                                                 </option>
                                             </c:forEach>

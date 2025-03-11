@@ -48,8 +48,8 @@
                                 <td class="select-column" style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${p.getProjectCode()}" onchange="toggleDeleteMode()">
                                 </td>
-                                <td><a href="#" onclick="openViewPopup('viewProjectPopup', '${p.getProjectCode()}', event)">${p.getProjectCode()}</a></td>
-                                <td>${p.getProjectName()}</td>
+                                <td>${p.getProjectCode()}</td>
+                                <td><a href="#" onclick="openViewPopup('viewProjectPopup', '${p.getProjectCode()}', event)">${p.getProjectName()}</a></td>
                                 <td>${p.getDepartmentName()}</td>
                                 <td class="select-column" style="text-align: center">${p.getStartDate()}</td>
                             </tr>

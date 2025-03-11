@@ -211,8 +211,8 @@ public class ProjectDAO implements DAOInterface<Project> {
         try {
             Connection con = JDBCUtil.getConnection();
             String sql = "UPDATE Project\n"
-                    + "SET ProjectName = ?, Description = ?, Completion = ?, StartDate = ?, EndDate = ?, Budget = ?, Profit = ?, DepartmentID = ?\n"
-                    + "WHERE ProjectID = ?";
+                    + "SET ProjectName = ?, Description = ?, Completion = ?, StartDate = ?, EndDate = ?, Budget = ?, Profit = ?\n"
+                    + "WHERE ProjectCode = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, p.getProjectName());
             st.setString(2, p.getDescription());
@@ -221,8 +221,7 @@ public class ProjectDAO implements DAOInterface<Project> {
             st.setDate(5, Date.valueOf(p.getEndDate()));
             st.setDouble(6, p.getBudget());
             st.setDouble(7, p.getProfit());
-            st.setInt(8, p.getDepartmentId());
-            st.setInt(9, p.getProjectId());
+            st.setString(8, p.getProjectCode());
             result = st.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -242,5 +241,11 @@ public class ProjectDAO implements DAOInterface<Project> {
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public static void main(String[] args) {
+        ProjectDAO pDao = new ProjectDAO();
+        boolean e = pDao.update(new Project("PRJ0001", "An Mau Do", "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", 10, LocalDate.now(), LocalDate.now(), 1, 1));
+        System.out.println(e);
     }
 }

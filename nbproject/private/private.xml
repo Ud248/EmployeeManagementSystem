@@ -2,6 +2,12 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Controller/UpdateProject.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectUpdate.jsp</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/DAO/ProjectDAO.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectView.jsp</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Model/Project.java</file>
+        </group>
     </open-files>
 </project-private>

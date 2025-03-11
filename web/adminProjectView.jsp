@@ -83,8 +83,8 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <div class="field-container">
-                                    <label class="form-label">Project ID:</label>
-                                    <span class="detail">${projectId}</span>
+                                    <label class="form-label">Project Code:</label>
+                                    <span class="detail">${projectCode}</span>
                                 </div>
                             </div>
                             <div class="col-md-7">
