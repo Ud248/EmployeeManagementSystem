@@ -20,7 +20,7 @@
 
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
-                <div class="toolbar">
+                <div class="head">
                     <h1 class="title_table">Employee List</h1>
                 </div>
 

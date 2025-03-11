@@ -418,6 +418,40 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result > 0;
     }
 
+    public boolean deleteAllByID(String[] codes) {
+        int[] result = null;
+        int totalRowsDeleted = 0;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            con.setAutoCommit(false);
+            String sql = "DELETE FROM Employee WHERE EmployeeCode=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            for (String code : codes) {
+                st.setString(1, code);
+                st.addBatch();
+            }
+            result = st.executeBatch();
+            for (int row : result) {
+                totalRowsDeleted += row;
+            }
+            if (totalRowsDeleted != codes.length) {
+                throw new SQLException();
+            }
+            con.commit();
+            st.close();
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+                return false;
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            e.printStackTrace();
+        }
+        return totalRowsDeleted == codes.length;
+    }
+
     @Override
     public boolean update(Employee t) {
         int result = 0;

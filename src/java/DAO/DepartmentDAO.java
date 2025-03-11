@@ -150,22 +150,38 @@ public class DepartmentDAO implements DAOInterface<Department> {
         return result > 0;
     }
 
-    public boolean delete(int id) {
-        int result = 0;
+    public boolean deleteAllByID(ArrayList<Integer> ids) {
+        int[] result = null;
+        int totalRowsDeleted = 0;
+        Connection con = JDBCUtil.getConnection();
         try {
-            Connection con = JDBCUtil.getConnection();
-
+            con.setAutoCommit(false);
             String sql = "DELETE FROM Department WHERE DepartmentID=?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setInt(1, id);
-
-            result = st.executeUpdate();
-
+            for (int id : ids) {
+                st.setInt(1, id);
+                st.addBatch();
+            }
+            result = st.executeBatch();
+            for (int row : result) {
+                totalRowsDeleted += row;
+            }
+            if (totalRowsDeleted != ids.size()) {
+                throw new SQLException();
+            }
+            con.commit();
+            st.close();
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
+            try {
+                con.rollback();
+                return false;
+            } catch (SQLException ex) {
+                Logger.getLogger(DepartmentDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
             e.printStackTrace();
         }
-        return result > 0;
+        return totalRowsDeleted == ids.size();
     }
 
     @Override

@@ -13,14 +13,10 @@
 
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
-                <div class="d-flex">
-                    <div class="toolbar">
-                        <input type="text" class="search-box" id="searchName" placeholder="Search With Department Name"/>
-                    </div>
-
-                    <button id="searchButton" class="search-btn">Search</button>
+                <div class="head">
+                    <h1 class="title_table">Department List</h1>
                 </div>
-
+                
                 <div class="action-btn">
                     <button id="deleteButton" class="delete-btn" disabled=""><i class="ph ph-trash"></i>Delete</button>
                     <button class="new-employee-btn" onclick="openPopup('insertDepartmentPopup', null, event)">

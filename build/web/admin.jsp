@@ -49,12 +49,6 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="loadContent('adminWorkSchedule')">
-                            <i class="ph-bold ph-calendar-blank"></i>
-                            <span class="text">Work Schedule</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="javascript:void(0);" onclick="loadContent('adminProjectManagement')">
                             <i class="ph-bold ph-clipboard-text"></i>
                             <span class="text">Project</span>

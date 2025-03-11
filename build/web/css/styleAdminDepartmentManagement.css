@@ -73,11 +73,12 @@ body {
     margin-bottom: 20px;
 }
 
-.toolbar {
+.head {
     margin: 20px 0;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 td a {
@@ -241,4 +242,16 @@ td a:hover {
     text-align: center;
     margin-top: 10px;
     color: #666;
+}
+
+.title_table {
+    padding: 8px;
+    margin: 10px 0;
+    width: 100%;
+    font-size: 32px; /* Tăng kích thước chữ */
+    font-weight: bold; /* In đậm */
+    text-transform: uppercase; /* Viết hoa toàn bộ */
+    letter-spacing: 1.5px; /* Giãn chữ nhẹ */
+    color: #333; /* Màu chữ */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
 }

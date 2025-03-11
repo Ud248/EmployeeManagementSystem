@@ -32,16 +32,12 @@ public class DeleteEmployee extends HttpServlet {
         String[] employeeCode = employeeCodeParam.split(",");
         EmployeeDAO eDao = new EmployeeDAO();
         boolean deleteResult = true;
-        int deletedEmployee = 0;
-        for (String eCode : employeeCode) {
-            if (!eDao.delete(new Employee(eCode))) {
-                deleteResult = false;
-            }
-        }
         HttpSession session = request.getSession();
         String deleteMsg = "";
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
+        
+        deleteResult = eDao.deleteAllByID(employeeCode);
 
         if (deleteResult) {
             int currentPageDep = (int) session.getAttribute("currentPageEmployee");
