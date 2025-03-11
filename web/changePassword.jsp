@@ -4,6 +4,7 @@
     Author     : Ud
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (session.getAttribute("employee") == null) {
@@ -14,6 +15,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="icon" type="image/x-icon" href="image/Logo.jpg">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- CSS -->
         <link rel="stylesheet" href="css/styleChangePassword.css">
@@ -44,6 +46,11 @@
                 <span style="color: red;">${empty error ? '' : error}</span>
                 <div class="input-box">
                     <button class="btn-submit">Change Password</button>
+                    <c:choose>
+                        <c:when test="%{isAdmin} eq true"><a href="admin.jsp" class="cancel_btn"></c:when>
+                            <c:otherwise><a href="employee.jsp" class="cancel_btn"></c:otherwise>
+                        </c:choose>
+                        Cancel</a>
                 </div>
             </form>
         </div>

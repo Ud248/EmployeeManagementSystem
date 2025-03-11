@@ -9,13 +9,17 @@
         response.sendRedirect("login.jsp"); // Nếu chưa đăng nhập, chuyển về trang login
         return;
     }
+    else if(!(boolean)session.getAttribute("isAdmin")){
+        response.sendRedirect("403Error.jsp");
+        return;
+    }
 %>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Home page</title>
-        <link rel="icon" type="image/x-icon" href="image/logo.png">
+        <link rel="icon" type="image/x-icon" href="image/Logo.jpg">
         <link rel="stylesheet" href="./css/styleAdmin.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -46,12 +50,6 @@
                         <a href="javascript:void(0);" onclick="loadContent('adminDepartmentManagement')">
                             <i class="ph ph-users-four"></i>    
                             <span class="text">Department Management</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" onclick="loadContent('adminWorkSchedule')">
-                            <i class="ph-bold ph-calendar-blank"></i>
-                            <span class="text">Work Schedule</span>
                         </a>
                     </li>
                     <li>

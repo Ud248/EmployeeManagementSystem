@@ -72,7 +72,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
                 + "FROM Employee e \n"
                 + "JOIN Position p ON e.PositionID = p.PositionID \n"
                 + "LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID \n"
-                + "ORDER BY e.EmployeeCode \n"
+                + "ORDER BY p.PositionID \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
@@ -127,7 +127,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         if (positionId != 0) {
             sql.append(" AND e.PositionID = ? ");
         }
-        sql.append("ORDER BY e.EmployeeCode \n"
+        sql.append("ORDER BY p.PositionID \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;");
 
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql.toString())) {
@@ -416,6 +416,40 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             e.printStackTrace();
         }
         return result > 0;
+    }
+
+    public boolean deleteAllByID(String[] codes) {
+        int[] result = null;
+        int totalRowsDeleted = 0;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            con.setAutoCommit(false);
+            String sql = "DELETE FROM Employee WHERE EmployeeCode=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            for (String code : codes) {
+                st.setString(1, code);
+                st.addBatch();
+            }
+            result = st.executeBatch();
+            for (int row : result) {
+                totalRowsDeleted += row;
+            }
+            if (totalRowsDeleted != codes.length) {
+                throw new SQLException();
+            }
+            con.commit();
+            st.close();
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException e) {
+            try {
+                con.rollback();
+                return false;
+            } catch (SQLException ex) {
+                Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            e.printStackTrace();
+        }
+        return totalRowsDeleted == codes.length;
     }
 
     @Override

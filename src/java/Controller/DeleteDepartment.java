@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,12 +33,11 @@ public class DeleteDepartment extends HttpServlet {
         boolean deleteResult = true;
         String deleteMsg = "";
         HttpSession session = request.getSession();
-
+        ArrayList<Integer> ids = new ArrayList<>();
         for (String id : departmentId) {
-            if (!dDAO.delete(Integer.parseInt(id))) {
-                deleteResult = false;
-            }
+            ids.add(Integer.parseInt(id));
         }
+        deleteResult = dDAO.deleteAllByID(ids);
         if (deleteResult) {
             int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") - departmentId.length;
             int totalPagesDep = (int) Math.ceil((double) totalDepartment / 10);

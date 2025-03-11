@@ -15,7 +15,7 @@ CREATE TABLE Position(
 
 CREATE TABLE Department(
 	DepartmentID INT PRIMARY KEY IDENTITY,
-	DepartmentName NVARCHAR(100) NOT NULL UNIQUE,
+	DepartmentName NVARCHAR(100) NOT NULL,
 	[Description] NVARCHAR(MAX) NOT NULL,
 	StartTime TIME NOT NULL,
 	EndTime TIME NOT NULL,

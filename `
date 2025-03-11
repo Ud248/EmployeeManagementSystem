@@ -1,0 +1,37 @@
+[1mdiff --cc nbproject/private/private.properties[m
+[1mindex 4e4a966,7a0c96e..0000000[m
+[1m--- a/nbproject/private/private.properties[m
+[1m+++ b/nbproject/private/private.properties[m
+[36m@@@ -1,4 -1,4 +1,11 @@@[m
+[32m++<<<<<<< HEAD[m
+[32m +deploy.ant.properties.file=C:\\Users\\nongt\\AppData\\Roaming\\NetBeans\\17\\tomcat101.properties[m
+[32m +j2ee.server.home=D:/FPT/Spring2025/PRJ301/apache-tomcat-10.1.34[m
+[32m +j2ee.server.instance=tomcat101:home=D:\\FPT\\Spring2025\\PRJ301\\apache-tomcat-10.1.34[m
+[32m +user.properties.file=C:\\Users\\nongt\\AppData\\Roaming\\NetBeans\\17\\build.properties[m
+[32m++=======[m
+[32m+ deploy.ant.properties.file=C:\\Users\\Ud\\AppData\\Roaming\\NetBeans\\17\\tomcat101.properties[m
+[32m+ j2ee.server.home=C:/Program Files/Apache Software Foundation/Tomcat 10.1[m
+[32m+ j2ee.server.instance=tomcat101:home=C:\\Program Files\\Apache Software Foundation\\Tomcat 10.1[m
+[32m+ user.properties.file=C:\\Users\\anhnn\\AppData\\Roaming\\NetBeans\\17\\build.properties[m
+[32m++>>>>>>> a7f31fec7e43dd98c431a7549fbaf05e93418060[m
+[1mdiff --cc nbproject/private/private.xml[m
+[1mindex fc0ed3b,c0d5d66..0000000[m
+[1m--- a/nbproject/private/private.xml[m
+[1m+++ b/nbproject/private/private.xml[m
+[36m@@@ -3,11 -3,8 +3,16 @@@[m
+      <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>[m
+      <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">[m
+          <group>[m
+[32m++<<<<<<< HEAD[m
+[32m +            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Controller/UpdateProject.java</file>[m
+[32m +            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectUpdate.jsp</file>[m
+[32m +            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/DAO/ProjectDAO.java</file>[m
+[32m +            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectView.jsp</file>[m
+[32m +            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Model/Project.java</file>[m
+[32m++=======[m
+[32m+             <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/src/java/Controller/InsertEmployee.java</file>[m
+[32m+             <file>file:/D:/SoruceCode/PRJ301/FinalProject/EmployeeManagementSystem/web/adminEmployeeManagement.jsp</file>[m
+[32m++>>>>>>> a7f31fec7e43dd98c431a7549fbaf05e93418060[m
+          </group>[m
+      </open-files>[m
+  </project-private>[m

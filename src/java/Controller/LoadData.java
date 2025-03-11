@@ -8,15 +8,9 @@ import DAO.AccountDAO;
 import DAO.DepartmentDAO;
 import DAO.EmployeeDAO;
 import DAO.ProjectDAO;
-import DAO.WorkDAO;
 import DTO.DepartmentDTO;
 import DTO.EmployeeDTO;
 import DTO.ProjectDTO;
-import Model.Department;
-import Model.Employee;
-import Model.Position;
-import Model.Project;
-import Model.Work;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -161,10 +155,8 @@ public class LoadData extends HttpServlet {
 
         } else {
             url = "employee.jsp";
-            WorkDAO w = new WorkDAO();
-            ArrayList<Work> works = w.selectAll();
-            request.getServletContext().setAttribute("works", works);
         }
+        session.setAttribute("isAdmin", isAdmin);
         response.sendRedirect(url);
     }
 
