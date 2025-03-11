@@ -67,13 +67,14 @@ public class UpdateProject extends HttpServlet {
         String projectName = request.getParameter("projectName");
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
-        int completion = Integer.parseInt(request.getParameter("completion"));
+        String completionStr = request.getParameter("completion").replace("%", "");
+        String budgetStr = request.getParameter("budget").replace(",", "");
+        String profitStr = request.getParameter("profit").replace(",", "");
         LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
         LocalDate endDate = request.getParameter("endDate") != null && !request.getParameter("endDate").isEmpty()
                 ? LocalDate.parse(request.getParameter("endDate"))
                 : null;
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
-        String departmentName = new DAO.DepartmentDAO().getDepartmentNameById(departmentId);
 
         HttpSession session = request.getSession();
 
@@ -90,18 +91,19 @@ public class UpdateProject extends HttpServlet {
         if (ProjectUtil.isEmptyDescription(descriptionArray)) {
             errorDescriptionMsg = "Description must not be empty.";
         }
+        int completion = Integer.parseInt(completionStr);
         if (completion < 0 || completion > 100) {
             errorCompletionMsg = "Completion must be between 0 and 100.";
         }
         double budget = 0, profit = 0;
         try {
-            budget = Double.parseDouble(request.getParameter("budget"));
+            budget = Double.parseDouble(budgetStr);
         } catch (NumberFormatException e) {
             errorBudgetMsg = "Budget must be a valid number.";
         }
 
         try {
-            profit = Double.parseDouble(request.getParameter("profit"));
+            profit = Double.parseDouble(profitStr);
         } catch (NumberFormatException e) {
             errorProfitMsg = "Profit must be a valid number.";
         }
@@ -127,13 +129,12 @@ public class UpdateProject extends HttpServlet {
             request.setAttribute("projectCode", projectCode);
             request.setAttribute("projectName", projectName);
             request.setAttribute("descriptionArray", descriptionArray);
-            request.setAttribute("completion", completion);
+            request.setAttribute("completion", completionStr);
             request.setAttribute("startDate", startDate);
             request.setAttribute("endDate", endDate);
-            request.setAttribute("budget", budget);
-            request.setAttribute("profit", profit);
+            request.setAttribute("budget", budgetStr);
+            request.setAttribute("profit", profitStr);
             request.setAttribute("departmentId", departmentId);
-            request.setAttribute("departmentName", departmentName);
 
             request.getRequestDispatcher("adminProjectUpdate.jsp").forward(request, response);
         } else {

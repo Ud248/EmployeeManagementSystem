@@ -27,14 +27,8 @@
     <body>
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
-                <div class="toolbar">
+                <div class="head">
                     <h1 class="title_table">Project List</h1>
-                </div>
-                <div class="d-flex" style="margin-bottom: 15px;">
-                    <div class="toolbar">
-                        <input type="text" class="search-box" id="searchName" placeholder="Search With Project Name"/>
-                    </div>
-                    <button id="searchButton" class="search-btn">Search</button>
                 </div>
                 <div class="action-btn">
                     <button id="deleteButton" class="delete-btn" disabled><i class="ph ph-trash"></i>Delete</button>
@@ -58,8 +52,8 @@
                                 <td class="select-column" style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${p.getProjectCode()}" onchange="toggleDeleteMode()">
                                 </td>
-                                <td><a href="#" onclick="openViewPopup('viewProjectPopup', '${p.getProjectCode()}', event)">${p.getProjectCode()}</a></td>
-                                <td>${p.getProjectName()}</td>
+                                <td>${p.getProjectCode()}</td>
+                                <td><a href="#" onclick="openViewPopup('viewProjectPopup', '${p.getProjectCode()}', event)">${p.getProjectName()}</a></td>
                                 <td>${p.getDepartmentName()}</td>
                                 <td class="select-column" style="text-align: center">${p.getStartDate()}</td>
                             </tr>
