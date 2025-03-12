@@ -116,52 +116,52 @@
                                 </div>                               
                                 <div class="col-md-8">
                                     <select class="form-select" id="department" name="department" required autocomplete="off">
-                                            <option selected value="None">Select Project Department</option>
-                                            <c:forEach var="department" items="${applicationScope.listDepartment}">
-                                                <option value="${department.departmentId}" 
-                                                        ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
-                                                    ${department.departmentName}
-                                                </option>
-                                            </c:forEach>
-                                        </select>
+                                        <option selected value="None">Select Project Department</option>
+                                        <c:forEach var="department" items="${applicationScope.listDepartment}">
+                                            <option value="${department.departmentId}" 
+                                                    ${departmentId == department.departmentId ? 'selected="selected"' : ''}>
+                                                ${department.departmentName}
+                                            </option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
                                 <div class="error">${errorBudgetMsg}</div>
                             </div>
                             <div class="mb-3">
-                            <h5 class="section-header">OTHER INFORMATION</h5>
-                            <div class="row mb-3">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Description:</label>
-                                </div>                                
-                                <div class="col-md-8" id="description-container">
-                                    <c:choose>
-                                        <c:when test="${empty descriptionArray}">
-                                            <div class="d-flex mb-2">
-                                                <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
-                                                <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
+                                <h5 class="section-header">OTHER INFORMATION</h5>
+                                <div class="row mb-3">
+                                    <div class="col-md-4 text-end">
+                                        <label class="form-label">Description:</label>
+                                    </div>                                
+                                    <div class="col-md-8" id="description-container">
+                                        <c:choose>
+                                            <c:when test="${empty descriptionArray}">
                                                 <div class="d-flex mb-2">
                                                     <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
                                                     <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
                                                         <i class="fa fa-minus"></i>
                                                     </button>
                                                 </div>
-                                            </c:forEach>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                    <div class="error">${errorDescriptionMsg}</div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:forEach var="sub" items="${descriptionArray}" varStatus="status">
+                                                    <div class="d-flex mb-2">
+                                                        <input type="text" class="form-control flex-grow-1" name="description" value="${sub}"/>
+                                                        <button type="button" class="btn btn-danger ms-2 d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;" onclick="removeInputTag(this)">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                </c:forEach>
+                                            </c:otherwise>
+                                        </c:choose>
+                                        <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                        <div class="error">${errorDescriptionMsg}</div>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </div>
+                            </div>
                         </div>
                         <div class="section-divider"></div>
                         <input type="submit" class="insert-button" value="Insert"/>

@@ -98,6 +98,12 @@
                 width: 75%;
             }
 
+            .error {
+                color: red;
+                font-size: 14px;
+                margin-top: 5px;
+            }
+
         </style>
     </head>
     <body>
@@ -122,9 +128,9 @@
                                 <div class="col-md-7">
                                     <div class="field-container">
                                         <label class="form-label">Project Name:</label>
-                                        <input type="text" class="form-control detail" name="projectName" value="${projectName}" required>
+                                        <input type="text" class="form-control detail" name="projectName" value="${projectName}">
+                                        <div class="error">${errorNameMsg}</div>
                                     </div>
-                                    <div class="error">${errorNameMsg}</div>
 
                                     <div class="field-container">
                                         <label class="form-label">Department Name:</label>
@@ -171,8 +177,8 @@
                                     <div class="field-container">
                                         <label class="form-label">Completion:</label>
                                         <input type="text" class="form-control" name="completion" value="${completion}" required>
-                                        <div class="error">${errorCompletionMsg}</div>
                                     </div>
+                                    <div class="error">${errorCompletionMsg}</div>
                                 </div>
                             </div>
                         </div>
@@ -202,6 +208,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <input type="submit" class="submit-button" value="Update"/>
                     </form>
                 </div>
