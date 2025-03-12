@@ -128,8 +128,7 @@ public class UpdateDepartment extends HttpServlet {
             Department dep = new Department(departmentId, departmentName, description, startTime, endTime, telephone);
             boolean updateResult = new DepartmentDAO().update(dep);
             if (updateResult) {
-                List<Department> listDepartment = (ArrayList<Department>) request.getServletContext().getAttribute("listDepartment");
-                listDepartment = new DAO.DepartmentDAO().selectAll();
+                List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
                 request.getServletContext().setAttribute("listDepartment", listDepartment);
                 
                 int currentPageDep = (int) session.getAttribute("currentPageDep");

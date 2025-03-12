@@ -76,10 +76,6 @@ public class UpdateEmployee extends HttpServlet {
 
         EmployeeDAO eDao = new EmployeeDAO();
 
-        // Kiểm tra các trường bắt buộc
-        if (fullname == null || fullname.trim().isEmpty()) {
-            error += "Fullname name is required.<br>";
-        }
         String[] fullnameArray = fullname.split("\\s+");
         String lastname = fullnameArray[0];
         String firstname = "";
@@ -88,27 +84,14 @@ public class UpdateEmployee extends HttpServlet {
         }
         firstname = firstname.trim();
 
-        if (birthdateStr == null || birthdateStr.trim().isEmpty()) {
-            error += "Birthdate is required.<br>";
-        }
-
         LocalDate birthdate = null;
         try {
             birthdate = LocalDate.parse(birthdateStr);
         } catch (Exception e) {
             error += "Invalid birthdate format.<br>";
         }
-
-        if (tel == null || tel.trim().isEmpty()) {
-            error += "Telephone is required.<br>";
-        } else if (!tel.matches("^0\\d{9}$")) {
-            error += "Telephone must have 10 digits and start with 0.<br>";
-        } else if (eDao.isExistPhoneNumberForUpdate(tel, employeeCode)) {
+        if (eDao.isExistPhoneNumberForUpdate(tel, employeeCode)) {
             error += "This phone number is already registered.<br>";
-        }
-
-        if (address == null || address.trim().isEmpty()) {
-            error += "Address is required.<br>";
         }
 
         try {

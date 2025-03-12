@@ -46,7 +46,7 @@
                         </select>
 
                         <select class="" id="department" name="department">
-                            <option selected value="None">Department Name</option>
+                            <option selected value="None" ${sessionScope.departmentIdFilter == null || sessionScope.departmentIdFilter == 0 ? 'selected="selected"' : ''}>Department Name</option>
                             <c:forEach var="department" items="${applicationScope.listDepartment}">
                                 <option value="${department.departmentId}" 
                                         ${sessionScope.departmentIdFilter == department.departmentId ? 'selected="selected"' : ''}>

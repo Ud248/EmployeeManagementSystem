@@ -87,6 +87,7 @@ public class InsertDepartment extends HttpServlet {
             if (insertResult) {
                 List<Department> listDepartment = (ArrayList<Department>) request.getServletContext().getAttribute("listDepartment");
                 listDepartment.add(dep);
+                request.getServletContext().setAttribute("listDepartment", listDepartment);
                 int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") + 1;
                 request.getServletContext().setAttribute("totalDepartment", totalDepartment);
 

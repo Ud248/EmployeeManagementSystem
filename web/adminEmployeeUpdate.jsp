@@ -126,12 +126,12 @@
 
                                     <div class="field-container">
                                         <label class="form-label">Full Name:</label>
-                                        <input type="text" class="form-control detail" value="${empty fullname ? '' : fullname}" name="fullname">
+                                        <input type="text" class="form-control detail" value="${empty fullname ? '' : fullname}" name="fullname" required>
                                     </div>
 
                                     <div class="field-container">
                                         <label class="form-label">Birth Date:</label>
-                                        <input type="date" class="form-control detail" value="${empty birthdate ? '' : birthdate}" name="birthdate">
+                                        <input type="date" class="form-control detail" value="${empty birthdate ? '' : birthdate}" name="birthdate" required>
                                     </div>
                                 </div>
 
@@ -139,7 +139,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Gender:</label>
-                                        <select class="form-select detail" id="gender" name="gender">
+                                        <select class="form-select detail" id="gender" name="gender" required>
                                             <option value="Nam" ${gender == 'Nam' ? 'selected="selected"' : ''}>Nam</option>
                                             <option value="Nữ" ${gender == 'Nữ ' ? 'selected="selected"' : ''}>Nữ</option>
                                         </select>
@@ -149,12 +149,12 @@
                                         <label class="form-label">Telephone:</label>
                                         <input type="tel" class="form-control detail" id="tel" name="tel" required 
                                                pattern="0[0-9]{9}" title="Telephone must start with 0 and have 10 digits." 
-                                               value="${empty tel ? '' : tel}">
+                                               value="${empty tel ? '' : tel}" required>
                                     </div>
 
                                     <div class="field-container">
                                         <label class="form-label">Address:</label>
-                                        <input type="text" class="form-control detail" value="${empty address ? '' : address}" name="address">
+                                        <input type="text" class="form-control detail" value="${empty address ? '' : address}" name="address" required>
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +195,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Basic Salary:</label>
-                                        <input type="text" class="form-control detail" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary">
+                                        <input type="text" class="form-control detail" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary" required>
                                     </div>
                                 </div>
                             </div>
