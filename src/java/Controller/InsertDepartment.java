@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.Session;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -82,8 +82,11 @@ public class InsertDepartment extends HttpServlet {
             description = DepartmentUtil.getDescription(descriptionArray);
             String insertMsg = "";
             HttpSession session = request.getSession();
-            boolean insertResult = new DepartmentDAO().insert(new Department(departmentName, description, startTime, endTime, telephone));
+            Department dep = new Department(departmentName, description, startTime, endTime, telephone);
+            boolean insertResult = new DepartmentDAO().insert(dep);
             if (insertResult) {
+                List<Department> listDepartment = (ArrayList<Department>) request.getServletContext().getAttribute("listDepartment");
+                listDepartment.add(dep);
                 int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") + 1;
                 request.getServletContext().setAttribute("totalDepartment", totalDepartment);
 
@@ -104,8 +107,8 @@ public class InsertDepartment extends HttpServlet {
             session.setAttribute("actionMsg", insertMsg);
             PrintWriter out = response.getWriter();
             out.println("<script>");
-            out.println("window.parent.location.reload();"); 
-            out.println("window.close();"); 
+            out.println("window.parent.location.reload();");
+            out.println("window.close();");
             out.println("</script>");
             out.close();
         }
