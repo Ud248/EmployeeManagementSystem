@@ -31,6 +31,7 @@ public class InsertDepartment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        DepartmentDAO dDao = new DepartmentDAO();
         String departmentName = request.getParameter("departmentName");
         String telephone = request.getParameter("telephone");
         String openTime = request.getParameter("openTime");
@@ -83,10 +84,9 @@ public class InsertDepartment extends HttpServlet {
             String insertMsg = "";
             HttpSession session = request.getSession();
             Department dep = new Department(departmentName, description, startTime, endTime, telephone);
-            boolean insertResult = new DepartmentDAO().insert(dep);
+            boolean insertResult = dDao.insert(dep);
             if (insertResult) {
-                List<Department> listDepartment = (ArrayList<Department>) request.getServletContext().getAttribute("listDepartment");
-                listDepartment.add(dep);
+                List<Department> listDepartment = dDao.selectAll();
                 request.getServletContext().setAttribute("listDepartment", listDepartment);
                 int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") + 1;
                 request.getServletContext().setAttribute("totalDepartment", totalDepartment);
