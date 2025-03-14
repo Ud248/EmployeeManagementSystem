@@ -14,7 +14,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -50,29 +54,28 @@ public class ProjectDAO implements DAOInterface<Project> {
         return result;
     }
 
-    public ArrayList<Project> selectReport() {
-        ArrayList<Project> result = new ArrayList<>();
-        String sql = "SELECT ProjectName, Conpletion, Budget, Profit\n"
-                + "FROM Project";
-        try {
-            Connection conn = JDBCUtil.getConnection();
-            PreparedStatement st = conn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                result.add(new Project(
-                        rs.getString(1),
-                        rs.getInt(2),
-                        rs.getDouble(3),
-                        rs.getDouble(4)));
-            }
-
-            JDBCUtil.closeConnection(conn);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
+//    public ArrayList<Project> selectReport() {
+//        ArrayList<Project> result = new ArrayList<>();
+//        String sql = "SELECT ProjectName, Completion, Budget, Profit\n"
+//                + "FROM Project";
+//        try {
+//            Connection conn = JDBCUtil.getConnection();
+//            PreparedStatement st = conn.prepareStatement(sql);
+//            ResultSet rs = st.executeQuery();
+//            while (rs.next()) {
+//                result.add(new Project(
+//                        rs.getString(1),
+//                        rs.getInt(2),
+//                        rs.getDouble(3),
+//                        rs.getDouble(4)));
+//            }
+//
+//            JDBCUtil.closeConnection(conn);
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
     public ArrayList<ProjectDTO> selectAllProjectDTO(int page, int itemsPerPage) {
         ArrayList<ProjectDTO> result = new ArrayList<>();
         String sql = "select\n"
@@ -267,9 +270,39 @@ public class ProjectDAO implements DAOInterface<Project> {
         return 0;
     }
 
+    public Map<Integer, Integer> getTotalProjectPerDepartment() {
+        Map<Integer, Integer> map = new HashMap<>();
+        String sql = "SELECT \n"
+                + "	DepartmentID, \n"
+                + "	count(*) as TotalCompletedProject\n"
+                + "FROM project\n"
+                + "WHERE Completion = 100\n"
+                + "GROUP BY DepartmentID\n"
+                + "UNION \n"
+                + "SELECT DepartmentID, 0 \n"
+                + "FROM Department\n"
+                + "WHERE DepartmentID not in (select \n"
+                + "	departmentid\n"
+                + "FROM project\n"
+                + "WHERE Completion = 100\n"
+                + "GROUP BY DepartmentID)";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getInt("DepartmentID"), rs.getInt("TotalCompletedProject"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
     public static void main(String[] args) {
         ProjectDAO pDao = new ProjectDAO();
         boolean e = pDao.update(new Project("PRJ0001", "An Mau Do", "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", 10, LocalDate.now(), LocalDate.now(), 1, 1));
         System.out.println(e);
     }
+
 }

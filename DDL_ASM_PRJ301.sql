@@ -124,6 +124,7 @@ CREATE TABLE Project(
 	Completion INT NOT NULL DEFAULT 0,
 	StartDate DATE NOT NULL,
 	EndDate DATE,
+	--Deadline DATE NOT NULL, 
 	Budget DECIMAL(18,2) NOT NULL,
 	Profit DECIMAL(18,2) NOT NULL  DEFAULT 0,
 	DepartmentID INT,
