@@ -68,6 +68,27 @@
                 background-color: #dee2e6;
                 margin: 25px 0;
             }
+            .custom-error-tooltip {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: rgba(255, 0, 0, 0.9);
+                color: white;
+                padding: 5px 10px;
+                font-size: 14px;
+                border-radius: 5px;
+                margin-top: 5px;
+                white-space: nowrap;
+                z-index: 1000;
+            }
+            .is-invalid + .custom-error-tooltip {
+                display: block;
+            }
+            .is-invalid {
+                border: 1px solid red !important;
+                background-color: #ffe6e6;
+            }
         </style>
     </head>
     <body>
@@ -77,16 +98,16 @@
                 <br/>
                 <div class="modal-body">
                     <form action="insert-project" method="post">
-                        <div class="mb-3">
-                            <h5 class="section-header">PROJECT DETAILS</h5>
-                            <div class="row mb-3"> 
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Project Name:</label>
-                                </div>                                  
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control" name="projectName" value="${projectName}">
-                                </div>
-                                <div class="error">${errorNameMsg}</div>
+                        <div class="row mb-3"> 
+                            <div class="col-md-4 text-end">
+                                <label class="form-label">Project Name:</label>
+                            </div>                                  
+                            <div class="col-md-8 position-relative">
+                                <input type="text" class="form-control ${not empty errorNameMsg ? 'is-invalid' : ''}" 
+                                       name="projectName" value="${projectName}" 
+                                       onfocus="hideError(this)" 
+                                       onblur="showError(this, '${errorNameMsg}')">
+                                <div class="custom-error-tooltip">${errorNameMsg}</div>
                             </div>
                         </div>
                         <div class="section-divider"></div>
@@ -95,20 +116,29 @@
                             <div class="row mb-3">
                                 <div class="col-md-4 text-end">
                                     <label class="form-label">Start Project At:</label>
-                                </div>                               
-                                <div class="col-md-8">
-                                    <input type="date" class="form-control" name="startDate" value="${startDate}">
                                 </div>
-                                <div class="error">${errorStartDateMsg}</div>
+                                <div class="col-md-8">
+                                    <input type="date" class="form-control ${not empty errorStartDateMsg ? 'is-invalid' : ''}" name="startDate" value="${startDate}">
+                                    <div class="error">${errorStartDateMsg}</div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">End Project At:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="date" class="form-control ${not empty errorEndDateMsg ? 'is-invalid' : ''}" name="endDate" value="${endDate}">
+                                    <div class="error">${errorEndDateMsg}</div>
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-4 text-end">
                                     <label class="form-label">Budget:</label>
-                                </div>                               
-                                <div class="col-md-8">
-                                    <input type="number" class="form-control" name="budget" value="${budget}">
                                 </div>
-                                <div class="error">${errorBudgetMsg}</div>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control ${not empty errorBudgetMsg ? 'is-invalid' : ''}" name="budget" value="${budget}">
+                                    <div class="error">${errorBudgetMsg}</div>
+                                </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-4 text-end">

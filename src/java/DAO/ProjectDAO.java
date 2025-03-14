@@ -50,6 +50,29 @@ public class ProjectDAO implements DAOInterface<Project> {
         return result;
     }
 
+    public ArrayList<Project> selectReport() {
+        ArrayList<Project> result = new ArrayList<>();
+        String sql = "SELECT ProjectName, Conpletion, Budget, Profit\n"
+                + "FROM Project";
+        try {
+            Connection conn = JDBCUtil.getConnection();
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(new Project(
+                        rs.getString(1),
+                        rs.getInt(2),
+                        rs.getDouble(3),
+                        rs.getDouble(4)));
+            }
+
+            JDBCUtil.closeConnection(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public ArrayList<ProjectDTO> selectAllProjectDTO(int page, int itemsPerPage) {
         ArrayList<ProjectDTO> result = new ArrayList<>();
         String sql = "select\n"
@@ -173,14 +196,15 @@ public class ProjectDAO implements DAOInterface<Project> {
         int result = 0;
         try {
             Connection con = JDBCUtil.getConnection();
-            String sql = "INSERT INTO Project(ProjectName, Description, StartDate, Budget, DepartmentID)\n"
-                    + "VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO Project(ProjectName, Description, StartDate, EndDate, Budget, DepartmentID)\n"
+                    + "VALUES(?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, p.getProjectName());
             st.setString(2, p.getDescription());
             st.setDate(3, Date.valueOf(p.getStartDate()));
-            st.setDouble(4, p.getBudget());
-            st.setInt(5, p.getDepartmentId());
+            st.setDate(4, Date.valueOf(p.getEndDate()));
+            st.setDouble(5, p.getBudget());
+            st.setInt(6, p.getDepartmentId());
             result = st.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -242,7 +266,7 @@ public class ProjectDAO implements DAOInterface<Project> {
         }
         return 0;
     }
-    
+
     public static void main(String[] args) {
         ProjectDAO pDao = new ProjectDAO();
         boolean e = pDao.update(new Project("PRJ0001", "An Mau Do", "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", 10, LocalDate.now(), LocalDate.now(), 1, 1));

@@ -37,12 +37,14 @@ public class InsertProject extends HttpServlet {
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
         String startDateStr = request.getParameter("startDate");
+        String endDateStr = request.getParameter("endDate");
         String budgetStr = request.getParameter("budget");
         int departmentId = 0;
 
         String errorNameMsg = "";
         String errorDescriptionMsg = "";
         String errorStartDateMsg = "";
+        String errorEndDateMsg = "";
         String errorBudgetMsg = "";
         String errorDepartmentNameMsg = "";
 
@@ -57,10 +59,16 @@ public class InsertProject extends HttpServlet {
         }
 
         LocalDate startDate = null;
+        LocalDate endDate = null;
         try {
             startDate = LocalDate.parse(startDateStr);
+            endDate = LocalDate.parse(endDateStr);
+            if (endDate != null && endDate.isBefore(startDate)) {
+                errorEndDateMsg = "End Date must be after Start Date.";
+            }
         } catch (Exception e) {
             errorStartDateMsg = "Invalid startDate format";
+            errorEndDateMsg = "Invalid endDate format";
         }
         try {
             departmentId = Integer.parseInt(request.getParameter("department"));
@@ -85,9 +93,11 @@ public class InsertProject extends HttpServlet {
             request.setAttribute("errorNameMsg", errorNameMsg);
             request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
             request.setAttribute("errorStartDateMsg", errorStartDateMsg);
+            request.setAttribute("errorEndDateMsg", errorEndDateMsg);
             request.setAttribute("errorBudgetMsg", errorBudgetMsg);
             request.setAttribute("projectName", projectName);
             request.setAttribute("startDate", startDate);
+            request.setAttribute("endDate", endDate);
             request.setAttribute("budget", budgetStr);
             request.setAttribute("descriptionArray", descriptionArray);
             request.setAttribute("departmentId", departmentId);
@@ -96,7 +106,7 @@ public class InsertProject extends HttpServlet {
             description = ProjectUtil.getDescription(descriptionArray);
             String insertMsg = "";
             HttpSession session = request.getSession();
-            boolean insertResult = pDAO.insert(new Project(projectName, description, startDate, budget, departmentId));
+            boolean insertResult = pDAO.insert(new Project(projectName, description, startDate, endDate, budget, departmentId));
             if (insertResult) {
                 int totalProject = (int) request.getServletContext().getAttribute("totalProject") + 1;
                 request.getServletContext().setAttribute("totalProject", totalProject);

@@ -44,10 +44,11 @@ public class Project {
     }
 
     //insert
-    public Project(String projectName, String description, LocalDate startDate, double budget, int departmentId) {
+    public Project(String projectName, String description, LocalDate startDate, LocalDate endDate, double budget, int departmentId) {
         this.projectName = projectName;
         this.description = description;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.budget = budget;
         this.departmentId = departmentId;
     }
@@ -60,6 +61,14 @@ public class Project {
         this.completion = completion;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.budget = budget;
+        this.profit = profit;
+    }
+
+    //report
+    public Project(String projectName, int completion, double budget, double profit) {
+        this.projectName = projectName;
+        this.completion = completion;
         this.budget = budget;
         this.profit = profit;
     }

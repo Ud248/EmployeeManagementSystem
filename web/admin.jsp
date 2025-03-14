@@ -24,6 +24,8 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <!-- ICONS -->
         <script src="https://unpkg.com/@phosphor-icons/web"></script>
     </head>
@@ -59,9 +61,9 @@
                         </a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onclick="loadContent('adminReport')">
+                        <a href="javascript:void(0);" onclick="loadContent('adminProjectReport')">
                             <i class="ph-bold ph-clipboard-text"></i>
-                            <span class="text">Report</span>
+                            <span class="text">Report Project</span>
                         </a>
                     </li>
                 </ul>
