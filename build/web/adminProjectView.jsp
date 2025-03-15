@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="field-container">
                                     <label class="form-label">Percent Completion:</label>
-                                    <span class="detail">${completion}</span>
+                                    <span class="detail">${completion}%</span>
                                 </div>
                             </div>
                         </div>

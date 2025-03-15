@@ -150,10 +150,10 @@ FROM Employee
 WHERE DepartmentID = ? and PositionID = 2 
 */
 
-/*
+
 SELECT 
     d.DepartmentName, 
-    COUNT(p.ProjectID) AS Count
+    COUNT(p.ProjectID) AS TotalCompletedProject
 FROM Project p
 JOIN Department d ON p.DepartmentID = d.DepartmentID
 WHERE p.Completion = 100
@@ -167,4 +167,4 @@ WHERE d.DepartmentID NOT IN (
     SELECT DISTINCT p.DepartmentID 
     FROM Project p 
     WHERE p.Completion = 100);
-*/
+

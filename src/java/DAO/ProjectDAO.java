@@ -224,20 +224,25 @@ public class ProjectDAO implements DAOInterface<Project> {
     @Override
     public boolean update(Project p) {
         int result = 0;
+        Date endDate = null;
         try {
+            if (p.getEndDate() != null) {
+                endDate = Date.valueOf(p.getEndDate());
+            }
             Connection con = JDBCUtil.getConnection();
             String sql = "UPDATE Project\n"
-                    + "SET ProjectName = ?, Description = ?, Completion = ?, StartDate = ?, DeadLine = ?, Budget = ?, Profit = ?\n"
+                    + "SET ProjectName = ?, Description = ?, Completion = ?, StartDate = ?, EndDate = ?, DeadLine = ?, Budget = ?, Profit = ?\n"
                     + "WHERE ProjectCode = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, p.getProjectName());
             st.setString(2, p.getDescription());
             st.setInt(3, p.getCompletion());
             st.setDate(4, Date.valueOf(p.getStartDate()));
-            st.setDate(5, Date.valueOf(p.getDeadLine()));
-            st.setDouble(6, p.getBudget());
-            st.setDouble(7, p.getProfit());
-            st.setString(8, p.getProjectCode());
+            st.setDate(5, endDate);
+            st.setDate(6, Date.valueOf(p.getDeadLine()));
+            st.setDouble(7, p.getBudget());
+            st.setDouble(8, p.getProfit());
+            st.setString(9, p.getProjectCode());
             result = st.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -263,7 +268,7 @@ public class ProjectDAO implements DAOInterface<Project> {
         Map<String, Integer> map = new HashMap<>();
         String sql = "SELECT \n"
                 + "    d.DepartmentName, \n"
-                + "    COUNT(p.ProjectID) AS Count\n"
+                + "    COUNT(p.ProjectID) AS TotalCompletedProject\n"
                 + "FROM Project p\n"
                 + "JOIN Department d ON p.DepartmentID = d.DepartmentID\n"
                 + "WHERE p.Completion = 100\n"
@@ -287,18 +292,18 @@ public class ProjectDAO implements DAOInterface<Project> {
         }
         return map;
     }
-
-    public boolean updateEndDateByCompletion(String projectCode, int completion) {
-        String sql = "UPDATE Project SET Completion = ?, EndDate = CASE WHEN ? = 100 THEN CURRENT_DATE ELSE EndDate END WHERE ProjectCode = ?";
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-            st.setInt(1, completion);
-            st.setInt(2, completion);
-            st.setString(3, projectCode);
-            return st.executeUpdate() > 0;
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
+//
+//    public boolean updateEndDateByCompletion(String projectCode, int completion) {
+//        String sql = "UPDATE Project SET Completion = ?, EndDate = CASE WHEN ? = 100 "
+//                + "THEN CURRENT_DATE ELSE EndDate END WHERE ProjectCode = ?";
+//        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+//            st.setInt(1, completion);
+//            st.setInt(2, completion);
+//            st.setString(3, projectCode);
+//            return st.executeUpdate() > 0;
+//        } catch (SQLException ex) {
+//            ex.printStackTrace();
+//        }
+//        return false;
+//    }
 }

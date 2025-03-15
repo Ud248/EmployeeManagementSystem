@@ -57,12 +57,13 @@ public class Project {
     }
 
     //update
-    public Project(String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate deadLine, double budget, double profit) {
+    public Project(String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, LocalDate deadLine, double budget, double profit) {
         this.projectCode = projectCode;
         this.projectName = projectName;
         this.description = description;
         this.completion = completion;
         this.startDate = startDate;
+        this.endDate = endDate;
         this.deadLine = deadLine;
         this.budget = budget;
         this.profit = profit;

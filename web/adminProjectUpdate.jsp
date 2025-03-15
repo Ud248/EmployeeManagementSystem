@@ -154,8 +154,7 @@
                                 <div class="col-md-5">
                                     <div class="field-container">
                                         <label class="form-label">Start Date:</label>
-                                        <input type="date" class="form-control detail" name="startDate" value="${startDate}" required>
-                                        <div class="error">${errorStartDateMsg}</div>
+                                        <span class="detail">${startDate}</span>
                                     </div>
                                     <div class="field-container">
                                         <label class="form-label">Dead Line:</label>

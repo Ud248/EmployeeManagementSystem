@@ -32,16 +32,14 @@ public class ViewProject extends HttpServlet {
         ProjectDAO pDao = new ProjectDAO();
         ProjectDTO project = pDao.selectByProjectCode(new Project(projectCode));
 
-        if (project.getCompletion() == 100 && project.getEndDate() == null) {
-            pDao.updateEndDateByCompletion(project.getProjectCode(), 100);
-            project.setEndDate(LocalDate.now());
-        }
-
+        String completion = project.getCompletion() + "";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedStartDate = project.getStartDate().format(formatter);
-        String formattedEndDate = (project.getEndDate() != null) ? project.getEndDate().format(formatter) : "Chưa hoàn thiện";
+        String formattedEndDate = "Chưa hoàn thiện";
+        if (Integer.parseInt(completion) == 100) {
+            formattedEndDate = LocalDate.now().format(formatter) + "";
+        }
         String formattedDeadLine = project.getDeadLine().format(formatter);
-        String completion = project.getCompletion() + "%";
         String description = project.getDescription();
         String[] descriptionArray = description.split("\\.");
         for (int i = 0; i < descriptionArray.length; i++) {
