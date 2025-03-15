@@ -37,16 +37,18 @@ public class InsertProject extends HttpServlet {
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
         String startDateStr = request.getParameter("startDate");
-        String endDateStr = request.getParameter("endDate");
+        String deadLineStr = request.getParameter("deadLine");
         String budgetStr = request.getParameter("budget");
+        String profitStr = request.getParameter("profit");
         int departmentId = 0;
 
         String errorNameMsg = "";
         String errorDescriptionMsg = "";
         String errorStartDateMsg = "";
-        String errorEndDateMsg = "";
+        String errorDeadLineMsg = "";
         String errorBudgetMsg = "";
         String errorDepartmentNameMsg = "";
+        String errorProfitMsg = "";
 
         if (projectName.trim().isEmpty()) {
             errorNameMsg = "Project Name must be not empty field";
@@ -59,23 +61,23 @@ public class InsertProject extends HttpServlet {
         }
 
         LocalDate startDate = null;
-        LocalDate endDate = null;
+        LocalDate deadLine = null;
         try {
             startDate = LocalDate.parse(startDateStr);
-            endDate = LocalDate.parse(endDateStr);
-            if (endDate != null && endDate.isBefore(startDate)) {
-                errorEndDateMsg = "End Date must be after Start Date.";
+            deadLine = LocalDate.parse(deadLineStr);
+            if (deadLine != null && deadLine.isBefore(startDate)) {
+                errorDeadLineMsg = "Dead Line must be after Start Date.";
             }
         } catch (Exception e) {
             errorStartDateMsg = "Invalid startDate format";
-            errorEndDateMsg = "Invalid endDate format";
+            errorDeadLineMsg = "Invalid deadLine format";
         }
         try {
             departmentId = Integer.parseInt(request.getParameter("department"));
         } catch (NumberFormatException e) {
             errorDepartmentNameMsg = "Please select a valid department";
         }
-        double budget = 0;
+        double budget = 0, profit = 0;
         try {
             if (budgetStr == null || budgetStr.isEmpty()) {
                 errorBudgetMsg = "Budget must not be empty.";
@@ -85,20 +87,31 @@ public class InsertProject extends HttpServlet {
                     errorBudgetMsg = "Budget cannot be negative.";
                 }
             }
+            if (profitStr == null || profitStr.isEmpty()) {
+                errorProfitMsg = "Profit must not be empty.";
+            } else {
+                profit = Double.parseDouble(profitStr);
+                if (profit < 0) {
+                    errorProfitMsg = "Profit cannot be negative.";
+                }
+            }
         } catch (NumberFormatException e) {
             errorBudgetMsg = "Budget must be a valid number.";
+            errorProfitMsg = "Profit must be a valid number.";
         }
-        if (!errorNameMsg.isEmpty() || !errorStartDateMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorDepartmentNameMsg.isEmpty()) {
+        if (!errorNameMsg.isEmpty() || !errorStartDateMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorDepartmentNameMsg.isEmpty() || !errorProfitMsg.isEmpty()) {
             System.out.println("Validation errors found, returning to form");
             request.setAttribute("errorNameMsg", errorNameMsg);
             request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
             request.setAttribute("errorStartDateMsg", errorStartDateMsg);
-            request.setAttribute("errorEndDateMsg", errorEndDateMsg);
+            request.setAttribute("errorDeadLineMsg", errorDeadLineMsg);
             request.setAttribute("errorBudgetMsg", errorBudgetMsg);
+            request.setAttribute("errorProfitMsg", errorProfitMsg);
             request.setAttribute("projectName", projectName);
             request.setAttribute("startDate", startDate);
-            request.setAttribute("endDate", endDate);
+            request.setAttribute("deadLine", deadLine);
             request.setAttribute("budget", budgetStr);
+            request.setAttribute("profit", profitStr);
             request.setAttribute("descriptionArray", descriptionArray);
             request.setAttribute("departmentId", departmentId);
             request.getRequestDispatcher("adminProjectInsert.jsp").forward(request, response);
@@ -106,7 +119,7 @@ public class InsertProject extends HttpServlet {
             description = ProjectUtil.getDescription(descriptionArray);
             String insertMsg = "";
             HttpSession session = request.getSession();
-            boolean insertResult = pDAO.insert(new Project(projectName, description, startDate, endDate, budget, departmentId));
+            boolean insertResult = pDAO.insert(new Project(projectName, description, startDate, deadLine, budget, profit, departmentId));
             if (insertResult) {
                 int totalProject = (int) request.getServletContext().getAttribute("totalProject") + 1;
                 request.getServletContext().setAttribute("totalProject", totalProject);

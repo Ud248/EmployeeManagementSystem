@@ -32,9 +32,15 @@ public class ViewProject extends HttpServlet {
         ProjectDAO pDao = new ProjectDAO();
         ProjectDTO project = pDao.selectByProjectCode(new Project(projectCode));
 
+        if (project.getCompletion() == 100 && project.getEndDate() == null) {
+            pDao.updateEndDateByCompletion(project.getProjectCode(), 100);
+            project.setEndDate(LocalDate.now());
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedStartDate = project.getStartDate().format(formatter);
-        String formattedEndDate = project.getEndDate().format(formatter);
+        String formattedEndDate = (project.getEndDate() != null) ? project.getEndDate().format(formatter) : "Chưa hoàn thiện";
+        String formattedDeadLine = project.getDeadLine().format(formatter);
         String completion = project.getCompletion() + "%";
         String description = project.getDescription();
         String[] descriptionArray = description.split("\\.");
@@ -51,6 +57,7 @@ public class ViewProject extends HttpServlet {
         request.setAttribute("description", description);
         request.setAttribute("startDate", formattedStartDate);
         request.setAttribute("endDate", formattedEndDate);
+        request.setAttribute("deadLine", formattedDeadLine);
         request.setAttribute("completion", completion);
         request.setAttribute("budget", budget);
         request.setAttribute("profit", profit);

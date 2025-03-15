@@ -3,7 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectManagement.jsp</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Controller/ViewProject.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Controller/ProjectReport.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Controller/UpdateProject.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/Controller/UpdateEmployee.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectUpdate.jsp</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/src/java/DAO/ProjectDAO.java</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminProjectReport.jsp</file>
+            <file>file:/C:/Users/nongt/OneDrive/Desktop/New%20folder/EmployeeManagementSystem/web/adminEmployeeUpdate.jsp</file>
         </group>
     </open-files>
 </project-private>

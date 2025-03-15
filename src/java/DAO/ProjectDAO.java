@@ -42,9 +42,10 @@ public class ProjectDAO implements DAOInterface<Project> {
                         rs.getInt(5),
                         rs.getDate(6).toLocalDate(),
                         rs.getDate(7).toLocalDate(),
-                        rs.getDouble(8),
+                        rs.getDate(8).toLocalDate(),
                         rs.getDouble(9),
-                        rs.getInt(10)));
+                        rs.getDouble(10),
+                        rs.getInt(11)));
             }
 
             JDBCUtil.closeConnection(conn);
@@ -54,28 +55,6 @@ public class ProjectDAO implements DAOInterface<Project> {
         return result;
     }
 
-//    public ArrayList<Project> selectReport() {
-//        ArrayList<Project> result = new ArrayList<>();
-//        String sql = "SELECT ProjectName, Completion, Budget, Profit\n"
-//                + "FROM Project";
-//        try {
-//            Connection conn = JDBCUtil.getConnection();
-//            PreparedStatement st = conn.prepareStatement(sql);
-//            ResultSet rs = st.executeQuery();
-//            while (rs.next()) {
-//                result.add(new Project(
-//                        rs.getString(1),
-//                        rs.getInt(2),
-//                        rs.getDouble(3),
-//                        rs.getDouble(4)));
-//            }
-//
-//            JDBCUtil.closeConnection(conn);
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-//    }
     public ArrayList<ProjectDTO> selectAllProjectDTO(int page, int itemsPerPage) {
         ArrayList<ProjectDTO> result = new ArrayList<>();
         String sql = "select\n"
@@ -85,6 +64,7 @@ public class ProjectDAO implements DAOInterface<Project> {
                 + "COALESCE(d.DepartmentName, '') AS DepartmentName,\n"
                 + "p.StartDate,\n"
                 + "p.EndDate,\n"
+                + "p.DeadLine,\n"
                 + "p.Completion,\n"
                 + "p.Budget,\n"
                 + "p.Profit\n"
@@ -113,6 +93,10 @@ public class ProjectDAO implements DAOInterface<Project> {
                 Date endDate = rs.getDate("EndDate");
                 if (endDate != null) {
                     project.setEndDate(endDate.toLocalDate());
+                }
+                Date deadLine = rs.getDate("DeadLine");
+                if (deadLine != null) {
+                    project.setDeadLine(deadLine.toLocalDate());
                 }
                 project.setCompletion(rs.getInt("Completion"));
                 project.setBudget(rs.getDouble("Budget"));
@@ -144,9 +128,10 @@ public class ProjectDAO implements DAOInterface<Project> {
                         rs.getInt(5),
                         rs.getDate(6).toLocalDate(),
                         rs.getDate(7).toLocalDate(),
-                        rs.getDouble(8),
+                        rs.getDate(8).toLocalDate(),
                         rs.getDouble(9),
-                        rs.getInt(10));
+                        rs.getDouble(10),
+                        rs.getInt(11));
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -164,6 +149,7 @@ public class ProjectDAO implements DAOInterface<Project> {
                 + "p.Completion, \n"
                 + "p.StartDate, \n"
                 + "p.EndDate, \n"
+                + "p.DeadLine, \n"
                 + "p.Budget, \n"
                 + "p.Profit,\n"
                 + "COALESCE(d.DepartmentName, '') AS DepartmentName\n"
@@ -181,11 +167,13 @@ public class ProjectDAO implements DAOInterface<Project> {
                 String description = rs.getString("Description");
                 int completion = rs.getInt("Completion");
                 LocalDate startDate = rs.getDate("StartDate").toLocalDate();
-                LocalDate endDate = rs.getDate("EndDate").toLocalDate();
+                Date endDateSql = rs.getDate("EndDate");
+                LocalDate endDate = (endDateSql != null) ? endDateSql.toLocalDate() : null;
+                LocalDate deadLine = rs.getDate("DeadLine").toLocalDate();
                 double budget = rs.getDouble("Budget");
                 double profit = rs.getDouble("Profit");
                 String departmentName = rs.getString("DepartmentName");
-                result = new ProjectDTO(projectCode, projectName, description, departmentName, completion, startDate, endDate, budget, profit);
+                result = new ProjectDTO(projectCode, projectName, description, departmentName, completion, startDate, endDate, deadLine, budget, profit);
             }
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -199,15 +187,16 @@ public class ProjectDAO implements DAOInterface<Project> {
         int result = 0;
         try {
             Connection con = JDBCUtil.getConnection();
-            String sql = "INSERT INTO Project(ProjectName, Description, StartDate, EndDate, Budget, DepartmentID)\n"
-                    + "VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO Project(ProjectName, Description, StartDate, DeadLine, Budget, Profit, DepartmentID)\n"
+                    + "VALUES(?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, p.getProjectName());
             st.setString(2, p.getDescription());
             st.setDate(3, Date.valueOf(p.getStartDate()));
-            st.setDate(4, Date.valueOf(p.getEndDate()));
+            st.setDate(4, Date.valueOf(p.getDeadLine()));
             st.setDouble(5, p.getBudget());
-            st.setInt(6, p.getDepartmentId());
+            st.setDouble(6, p.getProfit());
+            st.setInt(7, p.getDepartmentId());
             result = st.executeUpdate();
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
@@ -238,14 +227,14 @@ public class ProjectDAO implements DAOInterface<Project> {
         try {
             Connection con = JDBCUtil.getConnection();
             String sql = "UPDATE Project\n"
-                    + "SET ProjectName = ?, Description = ?, Completion = ?, StartDate = ?, EndDate = ?, Budget = ?, Profit = ?\n"
+                    + "SET ProjectName = ?, Description = ?, Completion = ?, StartDate = ?, DeadLine = ?, Budget = ?, Profit = ?\n"
                     + "WHERE ProjectCode = ?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, p.getProjectName());
             st.setString(2, p.getDescription());
             st.setInt(3, p.getCompletion());
             st.setDate(4, Date.valueOf(p.getStartDate()));
-            st.setDate(5, Date.valueOf(p.getEndDate()));
+            st.setDate(5, Date.valueOf(p.getDeadLine()));
             st.setDouble(6, p.getBudget());
             st.setDouble(7, p.getProfit());
             st.setString(8, p.getProjectCode());
@@ -270,28 +259,28 @@ public class ProjectDAO implements DAOInterface<Project> {
         return 0;
     }
 
-    public Map<Integer, Integer> getTotalProjectPerDepartment() {
-        Map<Integer, Integer> map = new HashMap<>();
+    public Map<String, Integer> getTotalProjectPerDepartment() {
+        Map<String, Integer> map = new HashMap<>();
         String sql = "SELECT \n"
-                + "	DepartmentID, \n"
-                + "	count(*) as TotalCompletedProject\n"
-                + "FROM project\n"
-                + "WHERE Completion = 100\n"
-                + "GROUP BY DepartmentID\n"
+                + "    d.DepartmentName, \n"
+                + "    COUNT(p.ProjectID) AS Count\n"
+                + "FROM Project p\n"
+                + "JOIN Department d ON p.DepartmentID = d.DepartmentID\n"
+                + "WHERE p.Completion = 100\n"
+                + "GROUP BY d.DepartmentName\n"
                 + "UNION \n"
-                + "SELECT DepartmentID, 0 \n"
-                + "FROM Department\n"
-                + "WHERE DepartmentID not in (select \n"
-                + "	departmentid\n"
-                + "FROM project\n"
-                + "WHERE Completion = 100\n"
-                + "GROUP BY DepartmentID)";
+                + "SELECT d.DepartmentName, 0 \n"
+                + "FROM Department d\n"
+                + "WHERE d.DepartmentID NOT IN (\n"
+                + "    SELECT DISTINCT p.DepartmentID \n"
+                + "    FROM Project p \n"
+                + "    WHERE p.Completion = 100);";
         Connection con = JDBCUtil.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                map.put(rs.getInt("DepartmentID"), rs.getInt("TotalCompletedProject"));
+                map.put(rs.getString("DepartmentName"), rs.getInt("TotalCompletedProject"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -299,10 +288,17 @@ public class ProjectDAO implements DAOInterface<Project> {
         return map;
     }
 
-    public static void main(String[] args) {
-        ProjectDAO pDao = new ProjectDAO();
-        boolean e = pDao.update(new Project("PRJ0001", "An Mau Do", "Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.", 10, LocalDate.now(), LocalDate.now(), 1, 1));
-        System.out.println(e);
+    public boolean updateEndDateByCompletion(String projectCode, int completion) {
+        String sql = "UPDATE Project SET Completion = ?, EndDate = CASE WHEN ? = 100 THEN CURRENT_DATE ELSE EndDate END WHERE ProjectCode = ?";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setInt(1, completion);
+            st.setInt(2, completion);
+            st.setString(3, projectCode);
+            return st.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 
 }

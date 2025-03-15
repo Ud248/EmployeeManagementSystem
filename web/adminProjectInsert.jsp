@@ -124,11 +124,11 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-4 text-end">
-                                    <label class="form-label">End Project At:</label>
+                                    <label class="form-label">Dead Line:</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="date" class="form-control ${not empty errorEndDateMsg ? 'is-invalid' : ''}" name="endDate" value="${endDate}">
-                                    <div class="error">${errorEndDateMsg}</div>
+                                    <input type="date" class="form-control ${not empty errorDeadLineMsg ? 'is-invalid' : ''}" name="deadLine" value="${deadLine}">
+                                    <div class="error">${errorDeadLineMsg}</div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -138,6 +138,16 @@
                                 <div class="col-md-8">
                                     <input type="number" class="form-control ${not empty errorBudgetMsg ? 'is-invalid' : ''}" name="budget" value="${budget}">
                                     <div class="error">${errorBudgetMsg}</div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+
+                                <div class="col-md-4 text-end">
+                                    <label class="form-label">Profit:</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="number" class="form-control ${not empty errorProfitMsg ? 'is-invalid' : ''}" name="profit" value="${profit}">
+                                    <div class="error">${errorProfitMsg}</div>
                                 </div>
                             </div>
                             <div class="row mb-3">

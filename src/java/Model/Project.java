@@ -19,6 +19,7 @@ public class Project {
     private int completion;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalDate deadLine;
     private double budget;
     private double profit;
     private int departmentId;
@@ -30,7 +31,7 @@ public class Project {
         this.projectCode = projectCode;
     }
 
-    public Project(int projectId, String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit, int departmentId) {
+    public Project(int projectId, String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, LocalDate deadLine, double budget, double profit, int departmentId) {
         this.projectId = projectId;
         this.projectCode = projectCode;
         this.projectName = projectName;
@@ -38,29 +39,31 @@ public class Project {
         this.completion = completion;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.deadLine = deadLine;
         this.budget = budget;
         this.profit = profit;
         this.departmentId = departmentId;
     }
 
     //insert
-    public Project(String projectName, String description, LocalDate startDate, LocalDate endDate, double budget, int departmentId) {
+    public Project(String projectName, String description, LocalDate startDate, LocalDate deadLine, double budget, double profit, int departmentId) {
         this.projectName = projectName;
         this.description = description;
         this.startDate = startDate;
-        this.endDate = endDate;
+        this.deadLine = deadLine;
         this.budget = budget;
+        this.profit = profit;
         this.departmentId = departmentId;
     }
 
     //update
-    public Project(String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit) {
+    public Project(String projectCode, String projectName, String description, int completion, LocalDate startDate, LocalDate deadLine, double budget, double profit) {
         this.projectCode = projectCode;
         this.projectName = projectName;
         this.description = description;
         this.completion = completion;
         this.startDate = startDate;
-        this.endDate = endDate;
+        this.deadLine = deadLine;
         this.budget = budget;
         this.profit = profit;
     }
@@ -129,6 +132,14 @@ public class Project {
         this.endDate = endDate;
     }
 
+    public LocalDate getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(LocalDate deadLine) {
+        this.deadLine = deadLine;
+    }
+
     public double getBudget() {
         return budget;
     }
@@ -155,7 +166,7 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{" + "projectId=" + projectId + ", projectName=" + projectName + ", description=" + description + ", completion=" + completion + ", startDate=" + startDate + ", endDate=" + endDate + ", budget=" + budget + ", profit=" + profit + ", departmentId=" + departmentId + '}';
+        return "Project{" + "projectId=" + projectId + ", projectCode=" + projectCode + ", projectName=" + projectName + ", description=" + description + ", completion=" + completion + ", startDate=" + startDate + ", endDate=" + endDate + ", deadLine=" + deadLine + ", budget=" + budget + ", profit=" + profit + ", departmentId=" + departmentId + '}';
     }
 
 }

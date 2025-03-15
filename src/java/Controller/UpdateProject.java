@@ -2,7 +2,6 @@ package Controller;
 
 import DAO.ProjectDAO;
 import DTO.ProjectDTO;
-import Model.Department;
 import Model.Project;
 import Utils.ProjectUtil;
 import java.io.IOException;
@@ -33,8 +32,15 @@ public class UpdateProject extends HttpServlet {
         ProjectDAO pDao = new ProjectDAO();
         ProjectDTO project = pDao.selectByProjectCode(new Project(projectCode));
 
-        String startDate = project.getStartDate() + "";
-        String endDate = project.getEndDate() + "";
+        if (project.getCompletion() == 100 && project.getEndDate() == null) {
+            pDao.updateEndDateByCompletion(project.getProjectCode(), 100);
+            project.setEndDate(LocalDate.now());
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        String startDate = project.getStartDate().format(formatter);
+        String endDate = (project.getEndDate() != null) ? project.getEndDate().format(formatter) : "Chưa hoàn thiện";
+        String deadLine = project.getDeadLine().format(formatter);
         String completion = project.getCompletion() + "%";
         String description = project.getDescription();
         String[] descriptionArray = description.split("\\.");
@@ -51,6 +57,7 @@ public class UpdateProject extends HttpServlet {
         request.setAttribute("description", description);
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
+        request.setAttribute("deadLine", deadLine);
         request.setAttribute("completion", completion);
         request.setAttribute("budget", budget);
         request.setAttribute("profit", profit);
@@ -71,9 +78,8 @@ public class UpdateProject extends HttpServlet {
         String budgetStr = request.getParameter("budget").replace(",", "");
         String profitStr = request.getParameter("profit").replace(",", "");
         LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
-        LocalDate endDate = request.getParameter("endDate") != null && !request.getParameter("endDate").isEmpty()
-                ? LocalDate.parse(request.getParameter("endDate"))
-                : null;
+        LocalDate deadLine = request.getParameter("deadLine") != null && !request.getParameter("deadLine").isEmpty()
+                ? LocalDate.parse(request.getParameter("deadLine")) : null;
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
 
         HttpSession session = request.getSession();
@@ -114,8 +120,8 @@ public class UpdateProject extends HttpServlet {
         if (profit < 0) {
             errorProfitMsg = "Profit must be a positive number.";
         }
-        if (endDate != null && endDate.isBefore(startDate)) {
-            errorDateMsg = "End Date must be after Start Date.";
+        if (deadLine != null && deadLine.isBefore(startDate)) {
+            errorDateMsg = "Dead Line must be after Start Date.";
         }
 
         if (!errorNameMsg.isEmpty() || !errorDescriptionMsg.isEmpty() || !errorCompletionMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorProfitMsg.isEmpty() || !errorDateMsg.isEmpty()) {
@@ -131,7 +137,7 @@ public class UpdateProject extends HttpServlet {
             request.setAttribute("descriptionArray", descriptionArray);
             request.setAttribute("completion", completionStr);
             request.setAttribute("startDate", startDate);
-            request.setAttribute("endDate", endDate);
+            request.setAttribute("deadLine", deadLine);
             request.setAttribute("budget", budgetStr);
             request.setAttribute("profit", profitStr);
             request.setAttribute("departmentId", departmentId);
@@ -139,7 +145,7 @@ public class UpdateProject extends HttpServlet {
             request.getRequestDispatcher("adminProjectUpdate.jsp").forward(request, response);
         } else {
             description = ProjectUtil.getDescription(descriptionArray);
-            boolean updateResult = new ProjectDAO().update(new Project(projectCode, projectName, description, completion, startDate, endDate, budget, profit));
+            boolean updateResult = new ProjectDAO().update(new Project(projectCode, projectName, description, completion, startDate, deadLine, budget, profit));
             if (updateResult) {
                 session.setAttribute("currentPagePro", 1);
                 List<ProjectDTO> projects = new ProjectDAO().selectAllProjectDTO(1, 10);

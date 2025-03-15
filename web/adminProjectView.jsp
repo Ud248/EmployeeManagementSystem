@@ -119,6 +119,10 @@
                                     <span class="detail">${startDate}</span>
                                 </div>
                                 <div class="field-container">
+                                    <label class="form-label">Dead Line:</label>
+                                    <span class="detail">${deadLine}</span>
+                                </div>
+                                <div class="field-container">
                                     <label class="form-label">End Date:</label>
                                     <span class="detail">${endDate}</span>
                                 </div>
@@ -167,7 +171,7 @@
                 console.log("ok");
                 frame.src = "update-project?projectCode=" + projectCode;
             }
-            
+
             window.onload = function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 const successMsg = urlParams.get('successMsg');

@@ -44,7 +44,7 @@
                             <th>Project Name</th>
                             <th>Department Name</th>
                             <th>Start Date</th>
-                            <th>End Date</th>
+                            <th>Dead Line</th>
                             <th>Completion</th>
                         </tr>
                     </thead>
@@ -58,7 +58,7 @@
                                 <td><a href="#" onclick="openViewPopup('viewProjectPopup', '${p.getProjectCode()}', event)">${p.getProjectName()}</a></td>
                                 <td>${p.getDepartmentName()}</td>
                                 <td class="select-column" style="text-align: center">${p.getStartDate()}</td>
-                                <td class="select-column" style="text-align: center">${p.getEndDate()}</td>
+                                <td class="select-column" style="text-align: center">${p.getDeadLine()}</td>
                                 <td class="select-column" style="text-align: center">${p.getCompletion()}%</td>
                             </tr>
                         </c:forEach>

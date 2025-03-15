@@ -63,32 +63,21 @@ INSERT INTO [Shift](ShiftName, StartTime, EndTime) VALUES
 (N'Ca Chiều', '12:00', '17:00'),
 (N'Ca Tối', '17:00', '22:00')
 
-INSERT INTO Project (ProjectName, [Description], Completion, StartDate, EndDate, Budget, Profit, DepartmentID)
-VALUES
-(N'Hệ Thống Quản Lý Nhân Sự', N'Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.', 80, '2024-01-01', '2024-06-30', 500000000, 150000000, 1),
-(N'Ứng Dụng Bán Hàng Trực Tuyến', N'Phát triển ứng dụng thương mại điện tử với tính năng mua sắm online.', 60, '2023-10-15', '2024-07-01', 800000000, 200000000, 2),
-(N'Phần Mềm Kế Toán', N'Tạo phần mềm hỗ trợ kế toán doanh nghiệp vừa và nhỏ.', 100, '2023-05-01', '2024-04-30', 300000000, 120000000, 3),
-(N'Website Dịch Vụ Đặt Phòng', N'Website giúp khách hàng đặt phòng khách sạn và homestay.', 75, '2023-08-10', '2024-05-20', 450000000, 180000000, 4),
-(N'Hệ Thống Quản Lý Bệnh Viện', N'Phát triển phần mềm quản lý hồ sơ bệnh nhân.', 50, '2024-02-01', '2025-02-01', 700000000, 250000000, 5),
-(N'Ứng Dụng Theo Dõi Sức Khỏe', N'Phát triển app giúp người dùng theo dõi sức khỏe cá nhân.', 40, '2024-03-15', '2025-02-01', 600000000, 170000000, 1),
-(N'Hệ Thống Quản Lý Nhân Sự', N'Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.', 100, '2024-01-01', '2024-06-30', 500000000, 150000000, 1),
-(N'Ứng Dụng Bán Hàng Trực Tuyến', N'Phát triển ứng dụng thương mại điện tử với tính năng mua sắm online.', 60, '2023-10-15', '2024-07-01', 800000000, 200000000, 2),
-(N'Phần Mềm Kế Toán', N'Tạo phần mềm hỗ trợ kế toán doanh nghiệp vừa và nhỏ.', 100, '2023-05-01', '2024-04-30', 300000000, 120000000, 3),
-(N'Website Dịch Vụ Đặt Phòng', N'Website giúp khách hàng đặt phòng khách sạn và homestay.', 75, '2023-08-10', '2024-05-20', 450000000, 180000000, 4),
-(N'Hệ Thống Quản Lý Bệnh Viện', N'Phát triển phần mềm quản lý hồ sơ bệnh nhân.', 100, '2024-02-01', '2025-02-01', 700000000, 250000000, 5),
-(N'Ứng Dụng Theo Dõi Sức Khỏe', N'Phát triển app giúp người dùng theo dõi sức khỏe cá nhân.', 40, '2024-03-15', '2025-02-01', 600000000, 170000000, 1),
-(N'Hệ Thống Quản Lý Nhân Sự', N'Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.', 80, '2024-01-01', '2024-06-30', 500000000, 150000000, 1),
-(N'Ứng Dụng Bán Hàng Trực Tuyến', N'Phát triển ứng dụng thương mại điện tử với tính năng mua sắm online.', 100, '2023-10-15', '2024-07-01', 800000000, 200000000, 2),
-(N'Phần Mềm Kế Toán', N'Tạo phần mềm hỗ trợ kế toán doanh nghiệp vừa và nhỏ.', 90, '2023-05-01', '2024-04-30', 300000000, 120000000, 3),
-(N'Website Dịch Vụ Đặt Phòng', N'Website giúp khách hàng đặt phòng khách sạn và homestay.', 75, '2023-08-10', '2024-05-20', 450000000, 180000000, 4),
-(N'Hệ Thống Quản Lý Bệnh Viện', N'Phát triển phần mềm quản lý hồ sơ bệnh nhân.', 50, '2024-02-01', '2025-02-01', 700000000, 250000000, 5),
-(N'Ứng Dụng Theo Dõi Sức Khỏe', N'Phát triển app giúp người dùng theo dõi sức khỏe cá nhân.', 40, '2024-03-15', '2025-02-01', 600000000, 170000000, 1),
-(N'Hệ Thống Quản Lý Nhân Sự', N'Xây dựng hệ thống quản lý nhân sự cho doanh nghiệp.', 80, '2024-01-01', '2024-06-30', 500000000, 150000000, 1),
-(N'Ứng Dụng Bán Hàng Trực Tuyến', N'Phát triển ứng dụng thương mại điện tử với tính năng mua sắm online.', 100, '2023-10-15', '2024-07-01', 800000000, 200000000, 2),
-(N'Phần Mềm Kế Toán', N'Tạo phần mềm hỗ trợ kế toán doanh nghiệp vừa và nhỏ.', 100, '2023-05-01', '2024-04-30', 300000000, 120000000, 3),
-(N'Website Dịch Vụ Đặt Phòng', N'Website giúp khách hàng đặt phòng khách sạn và homestay.', 75, '2023-08-10', '2024-05-20', 450000000, 180000000, 4),
-(N'Hệ Thống Quản Lý Bệnh Viện', N'Phát triển phần mềm quản lý hồ sơ bệnh nhân.', 100, '2024-02-01', '2025-02-01', 700000000, 250000000, 5),
-(N'Ứng Dụng Theo Dõi Sức Khỏe', N'Phát triển app giúp người dùng theo dõi sức khỏe cá nhân.', 40, '2024-03-15', '2025-02-01', 600000000, 170000000, 1);
+INSERT INTO Project (ProjectName, [Description], Completion, StartDate, Deadline, Budget, Profit, DepartmentID)
+VALUES 
+(N'Dự án Xây dựng Cầu A', N'Dự án xây dựng cầu vượt tại thành phố', 75, '2024-01-15', '2025-06-30', 5000000, 1200000, 1),
+(N'Dự án Phát triển Phần mềm B', N'Phát triển hệ thống quản lý khách hàng', 60, '2023-11-01', '2024-12-31', 200000, 50000, 2),
+(N'Dự án Nghiên cứu Y tế C', N'Nghiên cứu thuốc điều trị mới', 80, '2024-03-10', '2026-09-15', 800000, 150000, 3),
+(N'Dự án Nâng cấp Hệ thống D', N'Nâng cấp hệ thống máy chủ', 50, '2023-12-20', '2024-08-20', 300000, 90000, 4),
+(N'Dự án Xây dựng Nhà Máy E', N'Xây dựng nhà máy sản xuất mới', 40, '2024-02-05', '2025-11-01', 10000000, 2500000, 5),
+(N'Dự án Sản xuất Phim F', N'Bộ phim điện ảnh thể loại hành động', 30, '2024-04-25', '2024-12-20', 1500000, 400000, 6),
+(N'Dự án Trồng rừng G', N'Phục hồi rừng nhiệt đới tại địa phương', 55, '2024-01-10', '2025-07-15', 600000, 180000, 1),
+(N'Dự án Điện Mặt Trời H', N'Triển khai hệ thống điện mặt trời khu vực miền Trung', 90, '2023-10-01', '2025-05-30', 7500000, 2000000, 2),
+(N'Dự án Xây dựng Công Viên I', N'Công viên giải trí với nhiều trò chơi', 20, '2024-06-15', '2026-08-25', 5000000, 1200000, 3),
+(N'Dự án Cải thiện Giao thông J', N'Nâng cấp đường bộ trong khu đô thị', 65, '2023-09-05', '2025-02-18', 8500000, 3000000, 4),
+(N'Dự án Công nghệ AI K', N'Ứng dụng trí tuệ nhân tạo vào tự động hóa', 85, '2024-05-10', '2026-03-20', 5000000, 1500000, 5),
+(N'Dự án Mở rộng Cảng Biển L', N'Nâng cấp và mở rộng cảng biển phục vụ vận tải', 70, '2024-02-28', '2025-12-10', 9000000, 3200000, 6);
+
 
 
 SELECT * FROM Employee
@@ -161,22 +150,21 @@ FROM Employee
 WHERE DepartmentID = ? and PositionID = 2 
 */
 
-
-select * from project
-
+/*
 SELECT 
-	DepartmentID, 
-	count(*) as Count
-FROM project
-WHERE Completion = 100
-GROUP BY departmentid
+    d.DepartmentName, 
+    COUNT(p.ProjectID) AS Count
+FROM Project p
+JOIN Department d ON p.DepartmentID = d.DepartmentID
+WHERE p.Completion = 100
+GROUP BY d.DepartmentName
 
 UNION 
 
-SELECT departmentId, 0 
-FROM Department
-WHERE departmentId not in (select 
-	departmentid
-FROM project
-WHERE Completion = 100
-GROUP BY departmentid)
+SELECT d.DepartmentName, 0 
+FROM Department d
+WHERE d.DepartmentID NOT IN (
+    SELECT DISTINCT p.DepartmentID 
+    FROM Project p 
+    WHERE p.Completion = 100);
+*/

@@ -158,9 +158,13 @@
                                         <div class="error">${errorStartDateMsg}</div>
                                     </div>
                                     <div class="field-container">
+                                        <label class="form-label">Dead Line:</label>
+                                        <input type="date" class="form-control detail" name="deadLine" value="${deadLine}" required>
+                                        <div class="error">${errorDeadLineMsg}</div>
+                                    </div>
+                                    <div class="field-container">
                                         <label class="form-label">End Date:</label>
-                                        <input type="date" class="form-control detail" name="endDate" value="${endDate}" required>
-                                        <div class="error">${errorEndDateMsg}</div>
+                                        <span class="detail">${endDate}</span>
                                     </div>
                                 </div>
                                 <div class="col-md-7">

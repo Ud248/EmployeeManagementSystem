@@ -19,13 +19,14 @@ public class ProjectDTO {
     private int completion;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalDate deadLine;
     private double budget;
     private double profit;
 
     public ProjectDTO() {
     }
 
-    public ProjectDTO(String projectCode, String projectName, String description, String departmentName, int completion, LocalDate startDate, LocalDate endDate, double budget, double profit) {
+    public ProjectDTO(String projectCode, String projectName, String description, String departmentName, int completion, LocalDate startDate, LocalDate endDate, LocalDate deadLine, double budget, double profit) {
         this.projectCode = projectCode;
         this.projectName = projectName;
         this.description = description;
@@ -33,15 +34,17 @@ public class ProjectDTO {
         this.completion = completion;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.deadLine = deadLine;
         this.budget = budget;
         this.profit = profit;
     }
 
-    public ProjectDTO(String projectCode, String projectName, String departmentName, LocalDate startDate) {
+    public ProjectDTO(String projectCode, String projectName, String departmentName, LocalDate startDate, LocalDate deadLine) {
         this.projectCode = projectCode;
         this.projectName = projectName;
         this.departmentName = departmentName;
         this.startDate = startDate;
+        this.deadLine = deadLine;
     }
 
     public String getProjectCode() {
@@ -100,6 +103,14 @@ public class ProjectDTO {
         this.endDate = endDate;
     }
 
+    public LocalDate getDeadLine() {
+        return deadLine;
+    }
+
+    public void setDeadLine(LocalDate deadLine) {
+        this.deadLine = deadLine;
+    }
+
     public double getBudget() {
         return budget;
     }
@@ -118,7 +129,7 @@ public class ProjectDTO {
 
     @Override
     public String toString() {
-        return "ProjectDTO{" + "projectCode=" + projectCode + ", projectName=" + projectName + ", description=" + description + ", departmentName=" + departmentName + ", completion=" + completion + ", startDate=" + startDate + ", endDate=" + endDate + ", budget=" + budget + ", profit=" + profit + '}';
+        return "ProjectDTO{" + "projectCode=" + projectCode + ", projectName=" + projectName + ", description=" + description + ", departmentName=" + departmentName + ", completion=" + completion + ", startDate=" + startDate + ", endDate=" + endDate + ", deadLine=" + deadLine + ", budget=" + budget + ", profit=" + profit + '}';
     }
 
 }
