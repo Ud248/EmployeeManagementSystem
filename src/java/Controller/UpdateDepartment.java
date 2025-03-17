@@ -28,23 +28,12 @@ public class UpdateDepartment extends HttpServlet {
     private final String REGEX_TELEPHONE = "^\\d{10}$";
     private final String REGEX_OPENTIME = "^([01]\\d|2[0-3]):[0-5]\\d - ([01]\\d|2[0-3]):[0-5]\\d$";
 
-    private DepartmentDTO getDepartmentDTOById(ArrayList<DepartmentDTO> departments, int id) {
-        for (DepartmentDTO department : departments) {
-            if (department.getDepartmentId() == id) {
-                return department;
-            }
-        }
-        return null;
-    }
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String departmentId = request.getParameter("departmentId");
+        String departmentCode = request.getParameter("departmentCode");
 
-        HttpSession session = request.getSession();
-        ArrayList<DepartmentDTO> departments = (ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments");
-        DepartmentDTO dep = getDepartmentDTOById(departments, Integer.parseInt(departmentId));
+        DepartmentDTO dep = new DepartmentDAO().selectByEmployeeCode(departmentCode);
         String departmentName = dep.getDepartmentName();
         String description = dep.getDescription();
         String openTime = dep.getOpenTime();
@@ -58,7 +47,7 @@ public class UpdateDepartment extends HttpServlet {
         DecimalFormat df = new DecimalFormat("#,###.##");
         String costPerMonth = df.format(dep.getCostPerMonth());
 
-        request.setAttribute("departmentId", departmentId);
+        request.setAttribute("departmentCode", departmentCode);
         request.setAttribute("departmentName", departmentName);
         request.setAttribute("description", description);
         request.setAttribute("openTime", openTime);
@@ -73,7 +62,7 @@ public class UpdateDepartment extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        int departmentId = Integer.parseInt(request.getParameter("departmentId"));
+        String departmentCode = request.getParameter("departmentCode");
         String departmentName = request.getParameter("departmentName");
         String telephone = request.getParameter("telephone");
         String openTime = request.getParameter("openTime");
@@ -81,7 +70,6 @@ public class UpdateDepartment extends HttpServlet {
         String description = "";
         LocalTime startTime = null;
         LocalTime endTime = null;
-        HttpSession session = request.getSession();
 
         String errorTelephoneMsg = "";
         String errorNameMsg = "";
@@ -117,7 +105,7 @@ public class UpdateDepartment extends HttpServlet {
             request.setAttribute("errorTelephoneMsg", errorTelephoneMsg);
             request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
             request.setAttribute("errorOpenTimeMsg", errorOpenTimeMsg);
-            request.setAttribute("departmentId", departmentId);
+            request.setAttribute("departmentCode", departmentCode);
             request.setAttribute("departmentName", departmentName);
             request.setAttribute("telephone", telephone);
             request.setAttribute("openTime", openTime);
@@ -125,18 +113,15 @@ public class UpdateDepartment extends HttpServlet {
             request.getRequestDispatcher("adminDepartmentUpdate.jsp").forward(request, response);
         } else {
             description = DepartmentUtil.getDescription(descriptionArray);
-            Department dep = new Department(departmentId, departmentName, description, startTime, endTime, telephone);
+            Department dep = new Department(departmentCode, departmentName, description, startTime, endTime, telephone);
             boolean updateResult = new DepartmentDAO().update(dep);
             if (updateResult) {
                 List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
                 request.getServletContext().setAttribute("listDepartment", listDepartment);
-                
-                int currentPageDep = (int) session.getAttribute("currentPageDep");
-                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(currentPageDep, 10);
-                request.getServletContext().setAttribute("departments", departments);
-                response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&successMsg=Update successful!");
+
+                response.sendRedirect("view-department?departmentCode=" + departmentCode + "&successMsg=Update successful!");
             } else {
-                response.sendRedirect("viewdepartment?departmentId=" + departmentId + "&errorMsg=Update failed. Please try again!");
+                response.sendRedirect("view-department?departmentCode=" + departmentCode + "&errorMsg=Update failed. Please try again!");
             }
         }
     }

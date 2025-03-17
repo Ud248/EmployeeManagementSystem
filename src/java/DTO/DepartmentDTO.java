@@ -13,7 +13,7 @@ import java.time.LocalTime;
  */
 public class DepartmentDTO {
 
-    private int departmentId;
+    private String departmentCode;
     private String departmentName;
     private String description;
     private String openTime;
@@ -22,8 +22,8 @@ public class DepartmentDTO {
     private int totalEmployee;
     private double costPerMonth;
 
-    public DepartmentDTO(int departmentId, String departmentName, String description, LocalTime startTime, LocalTime endTime, String managerName, String telephone, int totalEmployee, double costPerMonth) {
-        this.departmentId = departmentId;
+    public DepartmentDTO(String departmentCode, String departmentName, String description, LocalTime startTime, LocalTime endTime, String managerName, String telephone, int totalEmployee, double costPerMonth) {
+        this.departmentCode = departmentCode;
         this.departmentName = departmentName;
         this.description = description;
         this.openTime = DepartmentUtil.formatOpenTime(startTime, endTime);
@@ -33,12 +33,12 @@ public class DepartmentDTO {
         this.costPerMonth = costPerMonth;
     }
 
-    public int getDepartmentId() {
-        return departmentId;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
-    public void setDepartmentId(int departmentId) {
-        this.departmentId = departmentId;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public String getDepartmentName() {

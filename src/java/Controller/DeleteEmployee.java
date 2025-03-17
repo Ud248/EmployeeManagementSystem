@@ -28,8 +28,11 @@ public class DeleteEmployee extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int currentPage = Integer.valueOf(request.getParameter("page"));
         String employeeCodeParam = request.getParameter("employeeCode");
-        String[] employeeCode = employeeCodeParam.split(",");
+
+        String[] arrEmployeeCode = employeeCodeParam.split(",");
+
         EmployeeDAO eDao = new EmployeeDAO();
         boolean deleteResult = true;
         HttpSession session = request.getSession();
@@ -37,34 +40,26 @@ public class DeleteEmployee extends HttpServlet {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
 
-        deleteResult = eDao.deleteAllByID(employeeCode);
+        deleteResult = eDao.deleteAllByID(arrEmployeeCode);
 
         if (deleteResult) {
-            int currentPageEmployee = (int) session.getAttribute("currentPageEmployee");
-            int positionIdFilter = (int) session.getAttribute("positionIdFilter");
-            int departmentIdFilter = (int) session.getAttribute("departmentIdFilter");
-            int totalEmployee = eDao.getTotalEmployeesForFilter(departmentIdFilter, positionIdFilter);
-            int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / 10);
-            if (currentPageEmployee > totalPagesEmployee) {
-                --currentPageEmployee;
-                session.setAttribute("currentPageEmployee", currentPageEmployee);
+            int itemsPerPage = (int) request.getServletContext().getAttribute("itemsPerPage");
+            int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee") - arrEmployeeCode.length;
+            int totalPage = (int) Math.ceil((double) totalEmployee / itemsPerPage);
+
+            if (currentPage > totalPage) {
+                currentPage = totalPage;
             }
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, 10, departmentIdFilter, positionIdFilter);
-            List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
 
-            session.setAttribute("totalEmployee", totalEmployee);
-            session.setAttribute("totalPagesEmployee", totalPagesEmployee);
-            session.setAttribute("employees", employees);
+            deleteMsg = "Delete employee " + String.join(", ", arrEmployeeCode) + " successfully!";
 
-            request.getServletContext().setAttribute("departments", departments);
-
-            deleteMsg = "Delete employee " + String.join(", ", employeeCode) + " successfully!";
+            request.getServletContext().setAttribute("totalEmployee", totalEmployee);
 
         } else {
-            deleteMsg = "Delete employee " + String.join(", ", employeeCode) + " failed! Please try again!";
+            deleteMsg = "Delete employee " + String.join(", ", arrEmployeeCode) + " failed! Please try again!";
         }
         session.setAttribute("actionMsg", deleteMsg);
-        response.sendRedirect("admin.jsp");
+        response.sendRedirect("show-employee?page=" + currentPage);
     }
 
     @Override

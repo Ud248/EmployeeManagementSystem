@@ -13,6 +13,7 @@ import java.time.LocalTime;
 public class Department {
 
     private int departmentId;
+    private String departmentCode;
     private String departmentName;
     private String description;
     private LocalTime startTime;
@@ -22,8 +23,18 @@ public class Department {
     public Department() {
     }
 
-    public Department(int departmentId, String departmentName, String description, LocalTime startTime, LocalTime endTime, String telephone) {
+    public Department(int departmentId, String departmentCode, String departmentName, String description, LocalTime startTime, LocalTime endTime, String telephone) {
         this.departmentId = departmentId;
+        this.departmentCode = departmentCode;
+        this.departmentName = departmentName;
+        this.description = description;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.telephone = telephone;
+    }
+    
+    public Department(String departmentCode, String departmentName, String description, LocalTime startTime, LocalTime endTime, String telephone) {
+        this.departmentCode = departmentCode;
         this.departmentName = departmentName;
         this.description = description;
         this.startTime = startTime;
@@ -37,6 +48,14 @@ public class Department {
         this.startTime = startTime;
         this.endTime = endTime;
         this.telephone = telephone;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public String getDepartmentName() {

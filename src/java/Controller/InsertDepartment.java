@@ -58,6 +58,8 @@ public class InsertDepartment extends HttpServlet {
         }
         if (!telephone.matches(REGEX_TELEPHONE)) {
             errorTelephoneMsg = "Invalid telephone's format (10 characters contain number from 0 to 9)";
+        } else if (dDao.isExistPhoneNumber(telephone)) {
+            errorTelephoneMsg = "This phone number is already registered";
         }
         if (!openTime.matches(REGEX_OPENTIME)) {
             errorOpenTimeMsg = "Invalid open time's format (HH:mm - HH:mm)";
@@ -88,18 +90,11 @@ public class InsertDepartment extends HttpServlet {
             if (insertResult) {
                 List<Department> listDepartment = dDao.selectAll();
                 request.getServletContext().setAttribute("listDepartment", listDepartment);
+                
                 int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") + 1;
                 request.getServletContext().setAttribute("totalDepartment", totalDepartment);
 
-                int totalPagesDep = (int) Math.ceil((double) totalDepartment / 10);
-
-                session.setAttribute("totalPagesDep", totalPagesDep);
-                session.setAttribute("currentPageDep", 1);
-
                 insertMsg = "Add new department " + departmentName + " successfully!";
-
-                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
-                request.getServletContext().setAttribute("departments", departments);
 
             } else {
                 insertMsg = "Add new department " + departmentName + " failed. Please try again!";

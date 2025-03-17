@@ -25,6 +25,8 @@ public class DeleteProject extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String projectCodeParam = request.getParameter("projectCode");
+        int currentPage = Integer.valueOf(request.getParameter("page"));
+
         String[] projectCode = projectCodeParam.split(",");
         ProjectDAO pDAO = new ProjectDAO();
         boolean deleteResult = true;
@@ -38,18 +40,16 @@ public class DeleteProject extends HttpServlet {
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
         if (deleteResult) {
+            int itemsPerPage = (int) request.getServletContext().getAttribute("itemsPerPage");
             int totalProject = (int) request.getServletContext().getAttribute("totalProject") - projectCode.length;
+
+            int totalPage = (int) Math.ceil((double) totalProject / itemsPerPage);
+
+            if (currentPage > totalPage) {
+                currentPage = totalPage;
+            }
+
             request.getServletContext().setAttribute("totalProject", totalProject);
-
-            int totalPagesPro = (int) Math.ceil((double) totalProject / 10);
-
-            session.setAttribute("totalPagesPro", totalPagesPro);
-            session.setAttribute("currentPagePro", 1);
-
-            List<ProjectDTO> projects = pDAO.selectAllProjectDTO(1, 10);
-            List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
-            request.getServletContext().setAttribute("projects", projects);
-            request.getServletContext().setAttribute("departments", departments);
 
             deleteMsg = "Delete project " + String.join(", ", projectCode) + " successfully!";
         } else {
@@ -57,7 +57,7 @@ public class DeleteProject extends HttpServlet {
         }
 
         session.setAttribute("actionMsg", deleteMsg);
-        response.sendRedirect("admin.jsp");
+        response.sendRedirect("show-project?page=" + currentPage);
     }
 
     @Override

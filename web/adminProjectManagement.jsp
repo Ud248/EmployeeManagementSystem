@@ -23,8 +23,13 @@
         <link rel="stylesheet" href="css/styleAdminDepartmentManagement.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" type="image/x-icon" href="./image/Logo.jpg">
+        <script src="https://unpkg.com/@phosphor-icons/web"></script>
     </head>
     <body>
+
+        <jsp:include page="./layout/sidebar.jsp" />
+
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
                 <div class="head">
@@ -49,7 +54,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="p" items="${applicationScope.projects}">
+                        <c:forEach var="p" items="${projectDTOs}">
                             <tr>
                                 <td class="select-column" style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${p.getProjectCode()}" onchange="toggleDeleteMode()">
@@ -65,22 +70,22 @@
                     </tbody>
                 </table>
                 <div class="pagination">
-                    <c:if test="${currentPagePro > 1}">
-                        <a href="load-data?pagePro=${currentPagePro - 1}">&laquo; Previous</a>
+                    <c:if test="${currentPage > 1}">
+                        <a href="show-project?page=${currentPage - 1}">&laquo; Previous</a>
                     </c:if>
-                    <c:forEach begin="1" end="${totalPagesPro}" var="i">
-                        <a href="load-data?pagePro=${i}" 
-                           class="${i == currentPagePro ? 'active' : ''}">${i}</a>
+                    <c:forEach begin="1" end="${totalPage}" var="i">
+                        <a href="show-project?page=${i}" 
+                           class="${i == currentPage ? 'active' : ''}">${i}</a>
                     </c:forEach>
-                    <c:if test="${currentPagePro < totalPagesPro}">
-                        <a href="load-data?pagePro=${currentPagePro + 1}">Next &raquo;</a>
+                    <c:if test="${currentPage < totalPage}">
+                        <a href="show-project?page=${currentPage + 1}">Next &raquo;</a>
                     </c:if>
                 </div>
                 <div class="page-info">
-                    Showing page ${currentPagePro} of ${totalPagesPro} 
+                    Showing page ${currentPage} of ${totalPage} 
                     (Total: ${applicationScope.totalProject} projects)
                 </div>
-            </div>
+            </div>                
         </div>
         <div id="insertProjectPopup" class="popup">
             <div class="popup-content">
@@ -94,6 +99,25 @@
                 <iframe id="viewProjectFrame"></iframe>
             </div>
         </div>
+
+        <% 
+            String actionMsg = (String) session.getAttribute("actionMsg");
+            if (actionMsg != null) {
+            session.removeAttribute("actionMsg");
+        %>
+        <script>
+            Swal.fire({
+                icon: "<%= actionMsg.contains("successfully") ? "success" : "error" %>",
+                title: "Notification",
+                text: "<%= actionMsg %>",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+        <%
+            }
+        %>
+
         <script>
             function openPopup(id) {
                 document.getElementById(id).style.display = 'flex';
@@ -165,7 +189,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         let selectedIds = getValueChecked().join(",");
-                        window.location.href = "delete-project?projectCode=" + selectedIds;
+                        window.location.href = "delete-project?page=" + ${currentPage} + "&projectCode=" + selectedIds;
                     }
                 });
             });

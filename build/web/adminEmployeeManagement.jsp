@@ -15,12 +15,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Employee Management</title>
         <link rel="stylesheet" href="./css/styleAdminEmployeeManagement.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="./image/Logo.jpg">
+        <script src="https://unpkg.com/@phosphor-icons/web"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     </head>
 
     <body>
+
+        <jsp:include page="./layout/sidebar.jsp" />
 
         <div class="content">
             <div style="padding: 20px 20px 0px 20px">
@@ -30,33 +35,13 @@
 
                 <div class="action-btn">
                     <button id="deleteButton" class="delete-btn" disabled=""><i class="ph ph-trash"></i>Delete</button>
-                    <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup')">
+                    <button class="new-employee-btn" onclick="openPopup('insertEmployeePopup', null, event)">
                         <i class="fas fa-plus"></i> New Employee
                     </button> 
+                    <form action="show-employee" method="GET">
+                        <input id="search" type="text" name="search" placeholder="Search" value="${search}"/>
 
-                    <form class="filter_form" action="load-data" method="GET">
-                        <select class="" id="position" name="position">
-                            <option selected value="None">Position Name</option>
-                            <c:forEach var="position" items="${applicationScope.listPosition}">
-                                <option value="${position.positionId}" 
-                                        ${sessionScope.positionIdFilter == position.positionId ? 'selected="selected"' : ''}>
-                                    ${position.positionName}
-                                </option>
-                            </c:forEach>
-                        </select>
-
-                        <select class="" id="department" name="department">
-                            <option selected value="None">Department Name</option>
-                            <c:forEach var="department" items="${applicationScope.listDepartment}">
-                                <option value="${department.departmentId}" 
-                                        ${sessionScope.departmentIdFilter == department.departmentId ? 'selected="selected"' : ''}>
-                                    ${department.departmentName}
-                                </option>
-                            </c:forEach>
-                        </select>
-
-                        <button type="submit" class="filter_btn">Filter</button>
-                        <button type="submit" name="reset" value="true" class="reset_btn">Reset</button>
+                        <button type="submit" class="search_btn" onclick="sendRequestSearch(event)">Search</button>
                     </form>
                 </div>
 
@@ -72,13 +57,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="e" items="${employees}">
+                        <c:forEach var="e" items="${employeeDTOs}">
                             <tr>
                                 <td class="select-column" style="text-align: center;">
                                     <input type="checkbox" class="rowCheckbox" value="${e.getEmployeeCode()}" onchange="toggleDeleteMode()">
                                 </td>
                                 <td>${e.getEmployeeCode()}</td>
-                                <td><a href="#" onclick="openViewPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getFullname()}</a></td>
+                                <td><a href="#" onclick="openPopup('viewEmployeePopup', '${e.getEmployeeCode()}', event)">${e.getFullname()}</a></td>
                                 <td>${e.getTel()}</td>
                                 <td>${e.getPositionName()}</td>
                                 <td>${e.getDepartmentName()}</td>
@@ -90,23 +75,23 @@
 
                 <!-- Pagination -->
                 <div class="pagination">
-                    <c:if test="${currentPageEmployee > 1}">
-                        <a href="load-data?pageEmployee=${currentPageEmployee - 1}">&laquo; Previous</a>
+                    <c:if test="${currentPage > 1}">
+                        <a href="show-employee?page=${currentPage - 1}">&laquo; Previous</a>
                     </c:if>
 
-                    <c:forEach begin="1" end="${totalPagesEmployee}" var="i">
-                        <a href="load-data?pageEmployee=${i}" 
-                           class="${i == currentPageEmployee ? 'active' : ''}">${i}</a>
+                    <c:forEach begin="1" end="${totalPage}" var="i">
+                        <a href="show-employee?page=${i}" 
+                           class="${i == currentPage ? 'active' : ''}">${i}</a>
                     </c:forEach>
 
-                    <c:if test="${currentPageEmployee < totalPagesEmployee}">
-                        <a href="load-data?pageEmployee=${currentPageEmployee + 1}">Next &raquo;</a>
+                    <c:if test="${currentPage < totalPage}">
+                        <a href="show-employee?page=${currentPage + 1}">Next &raquo;</a>
                     </c:if>
                 </div>
 
                 <div class="page-info">
-                    Showing page ${currentPageEmployee} of ${totalPagesEmployee}
-                    (Total: ${totalEmployee} employees)
+                    Showing page ${currentPage} of ${totalPage}
+                    (Total: ${applicationScope.totalEmployee} employees)
                 </div>
             </div>
         </div>
@@ -114,24 +99,36 @@
 
         <div id="insertEmployeePopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('insertEmployeePopup')">&times;</span>
-                <iframe id="insertEmployeeFrame" src="adminEmployeeInsert.jsp"></iframe>
+                <span class="close-btn" onclick="closePopup('insertEmployeePopup')">&times;</span>
+                <iframe id="insertEmployeeFrame" ></iframe>
             </div>
         </div>
 
         <div id="viewEmployeePopup" class="popup">
             <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
-                <iframe id="viewEmployeeFrame" src="adminEmployeeView.jsp"></iframe>
+                <span class="close-btn" onclick="closePopup('viewEmployeePopup')">&times;</span>
+                <iframe id="viewEmployeeFrame" ></iframe>
             </div>
         </div>
 
-        <div id="updateEmployeePopup" class="popup">
-            <div class="popup-content">
-                <span class="close-btn" onclick="closePopupAndReload('viewEmployeePopup')">&times;</span>
-                <iframe id="updateEmployeeFrame" src="adminEmployeeUpdate.jsp"></iframe>
-            </div>
-        </div>
+        <% 
+            String actionMsg = (String) session.getAttribute("actionMsg");
+            if (actionMsg != null) {
+            session.removeAttribute("actionMsg");
+        %>
+        <script>
+            Swal.fire({
+                icon: "<%= actionMsg.contains("successfully") ? "success" : "error" %>",
+                title: "Notification",
+                text: "<%= actionMsg %>",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+        <%
+            }
+        %>
+
 
         <script>
 
@@ -152,40 +149,24 @@
                 }
             });
 
-            function openPopup(id) {
-                document.getElementById(id).style.display = 'flex';
-            }
-
-            function openViewPopup(id, employeeCode = null, event) {
+            function openPopup(id, employeeCode = null, event) {
                 event.preventDefault();
                 let popup = document.getElementById(id);
-
                 if (employeeCode && id === 'viewEmployeePopup') {
                     document.getElementById('viewEmployeeFrame').src = "view-employee?employeeCode=" + employeeCode;
+                } else if (id === 'insertEmployeePopup') {
+                    document.getElementById('insertEmployeeFrame').src = 'adminEmployeeInsert.jsp';
                 }
-
                 popup.style.display = 'flex';
             }
 
-            function openUpdatePopup(id, employeeCode = null) {
-                event.preventDefault();
-                let popup = document.getElementById(id);
-
-                if (employeeCode && id === 'updateEmployeePopup') {
-                    document.getElementById('updateEmployeeFrame').src = "update-employee?employeeCode=" + employeeCode;
-                }
-
-                popup.style.display = 'flex';
-            }
-
-            function closePopupAndReload(id) {
+            function closePopup(id) {
                 document.getElementById(id).style.display = 'none';
                 location.reload();
             }
 
             document.addEventListener('click', function (event) {
                 let popups = document.querySelectorAll('.popup');
-
                 popups.forEach(popup => {
                     if (event.target === popup) {
                         popup.style.display = 'none';
@@ -217,10 +198,22 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         let selectedIds = getValueChecked().join(",");
-                        window.location.href = "delete-employee?employeeCode=" + selectedIds;
+                        window.location.href = "delete-employee?page=" + ${currentPage} + "&employeeCode=" + selectedIds;
                     }
                 });
             });
+
+            function sendRequestSearch(event) {
+                event.preventDefault();
+                let searchInputTag = document.getElementById("search");
+                if (searchInputTag.value === "") {
+                    window.location.href = "show-employee?page=1";
+                } else {
+                    window.location.href = "show-employee?page=1&search=" + searchInputTag.value;
+                }
+            }
+
+
         </script>
     </body>
 </html>

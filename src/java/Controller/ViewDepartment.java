@@ -4,6 +4,7 @@
  */
 package Controller;
 
+import DAO.DepartmentDAO;
 import DTO.DepartmentDTO;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -24,10 +25,9 @@ public class ViewDepartment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String departmentId = request.getParameter("departmentId");
-        int index = Integer.parseInt(departmentId) - 1;
+        String departmentCode = request.getParameter("departmentCode");
 
-        DepartmentDTO dep = ((ArrayList<DepartmentDTO>) request.getServletContext().getAttribute("departments")).get(index);
+        DepartmentDTO dep = new DepartmentDAO().selectByEmployeeCode(departmentCode);
 
         String departmentName = dep.getDepartmentName();
         String description = dep.getDescription();
@@ -42,7 +42,7 @@ public class ViewDepartment extends HttpServlet {
         DecimalFormat df = new DecimalFormat("#,###.##");
         String costPerMonth = df.format(dep.getCostPerMonth());
 
-        request.setAttribute("departmentId", departmentId);
+        request.setAttribute("departmentCode", departmentCode);
         request.setAttribute("departmentName", departmentName);
         request.setAttribute("description", description);
         request.setAttribute("openTime", openTime);

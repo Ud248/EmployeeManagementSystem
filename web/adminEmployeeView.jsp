@@ -252,29 +252,7 @@
                 }
             };
 
-            window.onload = function () {
-                const urlParams = new URLSearchParams(window.location.search);
-                const successMsg = urlParams.get('successMsg');
-
-                if (successMsg) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Thành công!',
-                        text: successMsg,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-
-                if (errorMsg) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Thất bại!',
-                        text: errorMsg,
-                        showConfirmButton: true
-                    });
-                }
-            };
+            
         </script>
     </body>
 </html>

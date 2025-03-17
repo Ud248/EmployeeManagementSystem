@@ -233,12 +233,6 @@
                             </div>
                         </c:if>
 
-                        <c:if test="${not empty successMsg}">
-                            <div class="alert alert-success mt-3">
-                                ${successMsg}
-                            </div>
-                        </c:if>
-
                         <button type="submit" class="submit-button">Update</button>  
 
                     </form>     

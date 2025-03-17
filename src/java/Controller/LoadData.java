@@ -40,7 +40,7 @@ public class LoadData extends HttpServlet {
         boolean isAdmin = new AccountDAO().isAdmin(session.getAttribute("username") + "");
         String url = "";
         if (isAdmin) {
-            url = "admin.jsp";
+            url = "welcome";
 
             EmployeeDAO eDao = new EmployeeDAO();
             DepartmentDAO dDAO = new DepartmentDAO();
@@ -84,14 +84,14 @@ public class LoadData extends HttpServlet {
                 }
             }
 
-            int totalEmployee = eDao.getTotalEmployeesForFilter(departmentIdFilter, positionIdFilter);
-            int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / itemsPerPage);
+            //int totalEmployee = eDao.getTotalEmployeesForFilter(departmentIdFilter, positionIdFilter);
+            //int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / itemsPerPage);
             if (currentPageEmployee < 1) {
                 currentPageEmployee = 1;
             }
-            if (currentPageEmployee > totalPagesEmployee) {
-                currentPageEmployee = totalPagesEmployee;
-            }
+//            if (currentPageEmployee > totalPagesEmployee) {
+//                currentPageEmployee = totalPagesEmployee;
+//            }
 
 //phân trang dep
             int currentPageDep = 1;
@@ -131,19 +131,19 @@ public class LoadData extends HttpServlet {
                 currentPagePro = totalPagesPro;
             }
 
-            List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, itemsPerPage, departmentIdFilter, positionIdFilter);
+            //List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, itemsPerPage, departmentIdFilter, positionIdFilter);
             List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(currentPageDep, itemsPerPage);
             List<ProjectDTO> projects = pDAO.selectAllProjectDTO(currentPagePro, itemsPerPage);
 
-            session.setAttribute("employees", employees);
+            //session.setAttribute("employees", employees);
             request.getServletContext().setAttribute("departments", departments);
             request.getServletContext().setAttribute("projects", projects);
 
             session.setAttribute("positionIdFilter", positionIdFilter);
             session.setAttribute("departmentIdFilter", departmentIdFilter);
             session.setAttribute("currentPageEmployee", currentPageEmployee);
-            session.setAttribute("totalPagesEmployee", totalPagesEmployee);
-            session.setAttribute("totalEmployee", totalEmployee);
+//            session.setAttribute("totalPagesEmployee", totalPagesEmployee);
+//            session.setAttribute("totalEmployee", totalEmployee);
 
             session.setAttribute("totalPagesDep", totalPagesDep);
             session.setAttribute("currentPageDep", currentPageDep);

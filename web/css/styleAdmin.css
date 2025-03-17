@@ -94,6 +94,16 @@ body {
     background-color: #555;
 }
 
+.menu li:hover, .menu li.selected {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+ul {
+    padding-left: 0rem;
+}
+
 .text{
     margin-left: 15px;
 }
@@ -101,15 +111,7 @@ body {
     flex: 1;
 }
 
-.menu li:hover, .menu li.selected {
-    background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
 
-ol, ul {
-    padding-left: 0rem;
-}
 
 h4{
     font-size: 16px;

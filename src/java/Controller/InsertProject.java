@@ -124,16 +124,7 @@ public class InsertProject extends HttpServlet {
                 int totalProject = (int) request.getServletContext().getAttribute("totalProject") + 1;
                 request.getServletContext().setAttribute("totalProject", totalProject);
 
-                int totalPagesPro = (int) Math.ceil((double) totalProject / 10);
-
-                session.setAttribute("totalPagesPro", totalPagesPro);
-                session.setAttribute("currentPagePro", 1);
-
                 insertMsg = "Add new department " + projectName + " successfully!";
-
-                List<ProjectDTO> projects = new DAO.ProjectDAO().selectAllProjectDTO(1, 10);
-                request.getServletContext().setAttribute("projects", projects);
-
             } else {
                 insertMsg = "Add new project " + projectName + " failed. Please try again!";
             }

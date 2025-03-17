@@ -108,15 +108,15 @@
                     <h4 class="modal-title mx-auto">UPDATE DEPARTMENT DETAIL</h4>
                 </div>
                 <div class="modal-body">
-                    <form action="updatedepartment" method="post">
+                    <form action="update-department" method="post">
                         <div class="mb-3">
                             <h5 class="section-header">GENERAL INFORMATION</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="field-container">
-                                        <label class="form-label">Department ID:</label>
-                                        <span class="detail">${departmentId}</span>
-                                        <input type="hidden" name="departmentId" value="${departmentId}"/>
+                                        <label class="form-label">Department Code:</label>
+                                        <span class="detail">${departmentCode}</span>
+                                        <input type="hidden" name="departmentCode" value="${departmentCode}"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">

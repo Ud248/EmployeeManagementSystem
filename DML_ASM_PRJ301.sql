@@ -30,7 +30,67 @@ VALUES
 
     (N'Phòng Marketing', 
      N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
-     '09:00:00', '17:00:00', '0978901234');
+     '09:00:00', '17:00:00', '0978901234'),
+	 --thêm để test phân trang
+	 (N'Phòng Chiến Lược & Điều Hành', 
+     N'Hoạch định và thực thi các chiến lược dài hạn của công ty. Giám sát hoạt động của các phòng ban. Đảm bảo sự phát triển bền vững.',
+     '08:00:00', '17:00:00', '0123456789'),
+
+    (N'Phòng Kinh Doanh', 
+     N'Tìm kiếm khách hàng mới và duy trì quan hệ với khách hàng hiện tại. Lập kế hoạch tăng trưởng doanh thu và triển khai chiến lược bán hàng. Mở rộng thị trường và nâng cao lợi thế cạnh tranh.',
+     '08:30:00', '17:00:00', '0123456788'),
+
+    (N'Phòng Kế Toán', 
+     N'Quản lý tài chính, kế toán và thuế. Giám sát dòng tiền và lập báo cáo tài chính. Đảm bảo tuân thủ các quy định kế toán.',
+     '08:00:00', '17:00:00', '0123456787'),
+
+    (N'Phòng Nhân Sự', 
+     N'Tuyển dụng, đào tạo và đánh giá nhân viên. Xây dựng chính sách phúc lợi và quản lý chế độ lương thưởng. Thúc đẩy văn hóa doanh nghiệp.',
+     '08:00:00', '17:30:00', '0123456786'),
+
+    (N'Phòng IT', 
+     N'Xây dựng, vận hành và bảo trì hệ thống công nghệ thông tin. Hỗ trợ các phòng ban trong việc áp dụng công nghệ vào quy trình làm việc. Đảm bảo an toàn bảo mật dữ liệu cho toàn công ty.',
+     '07:30:00', '18:30:00', '0123456785'),
+
+    (N'Phòng Marketing', 
+     N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
+     '09:00:00', '17:00:00', '0123456784'),
+
+	 (N'Phòng Nhân Sự', 
+     N'Tuyển dụng, đào tạo và đánh giá nhân viên. Xây dựng chính sách phúc lợi và quản lý chế độ lương thưởng. Thúc đẩy văn hóa doanh nghiệp.',
+     '08:00:00', '17:30:00', '0123456783'),
+
+    (N'Phòng IT', 
+     N'Xây dựng, vận hành và bảo trì hệ thống công nghệ thông tin. Hỗ trợ các phòng ban trong việc áp dụng công nghệ vào quy trình làm việc. Đảm bảo an toàn bảo mật dữ liệu cho toàn công ty.',
+     '07:30:00', '18:30:00', '0123456782'),
+
+    (N'Phòng Marketing', 
+     N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
+     '09:00:00', '17:00:00', '0123456781'),
+
+	 (N'Phòng Nhân Sự', 
+     N'Tuyển dụng, đào tạo và đánh giá nhân viên. Xây dựng chính sách phúc lợi và quản lý chế độ lương thưởng. Thúc đẩy văn hóa doanh nghiệp.',
+     '08:00:00', '17:30:00', '0123456790'),
+
+    (N'Phòng IT', 
+     N'Xây dựng, vận hành và bảo trì hệ thống công nghệ thông tin. Hỗ trợ các phòng ban trong việc áp dụng công nghệ vào quy trình làm việc. Đảm bảo an toàn bảo mật dữ liệu cho toàn công ty.',
+     '07:30:00', '18:30:00', '0123456799'),
+
+    (N'Phòng Marketing', 
+     N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
+     '09:00:00', '17:00:00', '0123456798'),
+
+	 (N'Phòng Nhân Sự', 
+     N'Tuyển dụng, đào tạo và đánh giá nhân viên. Xây dựng chính sách phúc lợi và quản lý chế độ lương thưởng. Thúc đẩy văn hóa doanh nghiệp.',
+     '08:00:00', '17:30:00', '0123456797'),
+
+    (N'Phòng IT', 
+     N'Xây dựng, vận hành và bảo trì hệ thống công nghệ thông tin. Hỗ trợ các phòng ban trong việc áp dụng công nghệ vào quy trình làm việc. Đảm bảo an toàn bảo mật dữ liệu cho toàn công ty.',
+     '07:30:00', '18:30:00', '0123456796'),
+
+    (N'Phòng Marketing', 
+     N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
+     '09:00:00', '17:00:00', '0123456795');
 
 
 
@@ -111,14 +171,15 @@ ORDER BY d.DepartmentID
 /*
 SELECT 
 	e.EmployeeCode, 
-	e.LastName + ' ' + e.FirstName AS Fullname, 
+	e.LastName + ' ' + e.FirstName AS FullName, 
 	e.Tel, 
     p.PositionName AS PositionName, 
 	COALESCE(d.DepartmentName, '') AS DepartmentName 
 FROM Employee e 
 JOIN Position p ON e.PositionID = p.PositionID 
-LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID
-ORDER BY e.EmployeeCode 
+JOIN Department d ON e.DepartmentID = d.DepartmentID
+WHERE (EmployeeCode LIKE '%0%') OR (e.LastName + ' ' + e.FirstName LIKE '%0%') OR (e.Tel LIKE '%0%') OR (PositionName LIKE '%0%') OR (DepartmentName LIKE '%0%')
+ORDER BY p.PositionID
 OFFSET 0 ROWS FETCH NEXT 10 ROWS ONLY
 */
 
@@ -150,7 +211,7 @@ FROM Employee
 WHERE DepartmentID = ? and PositionID = 2 
 */
 
-
+/*
 SELECT 
     d.DepartmentName, 
     COUNT(p.ProjectID) AS TotalCompletedProject
@@ -167,4 +228,7 @@ WHERE d.DepartmentID NOT IN (
     SELECT DISTINCT p.DepartmentID 
     FROM Project p 
     WHERE p.Completion = 100);
+*/
+
+
 

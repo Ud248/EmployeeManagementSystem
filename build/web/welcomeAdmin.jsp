@@ -25,12 +25,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://unpkg.com/@phosphor-icons/web"></script>  
         <link rel="stylesheet" href="./css/styleWelcome.css">  
-        <style>
-
-        </style>
+        <link rel="icon" type="image/x-icon" href="./image/Logo.jpg">
     </head>
 
     <body>
+
+        <jsp:include page="./layout/sidebar.jsp" />
+
         <div class="container-fluid container-fluid-custom">
             <!-- Hero Section -->
             <div class="hero-section">

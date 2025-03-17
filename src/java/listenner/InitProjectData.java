@@ -24,10 +24,13 @@ public class InitProjectData implements ServletContextListener {
         List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
         List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
         List<ProjectDTO> projects = new DAO.ProjectDAO().selectAllProjectDTO(1, 10);
-        
+        int itemsPerPage = 10;
+
         int totalEmployee = new DAO.EmployeeDAO().getTotalEmployees();
         int totalDepartment = new DAO.DepartmentDAO().getTotalDepartments();
         int totalProject = new DAO.ProjectDAO().getTotalProjects();
+
+        sce.getServletContext().setAttribute("itemsPerPage", itemsPerPage);
 
         sce.getServletContext().setAttribute("listPosition", listPosition);
         sce.getServletContext().setAttribute("listDepartment", listDepartment);

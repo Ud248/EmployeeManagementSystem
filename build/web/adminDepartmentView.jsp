@@ -112,8 +112,8 @@
                             <!-- Left Column -->
                             <div class="col-md-5">
                                 <div class="field-container">
-                                    <label class="form-label">Department ID:</label>
-                                    <span class="detail">${departmentId}</span>
+                                    <label class="form-label">Department Code:</label>
+                                    <span class="detail">${departmentCode}</span>
                                 </div>
                             </div>
 
@@ -188,20 +188,21 @@
                         </div>
                     </div>
 
-                    <button type="button" class="edit-button" onclick="switchToUpdatePopup(${departmentId})">Edit</button>
+                    <button type="button" class="edit-button" onclick="switchToUpdatePopup('${departmentCode}')">Edit</button>
                 </div>
             </div>
         </div>
 
         <script>
-            function switchToUpdatePopup(departmentId) {
+            function switchToUpdatePopup(departmentCode) {
                 let frame = window.parent.document.getElementById('viewDepartmentFrame');
-                frame.src = "updatedepartment?departmentId=" + departmentId;
+                frame.src = "update-department?departmentCode=" + departmentCode;
             }
 
             window.onload = function () {
                 const urlParams = new URLSearchParams(window.location.search);
                 const successMsg = urlParams.get('successMsg');
+                const errorMsg = urlParams.get('errorMsg');
 
                 if (successMsg) {
                     Swal.fire({

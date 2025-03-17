@@ -63,10 +63,8 @@ public class UpdateProject extends HttpServlet {
         request.setAttribute("descriptionArray", descriptionArray);
 
         request.getRequestDispatcher("adminProjectUpdate.jsp").forward(request, response);
-
     }
 
-    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String projectCode = request.getParameter("projectCode");
@@ -151,9 +149,6 @@ public class UpdateProject extends HttpServlet {
             description = ProjectUtil.getDescription(descriptionArray);
             boolean updateResult = new ProjectDAO().update(new Project(projectCode, projectName, description, completion, startDate, endDate, deadLine, budget, profit));
             if (updateResult) {
-                session.setAttribute("currentPagePro", 1);
-                List<ProjectDTO> projects = new ProjectDAO().selectAllProjectDTO(1, 10);
-                request.getServletContext().setAttribute("projects", projects);
                 response.sendRedirect("view-project?projectCode=" + projectCode + "&successMsg=Update successful!");
             } else {
                 response.sendRedirect("view-project?projectCode=" + projectCode + "&errorMsg=Update failed. Please try again!");

@@ -61,13 +61,92 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return result;
     }
 
+    public int getTotalEmployees(String search) {
+        String sql = "SELECT \n"
+                + "COUNT(*) AS Total \n"
+                + "FROM Employee e \n"
+                + "JOIN Position p ON e.PositionID = p.PositionID \n"
+                + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
+                + "WHERE (EmployeeCode LIKE ?) OR (e.LastName + ' ' + e.FirstName LIKE ?) "
+                + "OR (e.Tel LIKE ?) OR (PositionName LIKE ?) OR (DepartmentName LIKE ?) \n";
+
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, "%" + search + "%");
+            st.setString(2, "%" + search + "%");
+            st.setString(3, "%" + search + "%");
+            st.setString(4, "%" + search + "%");
+            st.setString(5, "%" + search + "%");
+
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalEmployees() {
+        String sql = "SELECT COUNT(*) AS total FROM Employee";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //search
+    public List<EmployeeDTO> selectEmployeesByPage(int page, int itemsPerPage, String search) {
+        List<EmployeeDTO> result = new ArrayList<>();
+        String sql = "SELECT \n"
+                + "	e.EmployeeCode, \n"
+                + "	e.LastName + ' ' + e.FirstName AS FullName, \n"
+                + "	e.Tel, \n"
+                + "    p.PositionName AS PositionName, \n"
+                + "	COALESCE(d.DepartmentName, '') AS DepartmentName \n"
+                + "FROM Employee e \n"
+                + "JOIN Position p ON e.PositionID = p.PositionID \n"
+                + "JOIN Department d ON e.DepartmentID = d.DepartmentID\n"
+                + "WHERE (EmployeeCode LIKE ?) OR (e.LastName + ' ' + e.FirstName LIKE ?) OR (e.Tel LIKE ?) OR (PositionName LIKE ?) OR (DepartmentName LIKE ?) \n"
+                + "ORDER BY p.PositionID\n"
+                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, "%" + search + "%");
+            st.setString(2, "%" + search + "%");
+            st.setString(3, "%" + search + "%");
+            st.setString(4, "%" + search + "%");
+            st.setString(5, "%" + search + "%");
+            st.setInt(6, (page - 1) * itemsPerPage);
+            st.setInt(7, itemsPerPage);
+
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                result.add(new EmployeeDTO(
+                        rs.getString("EmployeeCode"),
+                        rs.getString("FullName"),
+                        rs.getString("Tel"),
+                        rs.getString("PositionName"),
+                        rs.getString("DepartmentName")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     public List<EmployeeDTO> selectEmployeesByPage(int page, int itemsPerPage) {
         List<EmployeeDTO> result = new ArrayList<>();
         String sql = "SELECT \n"
                 + "	e.EmployeeCode, \n"
                 + "	e.LastName + ' ' + e.FirstName AS Fullname, \n"
                 + "	e.Tel, \n"
-                + "    p.PositionName AS PositionName, \n"
+                + "     p.PositionName AS PositionName, \n"
                 + "	COALESCE(d.DepartmentName, '') AS DepartmentName \n"
                 + "FROM Employee e \n"
                 + "JOIN Position p ON e.PositionID = p.PositionID \n"
@@ -92,99 +171,6 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             e.printStackTrace();
         }
         return result;
-    }
-
-    public int getTotalEmployees() {
-        String sql = "SELECT COUNT(*) AS total FROM Employee";
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    //Filter 
-    public List<EmployeeDTO> selectEmployeesByPageForFilter(int page, int itemsPerPage, int departmentId, int positionId) {
-        List<EmployeeDTO> result = new ArrayList<>();
-        StringBuilder sql = new StringBuilder("SELECT \n"
-                + "    e.EmployeeCode, \n"
-                + "    e.LastName + ' ' + e.FirstName AS Fullname, \n"
-                + "    e.Tel, \n"
-                + "    p.PositionName AS PositionName, \n"
-                + "    COALESCE(d.DepartmentName, '') AS DepartmentName \n"
-                + "FROM Employee e \n"
-                + "JOIN Position p ON e.PositionID = p.PositionID \n"
-                + "LEFT JOIN Department d ON e.DepartmentID = d.DepartmentID \n"
-                + "WHERE 1=1 ");
-
-        if (departmentId != 0) {
-            sql.append(" AND e.DepartmentID = ? ");
-        }
-        if (positionId != 0) {
-            sql.append(" AND e.PositionID = ? ");
-        }
-        sql.append("ORDER BY p.PositionID \n"
-                + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY;");
-
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql.toString())) {
-            int paramIndex = 1;
-
-            if (departmentId != 0) {
-                st.setInt(paramIndex++, departmentId);
-            }
-            if (positionId != 0) {
-                st.setInt(paramIndex++, positionId);
-            }
-            st.setInt(paramIndex++, (page - 1) * itemsPerPage);
-            st.setInt(paramIndex, itemsPerPage);
-
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                result.add(new EmployeeDTO(
-                        rs.getString("EmployeeCode"),
-                        rs.getString("Fullname"),
-                        rs.getString("Tel"),
-                        rs.getString("PositionName"),
-                        rs.getString("DepartmentName")));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public int getTotalEmployeesForFilter(int departmentId, int positionId) {
-        StringBuilder sql = new StringBuilder("SELECT COUNT(*) AS total FROM Employee WHERE 1=1 ");
-
-        if (departmentId != 0) {
-            sql.append(" AND DepartmentID = ? ");
-        }
-        if (positionId != 0) {
-            sql.append(" AND PositionID = ? ");
-        }
-
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql.toString())) {
-            int paramIndex = 1;
-
-            if (departmentId != 0) {
-                st.setInt(paramIndex++, departmentId);
-            }
-            if (positionId != 0) {
-                st.setInt(paramIndex++, positionId);
-            }
-
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 
     @Override
@@ -575,11 +561,7 @@ public class EmployeeDAO implements DAOInterface<Employee> {
 
     public static void main(String[] args) {
         EmployeeDAO eDao = new EmployeeDAO();
-        List<EmployeeDTO> list = eDao.selectEmployeesByPageForFilter(1, 100, 0, 3);
-        System.out.println(eDao.getTotalEmployeesForFilter(0, 3));
-        System.out.println(list.size());
-        for (EmployeeDTO employeeDTO : list) {
-            System.out.println(employeeDTO);
-        }
+        int test = eDao.getTotalEmployees("c");
+        System.out.println(test);
     }
 }

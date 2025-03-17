@@ -34,7 +34,6 @@ public class InsertEmployee extends HttpServlet {
         HttpSession session = request.getSession();
         String insertMsg = "";
 
-        // Kiểm tra các trường bắt buộc
         String firstName = "", lastName = "";
         if (fullname == null || fullname.trim().isEmpty()) {
             error += "Full name is required.<br>";
@@ -111,23 +110,11 @@ public class InsertEmployee extends HttpServlet {
             request.setAttribute("basicSalary", basicSalary);
             request.getRequestDispatcher("adminEmployeeInsert.jsp").forward(request, response);
         } else {
-            boolean success = eDao.insert(new Employee(firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
+            boolean insertResult = eDao.insert(new Employee(firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
 
-            if (success) {
-                int totalEmployee = eDao.getTotalEmployees();
-                int totalPagesEmployee = (int) Math.ceil((double) totalEmployee / 10);
-                List<EmployeeDTO> employees = eDao.selectEmployeesByPage(1, 10);
-                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
-
-                session.removeAttribute("positionIdFilter");
-                session.removeAttribute("departmentIdFilter");
-
-                session.setAttribute("totalEmployee", totalEmployee);
-                session.setAttribute("totalPagesEmployee", totalPagesEmployee);
-                session.setAttribute("currentPageEmployee", 1);
-                session.setAttribute("employees", employees);
-                
-                request.getServletContext().setAttribute("departments", departments);
+            if (insertResult) {
+                int totalEmployee = (int) request.getServletContext().getAttribute("totalEmployee") + 1;
+                request.getServletContext().setAttribute("totalEmployee", totalEmployee);
 
                 insertMsg = "Add new employee " + fullname + " successfully!";
             } else {

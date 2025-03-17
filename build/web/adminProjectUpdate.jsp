@@ -155,6 +155,7 @@
                                     <div class="field-container">
                                         <label class="form-label">Start Date:</label>
                                         <span class="detail">${startDate}</span>
+                                        <input type="hidden" name="startDate" value="${startDate}"/>
                                     </div>
                                     <div class="field-container">
                                         <label class="form-label">Dead Line:</label>

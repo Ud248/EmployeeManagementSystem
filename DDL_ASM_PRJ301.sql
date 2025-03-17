@@ -15,6 +15,7 @@ CREATE TABLE Position(
 
 CREATE TABLE Department(
 	DepartmentID INT PRIMARY KEY IDENTITY,
+	DepartmentCode CHAR(7) DEFAULT '',
 	DepartmentName NVARCHAR(100) NOT NULL,
 	[Description] NVARCHAR(MAX) NOT NULL,
 	StartTime TIME NOT NULL,
@@ -247,4 +248,16 @@ BEGIN
     SET p.ProjectCode = CONCAT('PRJ', FORMAT(i.ProjectID, '0000'))
     FROM INSERTED i
     JOIN Project p ON i.ProjectID = p.ProjectID
+END
+
+GO
+CREATE TRIGGER tr_AI_Department
+ON Department
+AFTER INSERT
+AS
+BEGIN
+    UPDATE d
+    SET d.DepartmentCode = CONCAT('DEP', FORMAT(i.DepartmentID, '0000'))
+    FROM INSERTED i
+    JOIN Department d ON i.DepartmentID = d.DepartmentID
 END

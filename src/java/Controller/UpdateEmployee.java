@@ -47,13 +47,6 @@ public class UpdateEmployee extends HttpServlet {
         request.setAttribute("basicSalary", e.getBasicSalary());
         request.setAttribute("username", e.getUsername());
         request.setAttribute("password", e.getPassword());
-
-        // Nhận successMsg từ request nếu có
-        String successMsg = request.getParameter("successMsg");
-        if (successMsg != null) {
-            request.setAttribute("successMsg", successMsg);
-        }
-
         request.getRequestDispatcher("adminEmployeeUpdate.jsp").forward(request, response);
     }
 
@@ -136,17 +129,6 @@ public class UpdateEmployee extends HttpServlet {
         } else {
             boolean success = eDao.update(new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
             if (success) {
-                int currentPageEmployee = (int) session.getAttribute("currentPageEmployee");
-                int currentPageDep = (int) session.getAttribute("currentPageDep");
-                int positionIdFilter = (int) session.getAttribute("positionIdFilter");
-                int departmentIdFilter = (int) session.getAttribute("departmentIdFilter");
-
-                List<EmployeeDTO> employees = eDao.selectEmployeesByPageForFilter(currentPageEmployee, 10, departmentIdFilter, positionIdFilter);
-                List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(currentPageDep, 10);
-
-                session.setAttribute("employees", employees);
-                request.getServletContext().setAttribute("departments", departments);
-
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");
             } else {
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&errorMsg=Update failed. Please try again!");

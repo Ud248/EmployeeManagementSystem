@@ -1,6 +1,4 @@
-body {
-    background-color: #f4f6f9;
-}
+
 .dashboard-card {
     background-color: white;
     border-radius: 10px;
@@ -56,8 +54,8 @@ body {
 
 .avatar .position {
     font-size: 12px;
-    color: gray;
     text-transform: uppercase;
+    color: gray;
     margin-top: 4px;
     margin-bottom: 0px;
 }
@@ -65,8 +63,7 @@ body {
 .avatar .name {
     font-size: 16px;
     font-weight: bold;
-    margin-top: 1px;
-    margin-bottom: 0px;
+    margin-top: 5px;
 }
 
 
@@ -97,7 +94,7 @@ body {
 }
 .menu li {
     width: 100%;
-    padding: 10px 15px;
+    padding: 12px 15px;
     margin: 5px 0px;
     border-radius: 8px;
     transition: background 0.3s ease, transform 0.2s ease;
@@ -115,9 +112,7 @@ body {
     background-color: #555;
 }
 
-.text{
-    margin-left: 15px;
-}
+
 .content {
     flex: 1;
 }
@@ -140,7 +135,7 @@ h4{
 
 .container-fluid-custom{
     margin-top: 1%;
-    width: 97%;
+    width: 80%;
 }
 
 

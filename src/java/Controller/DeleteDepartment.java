@@ -5,8 +5,6 @@
 package Controller;
 
 import DAO.DepartmentDAO;
-import DTO.DepartmentDTO;
-import DTO.EmployeeDTO;
 import Model.Department;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -26,39 +24,38 @@ public class DeleteDepartment extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String departmentIdParam = request.getParameter("departmentId");
-        String[] departmentId = departmentIdParam.split(",");
+        String departmentCodeParam = request.getParameter("departmentCode");
+        int currentPage = Integer.valueOf(request.getParameter("page"));
+
+        String[] arrDepartmentCode = departmentCodeParam.split(",");
+
         DepartmentDAO dDAO = new DepartmentDAO();
         boolean deleteResult = true;
         String deleteMsg = "";
         HttpSession session = request.getSession();
-        ArrayList<Integer> ids = new ArrayList<>();
-        for (String id : departmentId) {
-            ids.add(Integer.parseInt(id));
-        }
-        deleteResult = dDAO.deleteAllByID(ids);
+        
+        deleteResult = dDAO.deleteAllByCode(arrDepartmentCode);
         if (deleteResult) {
-            int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") - departmentId.length;
-            int totalPagesDep = (int) Math.ceil((double) totalDepartment / 10);
+            int itemsPerPage = (int) request.getServletContext().getAttribute("itemsPerPage");
+            int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") - arrDepartmentCode.length;
+            int totalPage = (int) Math.ceil((double) totalDepartment / itemsPerPage);
 
-            session.setAttribute("currentPageDep", 1);
-            session.setAttribute("totalPagesDep", totalPagesDep);
+            if (currentPage > totalPage) {
+                currentPage = totalPage;
+            }
 
-            deleteMsg = "Delete department " + String.join(", ", departmentId) + " successfully!";
+            deleteMsg = "Delete department " + String.join(", ", arrDepartmentCode) + " successfully!";
 
-            List<DepartmentDTO> departments = dDAO.selectDepartmentsByPage(1, 10);
             List<Department> listDepartment = dDAO.selectAll();
-            List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
+
             request.getServletContext().setAttribute("totalDepartment", totalDepartment);
-            request.getServletContext().setAttribute("employees", employees);
-            request.getServletContext().setAttribute("departments", departments);
             request.getServletContext().setAttribute("listDepartment", listDepartment);
 
         } else {
-            deleteMsg = "Delete department " + String.join(", ", departmentId) + " failed! Please try again!";
+            deleteMsg = "Delete department " + String.join(", ", arrDepartmentCode) + " failed! Please try again!";
         }
         session.setAttribute("actionMsg", deleteMsg);
-        response.sendRedirect("admin.jsp");
+        response.sendRedirect("show-department?page=" + currentPage);
 
     }
 

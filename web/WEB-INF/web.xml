@@ -4,9 +4,41 @@
         <servlet-name>InsertDepartment</servlet-name>
         <servlet-class>Controller.InsertDepartment</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowDepartment</servlet-name>
+        <servlet-class>Controller.ShowDepartment</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Welcome</servlet-name>
+        <servlet-class>Controller.Welcome</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowProject</servlet-name>
+        <servlet-class>Controller.ShowProject</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ShowEmployee</servlet-name>
+        <servlet-class>Controller.ShowEmployee</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>InsertDepartment</servlet-name>
         <url-pattern>/insert-department</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowDepartment</servlet-name>
+        <url-pattern>/show-department</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Welcome</servlet-name>
+        <url-pattern>/welcome</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowProject</servlet-name>
+        <url-pattern>/show-project</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ShowEmployee</servlet-name>
+        <url-pattern>/show-employee</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
@@ -25,11 +57,11 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ViewDepartment</servlet-name>
-        <url-pattern>/viewdepartment</url-pattern>
+        <url-pattern>/view-department</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteDepartment</servlet-name>
-        <url-pattern>/deletedepartment</url-pattern>
+        <url-pattern>/delete-department</url-pattern>
     </servlet-mapping>
     <servlet>
         <servlet-name>DeleteDepartment</servlet-name>
@@ -41,7 +73,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>UpdateDepartment</servlet-name>
-        <url-pattern>/updatedepartment</url-pattern>
+        <url-pattern>/update-department</url-pattern>
     </servlet-mapping>
     <listener>
         <listener-class>listenner.InitProjectData</listener-class>
