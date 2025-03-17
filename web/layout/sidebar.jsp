@@ -3,7 +3,7 @@
     Created on : Mar 15, 2025, 10:45:34 PM
     Author     : anhnn
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -13,7 +13,9 @@
     <body>
         <div class="sidebar">
             <div class="avatar">
-                <img src="./image/${sessionScope.employee.gender == 'Nam' ? 'MaleAvatar.png' : 'FemaleAvatar.png'}" alt="Avatar">
+                <c:if test="${not empty sessionScope.employee}">
+                    <img src="./image/${sessionScope.employee.gender == 'Nam' ? 'MaleAvatar.png' : 'FemaleAvatar.png'}" alt="Avatar">
+                </c:if>
                 <p class="position">${sessionScope.employee.positionName}</p>
                 <h3 class="name">${sessionScope.employee.fullname}</h3>
             </div>

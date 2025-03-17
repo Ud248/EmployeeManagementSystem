@@ -52,7 +52,7 @@ public class Login extends HttpServlet {
             session.setAttribute("username", account.getUsername());
             if (accountDAO.isAdmin(username)) {
                 session.setAttribute("isAdmin", true);
-                url = "welcome";
+                response.sendRedirect("welcome");
             }
         } else {
             request.setAttribute("username", username);
