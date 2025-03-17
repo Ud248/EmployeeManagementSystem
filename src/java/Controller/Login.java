@@ -24,6 +24,12 @@ import jakarta.servlet.http.HttpSession;
  */
 //@WebServlet(urlPatterns={"/login"})
 public class Login extends HttpServlet {
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -43,14 +49,15 @@ public class Login extends HttpServlet {
             EmployeeDTO employee = employeeDao.selectDTOById(account.getEmployeeId());
             HttpSession session = request.getSession();
             session.setAttribute("employee", employee);
-            
             session.setAttribute("username", account.getUsername());
-            url = "load-data";
+            if (accountDAO.isAdmin(username)) {
+                session.setAttribute("isAdmin", true);
+                url = "welcome";
+            }
         } else {
             request.setAttribute("username", username);
             request.setAttribute("error", "Incorrect username or password.");
-            url = "login.jsp";
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-        request.getRequestDispatcher(url).forward(request, response);
     }
 }

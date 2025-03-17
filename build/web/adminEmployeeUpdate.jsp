@@ -6,16 +6,7 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    if (session.getAttribute("employee") == null) {
-        response.sendRedirect("admin.jsp");
-        return;
-    }
-    else if(!(boolean)session.getAttribute("isAdmin")){
-        response.sendRedirect("403Error.jsp");
-        return;
-    }
-%>
+
 
 <!DOCTYPE html>
 <html lang="en">

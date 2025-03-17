@@ -90,7 +90,7 @@ public class InsertDepartment extends HttpServlet {
             if (insertResult) {
                 List<Department> listDepartment = dDao.selectAll();
                 request.getServletContext().setAttribute("listDepartment", listDepartment);
-                
+
                 int totalDepartment = (int) request.getServletContext().getAttribute("totalDepartment") + 1;
                 request.getServletContext().setAttribute("totalDepartment", totalDepartment);
 
@@ -105,6 +105,7 @@ public class InsertDepartment extends HttpServlet {
             out.println("<script>");
             out.println("window.parent.location.reload();");
             out.println("window.close();");
+            out.println("window.location.href = 'show-employee?page=1';");
             out.println("</script>");
             out.close();
         }

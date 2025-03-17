@@ -3,7 +3,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     if (session.getAttribute("employee") == null) {
-        response.sendRedirect("admin.jsp");
+        response.sendRedirect("login");
         return;
     }
     else if(!(boolean)session.getAttribute("isAdmin")){

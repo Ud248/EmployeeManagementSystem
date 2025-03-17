@@ -38,7 +38,7 @@
                     <label for="password" class="label">Password</label>
                 </div>
                 <div class="input-box">
-                    <button class="btn-submit" id="SignInBtn">Log In <i class='bx bx-log-in' ></i></button>
+                    <button type="submit" class="btn-submit" id="SignInBtn">Log In <i class='bx bx-log-in' ></i></button>
                 </div>
                 <div style="text-align: center"><span style="color: red"><%=error %></span></div>
             </form>

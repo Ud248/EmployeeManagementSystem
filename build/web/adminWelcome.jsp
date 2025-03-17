@@ -7,16 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="DAO.DepartmentDAO" %>
 <%@ page import="DAO.EmployeeDAO" %>
-<%
-    if (session.getAttribute("employee") == null) {
-        response.sendRedirect("admin.jsp");
-        return;
-    }
-    else if(!(boolean)session.getAttribute("isAdmin")){
-        response.sendRedirect("403Error.jsp");
-        return;
-    }
-%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,7 +28,7 @@
             <div class="hero-section">
                 <h1>Welcome to Employee & Department Management System</h1>
                 <p>Effortless, efficient, and professional employee management</p>
-                <a href="javascript:void(0);" onclick="loadContent('adminEmployeeManagement')" class="btn btn-primary btn-lg">Start now</a>
+                <a href="show-employee?page=1" class="btn btn-primary btn-lg">Start now</a>
             </div>
 
             <div class="row mt-5">
