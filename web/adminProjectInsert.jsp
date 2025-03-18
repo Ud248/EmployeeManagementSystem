@@ -110,7 +110,6 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input type="date" class="form-control ${not empty errorStartDateMsg ? 'is-invalid' : ''}" name="startDate" value="${startDate}">
-                                    <div class="error">${errorStartDateMsg}</div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -119,7 +118,6 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input type="date" class="form-control ${not empty errorDeadLineMsg ? 'is-invalid' : ''}" name="deadLine" value="${deadLine}">
-                                    <div class="error">${errorDeadLineMsg}</div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -128,7 +126,6 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input type="number" class="form-control ${not empty errorBudgetMsg ? 'is-invalid' : ''}" name="budget" value="${budget}">
-                                    <div class="error">${errorBudgetMsg}</div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -138,7 +135,6 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input type="number" class="form-control ${not empty errorProfitMsg ? 'is-invalid' : ''}" name="profit" value="${profit}">
-                                    <div class="error">${errorProfitMsg}</div>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -156,7 +152,6 @@
                                         </c:forEach>
                                     </select>
                                 </div>
-                                <div class="error">${errorBudgetMsg}</div>
                             </div>
                             <div class="mb-3">
                                 <h5 class="section-header">OTHER INFORMATION</h5>
@@ -188,13 +183,19 @@
                                         <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
                                             <i class="fa fa-plus"></i>
                                         </button>
-                                        <div class="error">${errorDescriptionMsg}</div>
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                        <div class="section-divider"></div>
+
+                        <div class="text-center">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger mt-3">
+                                    ${error}
+                                </div>
+                            </c:if>
+                        </div>
                         <input type="submit" class="insert-button" value="Insert"/>
                     </form>
                 </div>

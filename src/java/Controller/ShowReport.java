@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-
 package Controller;
 
 import DAO.EmployeeDAO;
@@ -77,7 +76,6 @@ public class ShowReport extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(new Gson().toJson(jsonResponse));
-        request.getRequestDispatcher("adminReport.jsp").forward(request, response);
     }
 
     public static void main(String[] args) {

@@ -59,7 +59,7 @@
             document.getElementById("reportForm").addEventListener("submit", function (event) {
                 event.preventDefault();
                 const reportType = document.getElementById("reportType").value;
-                fetch("report?reportType=" + reportType)
+                fetch("show-report?report=" + reportType)
                         .then(response => response.json())
                         .then(data => {
                             const tittleMainChart = document.getElementById("tittleMainChart");
@@ -326,6 +326,7 @@
                     statsContainer.appendChild(statBox);
                 });
             }
+            document.getElementById("reportForm").dispatchEvent(new Event('submit'));
         </script>
     </body>
 </html>

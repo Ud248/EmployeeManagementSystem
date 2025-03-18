@@ -50,7 +50,7 @@
             }
 
             .insert-button {
-                background-color: #0d6efd; 
+                background-color: #0d6efd;
                 color: white;
                 padding: 10px 20px;
                 border: none;
@@ -109,14 +109,6 @@
                     <form action="insert-department" method="post">
                         <div class="mb-3">
                             <h5 class="section-header">GENERAL INFORMATION</h5>
-<!--                            <div class="row mb-3 align-items-center">
-                                <div class="col-md-4 text-end">
-                                    <label class="form-label">Department ID:</label>
-                                </div>                                
-                                <div class="col-md-8">
-                                    <span class="detail"></span>
-                                </div>
-                            </div>-->
 
                             <div class="row mb-3"> 
                                 <div class="col-md-4 text-end">
@@ -125,7 +117,6 @@
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="departmentName" value="${departmentName}" required>
                                 </div>
-                                <div class="error">${errorNameMsg}</div>
                             </div>
                         </div>
 
@@ -140,7 +131,6 @@
                                 <div class="col-md-8">
                                     <input type="text" class="form-control" name="openTime" value="${openTime}" required>
                                 </div>
-                                <div class="error">${errorOpenTimeMsg}</div>
                             </div>
 
                             <div class="row mb-3">
@@ -148,9 +138,9 @@
                                     <label class="form-label">Telephone:</label>
                                 </div>                                
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="telephone" value="${telephone}" required>
+                                    <input type="text" class="form-control" name="telephone" value="${telephone}" required required 
+                                           pattern="0[0-9]{9}" title="Telephone must start with 0 and have 10 digits.">
                                 </div>
-                                <div class="error">${errorTelephoneMsg}</div>
                             </div>     
 
                         </div>
@@ -187,12 +177,20 @@
                                     <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                    <div class="error">${errorDescriptionMsg}</div>
                                 </div>
                             </div>
-
                         </div>
+
+                        <div>
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger mt-3">
+                                    ${error}
+                                </div>
+                            </c:if>
+                        </div>
+
                         <input type="submit" class="insert-button" value="Insert"/>
+
                     </form>
                 </div>
             </div>

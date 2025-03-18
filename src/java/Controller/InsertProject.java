@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.List;
 
 /**
  *
@@ -42,22 +41,16 @@ public class InsertProject extends HttpServlet {
         String profitStr = request.getParameter("profit");
         int departmentId = 0;
 
-        String errorNameMsg = "";
-        String errorDescriptionMsg = "";
-        String errorStartDateMsg = "";
-        String errorDeadLineMsg = "";
-        String errorBudgetMsg = "";
-        String errorDepartmentNameMsg = "";
-        String errorProfitMsg = "";
-
+        String error = "";
+        
         if (projectName.trim().isEmpty()) {
-            errorNameMsg = "Project Name must be not empty field";
+            error += "Project Name must be not empty field <br/>";
         }
         if (ProjectUtil.isEmptyDescription(descriptionArray)) {
-            errorDescriptionMsg = "Description must be not empty";
+            error += "Description must be not empty <br/>";
         }
         if (startDateStr == null || startDateStr.trim().isEmpty()) {
-            errorStartDateMsg = "startDate is required";
+            error += "startDate is required <br/>";
         }
 
         LocalDate startDate = null;
@@ -66,47 +59,42 @@ public class InsertProject extends HttpServlet {
             startDate = LocalDate.parse(startDateStr);
             deadLine = LocalDate.parse(deadLineStr);
             if (deadLine != null && deadLine.isBefore(startDate)) {
-                errorDeadLineMsg = "Dead Line must be after Start Date.";
+                error += "Dead Line must be after Start Date. <br/>";
             }
         } catch (Exception e) {
-            errorStartDateMsg = "Invalid startDate format";
-            errorDeadLineMsg = "Invalid deadLine format";
+            error += "Invalid startDate format <br/>";
+            error += "Invalid deadLine format <br/>";
         }
         try {
             departmentId = Integer.parseInt(request.getParameter("department"));
         } catch (NumberFormatException e) {
-            errorDepartmentNameMsg = "Please select a valid department";
+            error += "Please select a valid department <br/>";
         }
         double budget = 0, profit = 0;
         try {
             if (budgetStr == null || budgetStr.isEmpty()) {
-                errorBudgetMsg = "Budget must not be empty.";
+                error += "Budget must not be empty. <br/>";
             } else {
                 budget = Double.parseDouble(budgetStr);
                 if (budget < 0) {
-                    errorBudgetMsg = "Budget cannot be negative.";
+                    error += "Budget cannot be negative. <br/>";
                 }
             }
             if (profitStr == null || profitStr.isEmpty()) {
-                errorProfitMsg = "Profit must not be empty.";
+                error += "Profit must not be empty. <br/>";
             } else {
                 profit = Double.parseDouble(profitStr);
                 if (profit < 0) {
-                    errorProfitMsg = "Profit cannot be negative.";
+                    error += "Profit cannot be negative. <br/>";
                 }
             }
         } catch (NumberFormatException e) {
-            errorBudgetMsg = "Budget must be a valid number.";
-            errorProfitMsg = "Profit must be a valid number.";
+            error += "Budget must be a valid number. <br/>";
+            error += "Profit must be a valid number. <br/>";
         }
-        if (!errorNameMsg.isEmpty() || !errorStartDateMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorDepartmentNameMsg.isEmpty() || !errorProfitMsg.isEmpty()) {
+        if (!error.isEmpty() ) {
             System.out.println("Validation errors found, returning to form");
-            request.setAttribute("errorNameMsg", errorNameMsg);
-            request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
-            request.setAttribute("errorStartDateMsg", errorStartDateMsg);
-            request.setAttribute("errorDeadLineMsg", errorDeadLineMsg);
-            request.setAttribute("errorBudgetMsg", errorBudgetMsg);
-            request.setAttribute("errorProfitMsg", errorProfitMsg);
+            request.setAttribute("error", error);
             request.setAttribute("projectName", projectName);
             request.setAttribute("startDate", startDate);
             request.setAttribute("deadLine", deadLine);
@@ -131,7 +119,7 @@ public class InsertProject extends HttpServlet {
             session.setAttribute("actionMsg", insertMsg);
             PrintWriter out = response.getWriter();
             out.println("<script>");
-            out.println("window.parent.location.href = 'show-department?page=1';");
+            out.println("window.parent.location.href = 'show-project?page=1';");
             out.println("</script>");
             out.close();
         }
