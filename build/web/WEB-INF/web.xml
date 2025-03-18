@@ -20,6 +20,10 @@
         <servlet-name>ShowEmployee</servlet-name>
         <servlet-class>Controller.ShowEmployee</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ShowReport</servlet-name>
+        <servlet-class>Controller.ShowReport</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>InsertDepartment</servlet-name>
         <url-pattern>/insert-department</url-pattern>
@@ -72,15 +76,16 @@
         <servlet-name>UpdateDepartment</servlet-name>
         <url-pattern>/update-department</url-pattern>
     </servlet-mapping>
-    
     <welcome-file-list>
         <welcome-file>welcome</welcome-file>
     </welcome-file-list>
-    
+    <servlet-mapping>
+        <servlet-name>ShowReport</servlet-name>
+        <url-pattern>/show-report</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>2</session-timeout>
     </session-config>
-    
     <listener>
         <listener-class>listenner.InitProjectData</listener-class>
     </listener>

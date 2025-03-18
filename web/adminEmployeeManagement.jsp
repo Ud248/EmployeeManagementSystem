@@ -39,7 +39,7 @@
                         <i class="fas fa-plus"></i> New Employee
                     </button> 
                     <form action="show-employee" method="GET">
-                        <input id="search" type="text" name="search" placeholder="Search" value="${search}"/>
+                        <input id="search" type="text" name="search" placeholder="Search" value="${search}" class="search_input"/>
 
                         <button type="submit" class="search_btn" onclick="sendRequestSearch(event)">Search</button>
                     </form>
