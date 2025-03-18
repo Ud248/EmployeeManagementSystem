@@ -3,7 +3,7 @@
     Created on : Mar 5, 2025, 1:05:35 PM
     Author     : Ud
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="DAO.DepartmentDAO" %>
 <%@ page import="DAO.EmployeeDAO" %>
@@ -12,7 +12,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Welcome Page</title>
+        <title>Welcome Admin</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://unpkg.com/@phosphor-icons/web"></script>  
         <link rel="stylesheet" href="./css/styleWelcome.css">  
@@ -20,15 +20,16 @@
     </head>
 
     <body>
-
+        <c:if test="${sessionScope.employee != null}">
         <jsp:include page="./layout/sidebar.jsp" />
-
+        </c:if>
+        
         <div class="container-fluid container-fluid-custom">
             <!-- Hero Section -->
             <div class="hero-section">
                 <h1>Welcome to Employee & Department Management System</h1>
                 <p>Effortless, efficient, and professional employee management</p>
-                <a href="show-employee?page=1" class="btn btn-primary btn-lg">Start now</a>
+                <a href="login" class="btn btn-primary btn-lg">Start now</a>
             </div>
 
             <div class="row mt-5">

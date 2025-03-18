@@ -76,16 +76,16 @@
                 <!-- Pagination -->
                 <div class="pagination">
                     <c:if test="${currentPage > 1}">
-                        <a href="show-employee?page=${currentPage - 1}">&laquo; Previous</a>
+                        <a href="show-employee?page=${currentPage - 1}${search != null ? '&search='.concat(search) : ''}">&laquo; Previous</a>
                     </c:if>
 
                     <c:forEach begin="1" end="${totalPage}" var="i">
-                        <a href="show-employee?page=${i}" 
+                        <a href="show-employee?page=${i}${search != null ? '&search='.concat(search) : ''}" 
                            class="${i == currentPage ? 'active' : ''}">${i}</a>
                     </c:forEach>
 
                     <c:if test="${currentPage < totalPage}">
-                        <a href="show-employee?page=${currentPage + 1}">Next &raquo;</a>
+                        <a href="show-employee?page=${currentPage + 1}${search != null ? '&search='.concat(search) : ''}"">Next &raquo;</a>
                     </c:if>
                 </div>
 
@@ -128,6 +128,16 @@
         <%
             }
         %>
+
+        <%-- highlight search --%>
+        <c:if test="${highlightSearch == 'true'}">
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const searchTerm = "${search}";
+                    highlightSearchResults(searchTerm);
+                });
+            </script>
+        </c:if>
 
 
         <script>
@@ -213,7 +223,40 @@
                 }
             }
 
+            function highlightSearchResults(text) {
+            let cells = document.querySelectorAll(".table tbody td:not(.select-column)");
+            cells.forEach(cell => {
+                let anchorTag = cell.querySelector("a");
+                if (anchorTag) {
+                    let innerHTML = anchorTag.innerHTML;
+                    let index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
+                    if (index !== -1) { 
+                        innerHTML =
+                            innerHTML.substring(0, index) +
+                            "<span style='background-color: yellow;'>" +
+                            innerHTML.substring(index, index + text.length) +
+                            "</span>" +
+                            innerHTML.substring(index + text.length);
+                        anchorTag.innerHTML = innerHTML;
+                    }
+                }
+                else {
+                    let innerHTML = cell.innerHTML;
+                    let index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
+                    if (index !== -1) { 
+                        innerHTML =
+                            innerHTML.substring(0, index) +
+                            "<span style='background-color: yellow;'>" +
+                            innerHTML.substring(index, index + text.length) +
+                            "</span>" +
+                            innerHTML.substring(index + text.length);
 
+                        cell.innerHTML = innerHTML;
+                    }
+                }
+            });
+        }
+            
         </script>
     </body>
 </html>

@@ -35,14 +35,13 @@ public class ShowEmployee extends HttpServlet {
         if (search != null && !search.isEmpty()) {
             totalEmployee = empDAO.getTotalEmployees(search);
             employeeDTOs = empDAO.selectEmployeesByPage(currentPage, itemsPerPage, search);
-
             request.setAttribute("search", search);
+            request.setAttribute("highlightSearch", "true"); 
         } else {
             totalEmployee = empDAO.getTotalEmployees();
             employeeDTOs = empDAO.selectEmployeesByPage(currentPage, itemsPerPage);
         }
         int totalPage = (int) Math.ceil(1.0 * totalEmployee / itemsPerPage);
-
         request.getServletContext().setAttribute("totalEmployee", totalEmployee);
         request.setAttribute("employeeDTOs", employeeDTOs);
         request.setAttribute("currentPage", currentPage);

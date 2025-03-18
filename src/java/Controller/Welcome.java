@@ -21,7 +21,7 @@ public class Welcome extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("adminWelcome.jsp").forward(request, response);
+        request.getRequestDispatcher("welcome.jsp").forward(request, response);
     } 
 
 
