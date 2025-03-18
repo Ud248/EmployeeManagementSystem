@@ -103,9 +103,7 @@ public class InsertDepartment extends HttpServlet {
             session.setAttribute("actionMsg", insertMsg);
             PrintWriter out = response.getWriter();
             out.println("<script>");
-            out.println("window.parent.location.reload();");
-            out.println("window.close();");
-            out.println("window.location.href = 'show-employee?page=1';");
+            out.println("window.parent.location.href = 'show-department?page=1';");
             out.println("</script>");
             out.close();
         }

@@ -8,7 +8,7 @@ VALUES
 
 INSERT INTO Department (DepartmentName, [Description], StartTime, EndTime, Tel)
 VALUES 
-    (N'Phòng Chiến Lược & Điều Hành', 
+    (N'Phòng Chiến Lược và Điều Hành', 
      N'Hoạch định và thực thi các chiến lược dài hạn của công ty. Giám sát hoạt động của các phòng ban. Đảm bảo sự phát triển bền vững.',
      '08:00:00', '17:00:00', '0923456789'),
 
@@ -32,7 +32,7 @@ VALUES
      N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
      '09:00:00', '17:00:00', '0978901234'),
 	 --thêm để test phân trang
-	 (N'Phòng Chiến Lược & Điều Hành', 
+	 (N'Phòng Chiến Lược và Điều Hành', 
      N'Hoạch định và thực thi các chiến lược dài hạn của công ty. Giám sát hoạt động của các phòng ban. Đảm bảo sự phát triển bền vững.',
      '08:00:00', '17:00:00', '0123456789'),
 
