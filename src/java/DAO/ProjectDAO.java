@@ -251,19 +251,6 @@ public class ProjectDAO implements DAOInterface<Project> {
         return result > 0;
     }
 
-    public int getTotalProjects() {
-        String sql = "SELECT COUNT(*) AS total FROM Project";
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("total");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
     public Map<String, Integer> getTotalProjectPerDepartment() {
         Map<String, Integer> map = new HashMap<>();
         String sql = "SELECT \n"
@@ -292,18 +279,160 @@ public class ProjectDAO implements DAOInterface<Project> {
         }
         return map;
     }
-//
-//    public boolean updateEndDateByCompletion(String projectCode, int completion) {
-//        String sql = "UPDATE Project SET Completion = ?, EndDate = CASE WHEN ? = 100 "
-//                + "THEN CURRENT_DATE ELSE EndDate END WHERE ProjectCode = ?";
-//        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-//            st.setInt(1, completion);
-//            st.setInt(2, completion);
-//            st.setString(3, projectCode);
-//            return st.executeUpdate() > 0;
-//        } catch (SQLException ex) {
-//            ex.printStackTrace();
-//        }
-//        return false;
-//    }
+
+    public Map<String, Integer> getTotalBudgetPerDepartment() {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT \n"
+                + "    d.DepartmentName, \n"
+                + "    COALESCE(SUM(p.Budget), 0) AS TotalBudget\n"
+                + "FROM Department d\n"
+                + "LEFT JOIN Project p ON p.DepartmentID = d.DepartmentID\n"
+                + "GROUP BY d.DepartmentName;";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("DepartmentName"), rs.getInt("TotalBudget"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
+    public Map<String, Integer> getCompletionPerProject() {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT \n"
+                + "    ProjectCode, \n"
+                + "    COALESCE(SUM(Completion), 0) AS TotalCompletion\n"
+                + "FROM Project\n"
+                + "GROUP BY ProjectCode;";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("ProjectCode"), rs.getInt("TotalCompletion"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
+    public Map<String, Double> getTopProfitPerProjectName() {
+        Map<String, Double> map = new HashMap<>();
+        String sql = "SELECT TOP(5) ProjectName, Profit\n"
+                + "FROM Project\n"
+                + "ORDER BY Profit DESC;";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("ProjectName"), rs.getDouble("Profit"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
+    public int getTotalProjects() {
+        String sql = "SELECT COUNT(*) AS total FROM Project";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalProjectCompleted() {
+        String sql = "SELECT COUNT(*) AS TotalCompletedProjects\n"
+                + "FROM Project\n"
+                + "WHERE Completion = 100;";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TotalCompletedProjects");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public double getTotalBudget() {
+        String sql = "SELECT SUM(Budget) AS TotalBudget\n"
+                + "FROM Project;";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("TotalBudget");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public double getTotalProfit() {
+        String sql = "SELECT SUM(Profit) AS TotalProfit\n"
+                + "FROM Project;";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("TotalProfit");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public String getTopDepByCompletedPro() {
+        String sql = "SELECT top(1) d.DepartmentName\n"
+                + "FROM Department d\n"
+                + "JOIN Project p ON d.DepartmentID = p.DepartmentID\n"
+                + "WHERE p.Completion = 100\n"
+                + "GROUP BY d.DepartmentName\n"
+                + "ORDER BY COUNT(p.ProjectID) DESC;";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getString("DepartmentName");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getCountCompletedProByTopDep() {
+        String sql = "SELECT COUNT(p.ProjectID) AS CompletedProjects\n"
+                + "FROM Project p\n"
+                + "WHERE p.Completion = 100\n"
+                + "AND p.DepartmentID = (\n"
+                + "    SELECT TOP (1) d.DepartmentID\n"
+                + "    FROM Department d\n"
+                + "    JOIN Project p2 ON d.DepartmentID = p2.DepartmentID\n"
+                + "    WHERE p2.Completion = 100\n"
+                + "    GROUP BY d.DepartmentID\n"
+                + "    ORDER BY COUNT(p2.ProjectID) DESC);";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("CompletedProjects");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
 }

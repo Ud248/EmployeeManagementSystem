@@ -13,9 +13,7 @@
     <body>
         <div class="sidebar">
             <div class="avatar">
-                <c:if test="${not empty sessionScope.employee}">
-                    <img src="./image/${sessionScope.employee.gender == 'Nam' ? 'MaleAvatar.png' : 'FemaleAvatar.png'}" alt="Avatar">
-                </c:if>
+                <img src="./image/${sessionScope.employee.gender == 'Nam' ? 'MaleAvatar.png' : 'FemaleAvatar.png'}" alt="Avatar">
                 <p class="position">${sessionScope.employee.positionName}</p>
                 <h3 class="name">${sessionScope.employee.fullname}</h3>
             </div>
@@ -43,7 +41,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" >
+                        <a href="show-report?report=employee" >
                             <i class="ph-bold ph-clipboard-text"></i>
                             <span class="text">Report Project</span>
                         </a>

@@ -10,7 +10,9 @@ import Utils.JDBCUtil;
 import java.util.ArrayList;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -557,6 +559,107 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return isExist;
+    }
+    
+    public Map<String, Integer> getBasicSalaryPerEmployeeCode() {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT EmployeeCode, BasicSalary \n"
+                + "FROM Employee\n"
+                + "ORDER BY BasicSalary DESC;";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("EmployeeCode"), rs.getInt("BasicSalary"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
+    public Map<String, Integer> getTotalBasicSalaryPerPosition() {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT \n"
+                + "    p.PositionName, \n"
+                + "    COALESCE(SUM(e.BasicSalary), 0) AS TotalSalary\n"
+                + "FROM Position p\n"
+                + "LEFT JOIN Employee e ON p.PositionID = e.PositionID\n"
+                + "GROUP BY p.PositionName;";
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                map.put(rs.getString("PositionName"), rs.getInt("TotalSalary"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ProjectDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return map;
+    }
+
+    public int getTotalDirectorPosition() {
+        String sql = "SELECT COUNT(*) AS TotalDirector\n"
+                + "FROM Employee e\n"
+                + "JOIN Position p ON e.PositionID = p.PositionID\n"
+                + "WHERE p.PositionCode = 'GD';";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TotalDirector");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalEmployeePosition() {
+        String sql = "SELECT COUNT(*) AS TotalEmployee\n"
+                + "FROM Employee e\n"
+                + "JOIN Position p ON e.PositionID = p.PositionID\n"
+                + "WHERE p.PositionCode = 'NV';";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TotalEmployee");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalManagerPosition() {
+        String sql = "SELECT COUNT(*) AS TotalManager\n"
+                + "FROM Employee e\n"
+                + "JOIN Position p ON e.PositionID = p.PositionID\n"
+                + "WHERE p.PositionCode = 'QL';";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TotalManager");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getTotalBasicSalary() {
+        String sql = "SELECT SUM(BasicSalary) AS TotalSalary\n"
+                + "FROM Employee;";
+        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("TotalSalary");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     public static void main(String[] args) {
