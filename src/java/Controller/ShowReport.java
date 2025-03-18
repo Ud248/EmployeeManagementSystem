@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,10 +26,9 @@ public class ShowReport extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String reportType = request.getParameter("report");
-        Map<String, Object> jsonResponse = new HashMap<>();
+        String report = request.getParameter("report");
 
-        switch (reportType) {
+        switch (report) {
             case "employee" -> {
                 EmployeeDAO employeeDAO = new EmployeeDAO();
                 Map<String, Integer> employeeData = employeeDAO.getBasicSalaryPerEmployeeCode();
@@ -37,15 +37,21 @@ public class ShowReport extends HttpServlet {
                 int totalEmployee = employeeDAO.getTotalEmployeePosition();
                 int totalManager = employeeDAO.getTotalManagerPosition();
                 int totalBasicSalary = employeeDAO.getTotalBasicSalary();
+                
+                List<String> salaryLabelsList = new ArrayList<>(employeeData.keySet());
+                String salaryLabels = new Gson().toJson(salaryLabelsList);
+                request.setAttribute("salaryLabels", salaryLabels);
+                
+                List<String> totalSalaryLabelsList = new ArrayList<>(totalSalaryPerPosition.keySet());
+                String totalSalaryLabels = new Gson().toJson(totalSalaryLabelsList);
+                request.setAttribute("totalSalaryLabels", totalSalaryLabels);
 
-                jsonResponse.put("salaryLabels", new ArrayList<>(employeeData.keySet()));
-                jsonResponse.put("salaryData", new ArrayList<>(employeeData.values()));
-                jsonResponse.put("totalSalaryLabels", new ArrayList<>(totalSalaryPerPosition.keySet()));
-                jsonResponse.put("totalSalaryData", new ArrayList<>(totalSalaryPerPosition.values()));
-                jsonResponse.put("totalDirector", totalDirector);
-                jsonResponse.put("totalEmployee", totalEmployee);
-                jsonResponse.put("totalManager", totalManager);
-                jsonResponse.put("totalBasicSalary", totalBasicSalary);
+                request.setAttribute("salaryData", new ArrayList<>(employeeData.values()));
+                request.setAttribute("totalSalaryData", new ArrayList<>(totalSalaryPerPosition.values()));
+                request.setAttribute("totalDirector", totalDirector);
+                request.setAttribute("totalEmployee", totalEmployee);
+                request.setAttribute("totalManager", totalManager);
+                request.setAttribute("totalBasicSalary", totalBasicSalary);
             }
             case "project" -> {
                 ProjectDAO projectDAO = new ProjectDAO();
@@ -57,30 +63,33 @@ public class ShowReport extends HttpServlet {
                 String topDepartment = projectDAO.getTopDepByCompletedPro();
                 int totalCompletedProOfTopDep = projectDAO.getCountCompletedProByTopDep();
 
-                jsonResponse.put("completionLabels", new ArrayList<>(completion.keySet()));
-                jsonResponse.put("completionData", new ArrayList<>(completion.values()));
-                jsonResponse.put("totalProjectLabels", new ArrayList<>(totalProject.keySet()));
-                jsonResponse.put("totalProjectData", new ArrayList<>(totalProject.values()));
-                jsonResponse.put("totalCompletedProject", totalCompletedProject);
-                jsonResponse.put("totalBudget", totalBudget);
-                jsonResponse.put("totalProfit", totalProfit);
-                jsonResponse.put("topDepartment", topDepartment);
-                jsonResponse.put("totalCompletedProOfTopDep", totalCompletedProOfTopDep);
+                List<String> completionLabelsList = new ArrayList<>(completion.keySet());
+                String completionLabels = new Gson().toJson(completionLabelsList);
+                request.setAttribute("completionLabels", completionLabels);
+                
+                List<String> totalProjectLabelsList = new ArrayList<>(totalProject.keySet());
+                String totalProjectLabels = new Gson().toJson(totalProjectLabelsList);
+                request.setAttribute("totalProjectLabels", totalProjectLabels);
+
+                request.setAttribute("completionData", new ArrayList<>(completion.values()));
+                request.setAttribute("totalProjectData", new ArrayList<>(totalProject.values()));
+                request.setAttribute("totalCompletedProject", totalCompletedProject);
+                request.setAttribute("totalBudget", totalBudget);
+                request.setAttribute("totalProfit", totalProfit);
+                request.setAttribute("topDepartment", topDepartment);
+                request.setAttribute("totalCompletedProOfTopDep", totalCompletedProOfTopDep);
             }
             default -> {
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 return;
             }
         }
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(new Gson().toJson(jsonResponse));
+        request.setAttribute("report", report);
+        request.getRequestDispatcher("adminReport.jsp").forward(request, response);
     }
 
-    public static void main(String[] args) {
-        ProjectDAO projectDAO = new ProjectDAO();
-        Map<String, Double> top5Projects = projectDAO.getTopProfitPerProjectName();
-        System.out.println(top5Projects);
-    }
+//    public static void main(String[] args) {
+//        ProjectDAO projectDAO = new ProjectDAO();
+//        Map<String, Double> top5Projects = projectDAO.getTopProfitPerProjectName();
+//        System.out.println(top5Projects);
+//    }
 }
