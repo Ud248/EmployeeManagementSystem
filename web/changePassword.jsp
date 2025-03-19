@@ -19,6 +19,8 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- CSS -->
         <link rel="stylesheet" href="css/styleChangePassword.css">
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         <title>Change Password</title>
     </head>
     <body>
@@ -40,33 +42,49 @@
                 </div>
                 <div class="input-box">
                     <input type="password" class="input-field" id="confirmNewPassword" name="confirmNewPassword" required onkeyup="kiemTraMatKhau()">
-                    <span id="msg" style="color: red; margin: 10px 0px 0px 20px; font-size: 15px"></span>
+                    <span id="msg" style="color: red; margin: 10px 0px 0px 0px; font-size: 15px"></span>
                     <label for="confirmNewPassword" class="label">Confirm new password</label>
                 </div>
                 <span style="color: red;">${empty error ? '' : error}</span>
                 <div class="input-box">
                     <button class="btn-submit">Change Password</button>
-                    <c:choose>
-                        <c:when test="%{isAdmin} eq true"><a href="admin.jsp" class="cancel_btn"></c:when>
-                            <c:otherwise><a href="employee.jsp" class="cancel_btn"></c:otherwise>
-                        </c:choose>
-                        Cancel</a>
+                    <a href="welcome" class="cancel_btn">Cancel</a>
                 </div>
             </form>
         </div>
+
+        <% 
+            String actionMsg = (String) session.getAttribute("actionMsg");
+            if (actionMsg != null) {
+            session.removeAttribute("actionMsg");
+        %>
+        <script>
+            Swal.fire({
+                icon: "<%= actionMsg.contains("successfully") ? "success" : "error" %>",
+                title: "Notification",
+                text: "<%= actionMsg %>",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+        <%
+            }
+        %>
+
+        <script>
+            function kiemTraMatKhau() {
+                let newPassword = document.getElementById("newPassword").value;
+                let confirmNewPassword = document.getElementById("confirmNewPassword").value;
+                if (newPassword != confirmNewPassword) {
+                    document.getElementById("msg").innerHTML = "Mật khẩu không khớp!";
+                    return false;
+                } else {
+                    document.getElementById("msg").innerHTML = "";
+                    return true;
+                }
+            }
+        </script>
     </body>
 </html>
 
-<script>
-    function kiemTraMatKhau() {
-        newPassword = document.getElementById("newPassword").value;
-        confirmNewPassword = document.getElementById("confirmNewPassword").value;
-        if (newPassword != confirmNewPassword) {
-            document.getElementById("msg").innerHTML = "Mật khẩu không khớp!";
-            return false;
-        } else {
-            document.getElementById("msg").innerHTML = "";
-            return true;
-        }
-    }
-</script>
+
