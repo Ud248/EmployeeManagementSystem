@@ -227,6 +227,7 @@
                 inputTag.className = "form-control";
                 inputTag.name = "description";
                 inputTag.value = "";
+                inputTag.required = true;
                 inputTag.style.width = "97%";
 
                 let removeBtn = document.createElement("button");

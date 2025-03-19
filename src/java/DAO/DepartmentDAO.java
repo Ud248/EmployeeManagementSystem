@@ -334,13 +334,13 @@ public class DepartmentDAO implements DAOInterface<Department> {
         return null;
     }
 
-    public boolean isExistPhoneNumber(String tel) {
-        String sql = "SELECT 1 FROM Department WHERE Tel = ?";
+    public boolean isExistValueInFieldString(String fieldName, String fieldValue) {
+        String sql = "SELECT 1 FROM Department WHERE " + fieldName + " = ?";
         boolean isExist = false;
         Connection con = JDBCUtil.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, tel);
+            st.setString(1, fieldValue);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 isExist = true;
@@ -352,13 +352,13 @@ public class DepartmentDAO implements DAOInterface<Department> {
         return isExist;
     }
     
-    public boolean isExistPhoneNumber(String tel, String DepartmentCode) {
-        String sql = "SELECT 1 FROM Department WHERE Tel = ? and DepartmentCode != ?";
+    public boolean isExistValueInFieldString(String fieldName, String fieldValue, String DepartmentCode) {
+        String sql = "SELECT 1 FROM Department WHERE " + fieldName + " = ? and DepartmentCode != ?";
         boolean isExist = false;
         Connection con = JDBCUtil.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, tel);
+            st.setString(1, fieldValue);
             st.setString(2, DepartmentCode);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {

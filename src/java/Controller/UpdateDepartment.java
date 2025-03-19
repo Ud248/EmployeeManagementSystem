@@ -72,13 +72,15 @@ public class UpdateDepartment extends HttpServlet {
         DepartmentDAO dDao = new DepartmentDAO();
 
         String error = "";
-        if(departmentName.isEmpty()){
+        if (departmentName.isEmpty()) {
             error += "Department Name must not be empty <br/>";
+        } else if (dDao.isExistValueInFieldString("DepartmentName", departmentName, departmentCode)) {
+            error += "Department Name is exist <br/>";
         }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }
-        if (dDao.isExistPhoneNumber(telephone, departmentCode)) {
+        if (dDao.isExistValueInFieldString("Tel", telephone, departmentCode)) {
             error += "This phone number is already registered <br/>";
         }
         if (!openTime.matches(REGEX_OPENTIME)) {

@@ -31,7 +31,7 @@ public class InsertDepartment extends HttpServlet {
         DepartmentDAO dDao = new DepartmentDAO();
         String departmentName = request.getParameter("departmentName").trim();
         String telephone = request.getParameter("telephone");
-        String openTime = request.getParameter("openTime");
+        String openTime = request.getParameter("openTime").trim();
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
         LocalTime startTime = null;
@@ -40,14 +40,18 @@ public class InsertDepartment extends HttpServlet {
         String error = "";
         if (departmentName.isEmpty()) {
             error += "Department Name must not be empty <br/>";
+        } else if (dDao.isExistValueInFieldString("DepartmentName", departmentName)) {
+            error += "Department Name is exist <br/>";
         }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }
-        if (dDao.isExistPhoneNumber(telephone)) {
+        if (dDao.isExistValueInFieldString("Tel", telephone)) {
             error += "This phone number is already registered <br/>";
         }
-        if (!openTime.matches(REGEX_OPENTIME)) {
+        if (openTime.isEmpty()) {
+            error += "Open Time must be not empty";
+        } else if (!openTime.matches(REGEX_OPENTIME)) {
             error += "Invalid open time's format (HH:mm - HH:mm) <br/>";
         } else {
             LocalTime[] localTimeArray = DepartmentUtil.getStartAndEndTime(openTime);
