@@ -25,7 +25,6 @@ import java.util.List;
  */
 public class UpdateDepartment extends HttpServlet {
 
-    private final String REGEX_TELEPHONE = "^\\d{10}$";
     private final String REGEX_OPENTIME = "^([01]\\d|2[0-3]):[0-5]\\d - ([01]\\d|2[0-3]):[0-5]\\d$";
 
     @Override
@@ -70,25 +69,17 @@ public class UpdateDepartment extends HttpServlet {
         String description = "";
         LocalTime startTime = null;
         LocalTime endTime = null;
-        
-        String error= "";
-        if (departmentName.trim().isEmpty()) {
-            error += "Department Name must be not empty field <br/>";
-        }
-        if (openTime.trim().isEmpty()) {
-            error += "Open Time must be not empty field <br/>";
-        }
-        if (telephone.trim().isEmpty()) {
-            error += "Telephone must be not empty field <br/>";
-        }
+        DepartmentDAO dDao = new DepartmentDAO();
+
+        String error = "";
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }
-        if (!telephone.matches(REGEX_TELEPHONE)) {
-            error += "Invalid telephone's format (10 characters contain number from 0 to 9) <br/>";
+        if (dDao.isExistPhoneNumber(telephone, departmentCode)) {
+            error += "This phone number is already registered <br/>";
         }
         if (!openTime.matches(REGEX_OPENTIME)) {
-            error +="Invalid open time's format (HH:mm - HH:mm) <br/>";
+            error += "Invalid open time's format (HH:mm - HH:mm) <br/>";
         } else {
             LocalTime[] localTimeArray = DepartmentUtil.getStartAndEndTime(openTime);
             startTime = localTimeArray[0];

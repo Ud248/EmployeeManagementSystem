@@ -41,19 +41,10 @@ public class InsertDepartment extends HttpServlet {
         LocalTime endTime = null;
 
         String error = "";
-
-        if (departmentName.trim().isEmpty()) {
-            error += "Department Name must be not empty field <br/>";
-        }
-        if (openTime.trim().isEmpty()) {
-            error += "Open Time must be not empty field <br/>";
-        }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }
-        if (!telephone.matches(REGEX_TELEPHONE)) {
-            error += "Invalid telephone's format (10 characters contain number from 0 to 9) <br/>";
-        } else if (dDao.isExistPhoneNumber(telephone)) {
+        if (dDao.isExistPhoneNumber(telephone)) {
             error += "This phone number is already registered <br/>";
         }
         if (!openTime.matches(REGEX_OPENTIME)) {

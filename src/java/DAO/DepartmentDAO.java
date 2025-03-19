@@ -239,14 +239,15 @@ public class DepartmentDAO implements DAOInterface<Department> {
 
             //B2: Tạo ra đối tượng PreparedStatement
             String sql = "UPDATE Department\n"
-                    + "SET DepartmentName=?, Description=?, StartTime=?, EndTime=?\n"
+                    + "SET DepartmentName=?, Description=?, StartTime=?, EndTime=?, Tel=?\n"
                     + "WHERE DepartmentCode=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getDepartmentName());
             st.setString(2, t.getDescription());
             st.setTime(3, Time.valueOf(t.getStartTime()));
             st.setTime(4, Time.valueOf(t.getEndTime()));
-            st.setString(5, t.getDepartmentCode());
+            st.setString(5, t.getTelephone());
+            st.setString(6, t.getDepartmentCode());
 
             //B3: Thực thi câu lệnh sql
             System.out.println(sql);
@@ -340,6 +341,25 @@ public class DepartmentDAO implements DAOInterface<Department> {
         try {
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, tel);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                isExist = true;
+            }
+            JDBCUtil.closeConnection(con);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return isExist;
+    }
+    
+    public boolean isExistPhoneNumber(String tel, String DepartmentCode) {
+        String sql = "SELECT 1 FROM Department WHERE Tel = ? and DepartmentCode != ?";
+        boolean isExist = false;
+        Connection con = JDBCUtil.getConnection();
+        try {
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, tel);
+            st.setString(2, DepartmentCode);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 isExist = true;

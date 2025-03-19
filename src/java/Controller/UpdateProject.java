@@ -76,18 +76,13 @@ public class UpdateProject extends HttpServlet {
         String profitStr = request.getParameter("profit").replace(",", "");
         LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
         LocalDate endDate = null;
-        if (!completionStr.isEmpty() && Integer.parseInt(completionStr) == 100) {
-            endDate = LocalDate.now();
-        }
+
         LocalDate deadLine = request.getParameter("deadLine") != null && !request.getParameter("deadLine").isEmpty()
                 ? LocalDate.parse(request.getParameter("deadLine")) : null;
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
 
         String error = "";
 
-        if (projectName.trim().isEmpty()) {
-            error += "Project Name must not be empty. <br/>";
-        }
         if (ProjectUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must not be empty. <br/>";
         }
@@ -96,6 +91,9 @@ public class UpdateProject extends HttpServlet {
             completion = Integer.parseInt(completionStr);
         } catch (NumberFormatException e) {
             error += "Completion must be a valid number. <br/>";
+        }
+        if (!completionStr.isEmpty() && completion == 100) {
+            endDate = LocalDate.now();
         }
         if (completion < 0 || completion > 100) {
             error += "Completion must be between 0 and 100. <br/>";

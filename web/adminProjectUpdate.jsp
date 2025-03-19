@@ -119,8 +119,7 @@
                                 <div class="col-md-7">
                                     <div class="field-container">
                                         <label class="form-label">Project Name:</label>
-                                        <input type="text" class="form-control detail" name="projectName" value="${projectName}">
-                                        <div class="error">${errorNameMsg}</div>
+                                        <input type="text" class="form-control detail" name="projectName" value="${projectName}" required>
                                     </div>
 
                                     <div class="field-container">
@@ -151,7 +150,6 @@
                                     <div class="field-container">
                                         <label class="form-label">Dead Line:</label>
                                         <input type="date" class="form-control detail" name="deadLine" value="${deadLine}" required>
-                                        <div class="error">${errorDeadLineMsg}</div>
                                     </div>
                                     <div class="field-container">
                                         <label class="form-label">End Date:</label>
@@ -162,18 +160,15 @@
                                     <div class="field-container">
                                         <label class="form-label">Budget:</label>
                                         <input type="text" class="form-control" name="budget" value="${budget}" required>
-                                        <div class="error">${errorBudgetMsg}</div>
                                     </div>
                                     <div class="field-container">
                                         <label class="form-label">Profit:</label>
                                         <input type="text" class="form-control" name="profit" value="${profit}" required>
-                                        <div class="error">${errorProfitMsg}</div>
                                     </div>
                                     <div class="field-container">
                                         <label class="form-label">Completion:</label>
                                         <input type="text" class="form-control" name="completion" value="${completion}" required>
                                     </div>
-                                    <div class="error">${errorCompletionMsg}</div>
                                 </div>
                             </div>
                         </div>
@@ -199,11 +194,10 @@
                                     <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                    <div class="error">${errorDescriptionMsg}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center">
+                        <div>
                             <c:if test="${not empty error}">
                                 <div class="alert alert-danger mt-3">
                                     ${error}

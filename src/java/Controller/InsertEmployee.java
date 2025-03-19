@@ -35,20 +35,12 @@ public class InsertEmployee extends HttpServlet {
         String insertMsg = "";
 
         String firstName = "", lastName = "";
-        if (fullname == null || fullname.trim().isEmpty()) {
-            error += "Full name is required.<br>";
-        } else {
-            String[] fullnameArray = fullname.split("\\s+");
-            lastName = fullnameArray[0];
-            for (int i = 1; i < fullnameArray.length; i++) {
-                firstName += fullnameArray[i] + " ";
-            }
-            firstName = firstName.trim();
+        String[] fullnameArray = fullname.split("\\s+");
+        lastName = fullnameArray[0];
+        for (int i = 1; i < fullnameArray.length; i++) {
+            firstName += fullnameArray[i] + " ";
         }
-
-        if (birthdateStr == null || birthdateStr.trim().isEmpty()) {
-            error += "Birthdate is required.<br>";
-        }
+        firstName = firstName.trim();
 
         LocalDate birthdate = null;
         try {
@@ -60,15 +52,8 @@ public class InsertEmployee extends HttpServlet {
         if (gender.equals("None")) {
             error += "Please select your gender.<br>";
         }
-
-        if (tel == null || tel.trim().isEmpty()) {
-            error += "Telephone is required.<br>";
-        } else if (eDao.isExistPhoneNumber(tel)) {
+        if (eDao.isExistPhoneNumber(tel)) {
             error += "This phone number is already registered.<br>";
-        }
-
-        if (address == null || address.trim().isEmpty()) {
-            error += "Address is required.<br>";
         }
 
         try {

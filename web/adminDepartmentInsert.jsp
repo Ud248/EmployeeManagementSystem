@@ -156,7 +156,7 @@
                                     <label class="form-label">Telephone:</label>
                                 </div>                                
                                 <div class="col-md-8">
-                                    <input type="text" class="form-control" name="telephone" value="${telephone}" required required 
+                                    <input type="text" class="form-control" name="telephone" value="${telephone}" required
                                            pattern="0[0-9]{9}" title="Telephone must start with 0 and have 10 digits.">
                                 </div>
                             </div>     
