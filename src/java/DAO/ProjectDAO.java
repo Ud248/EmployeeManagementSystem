@@ -70,7 +70,7 @@ public class ProjectDAO implements DAOInterface<Project> {
                 + "p.Profit\n"
                 + "from Project p\n"
                 + "left join Department d on p.DepartmentID = d.DepartmentID\n"
-                + "ORDER BY p.ProjectCode\n"
+                + "ORDER BY p.Completion DESC, p.ProjectCode ASC \n"
                 + "OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
 
         try {
@@ -307,6 +307,7 @@ public class ProjectDAO implements DAOInterface<Project> {
                 + "    ProjectCode, \n"
                 + "    COALESCE(SUM(Completion), 0) AS TotalCompletion\n"
                 + "FROM Project\n"
+                + "WHERE Completion < 100 \n"
                 + "GROUP BY ProjectCode;";
         Connection con = JDBCUtil.getConnection();
         try {

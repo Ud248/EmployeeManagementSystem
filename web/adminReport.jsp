@@ -86,7 +86,7 @@
                     populateStats(totalDirector, totalManager, totalEmployee, totalBasicSalary, report);
 
                 } else {
-                    document.getElementById("tittleMainChart").textContent = "Percent Completion of Project";
+                    document.getElementById("tittleMainChart").textContent = "Current Project's Completion";
                     document.getElementById("tittleSubChart").textContent = "Total Project Completed";
 
                     const completionLabels = JSON.parse('${requestScope.completionLabels}');
@@ -227,7 +227,7 @@
                         {value: stat1, label: "Total Completed Project"},
                         {value: Number(stat2).toLocaleString(), label: "Total Budget"},
                         {value: Number(stat3).toLocaleString(), label: "Total Profit"},
-                        {value: stat4, label: "Top Department of number of completed Project"},
+                        {value: stat4, label: "Most Completed Project"},
                     ];
                 } else if (report === "employee") {
                     statsData = [

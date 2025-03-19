@@ -203,7 +203,13 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="text-center">
+                            <c:if test="${not empty error}">
+                                <div class="alert alert-danger mt-3">
+                                    ${error}
+                                </div>
+                            </c:if>
+                        </div>
                         <input type="submit" class="submit-button" value="Update"/>
                     </form>
                 </div>
@@ -249,11 +255,6 @@
                 let parentDiv = button.parentElement;
                 parentDiv.remove();
                 saveToLocalStorage();
-            }
-
-            function goBack(projectId) {
-                let frame = window.parent.document.getElementById('viewProjectFrame');
-                frame.src = "view-project?projectId=" + projectId;
             }
 
         </script>

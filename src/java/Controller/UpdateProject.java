@@ -71,68 +71,60 @@ public class UpdateProject extends HttpServlet {
         String projectName = request.getParameter("projectName");
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
-        String completionStr = request.getParameter("completion").replace("%", "");
+        String completionStr = request.getParameter("completion");
         String budgetStr = request.getParameter("budget").replace(",", "");
         String profitStr = request.getParameter("profit").replace(",", "");
         LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
         LocalDate endDate = null;
-        if (Integer.parseInt(completionStr) == 100) {
+        if (!completionStr.isEmpty() && Integer.parseInt(completionStr) == 100) {
             endDate = LocalDate.now();
         }
         LocalDate deadLine = request.getParameter("deadLine") != null && !request.getParameter("deadLine").isEmpty()
                 ? LocalDate.parse(request.getParameter("deadLine")) : null;
         int departmentId = Integer.parseInt(request.getParameter("departmentId"));
 
-        HttpSession session = request.getSession();
-
-        String errorNameMsg = "";
-        String errorDescriptionMsg = "";
-        String errorCompletionMsg = "";
-        String errorBudgetMsg = "";
-        String errorDateMsg = "";
-        String errorProfitMsg = "";
+        String error = "";
 
         if (projectName.trim().isEmpty()) {
-            errorNameMsg = "Project Name must not be empty.";
+            error += "Project Name must not be empty. <br/>";
         }
         if (ProjectUtil.isEmptyDescription(descriptionArray)) {
-            errorDescriptionMsg = "Description must not be empty.";
+            error += "Description must not be empty. <br/>";
         }
-        int completion = Integer.parseInt(completionStr);
+        int completion = 0;
+        try {
+            completion = Integer.parseInt(completionStr);
+        } catch (NumberFormatException e) {
+            error += "Completion must be a valid number. <br/>";
+        }
         if (completion < 0 || completion > 100) {
-            errorCompletionMsg = "Completion must be between 0 and 100.";
+            error += "Completion must be between 0 and 100. <br/>";
         }
         double budget = 0, profit = 0;
         try {
             budget = Double.parseDouble(budgetStr);
         } catch (NumberFormatException e) {
-            errorBudgetMsg = "Budget must be a valid number.";
+            error += "Budget must be a valid number. <br/>";
         }
 
         try {
             profit = Double.parseDouble(profitStr);
         } catch (NumberFormatException e) {
-            errorProfitMsg = "Profit must be a valid number.";
+            error += "Profit must be a valid number. <br/>";
         }
 
         if (budget < 0) {
-            errorBudgetMsg = "Budget must be a positive number.";
+            error += "Budget must be a positive number. <br/>";
         }
         if (profit < 0) {
-            errorProfitMsg = "Profit must be a positive number.";
+            error += "Profit must be a positive number. <br/>";
         }
         if (deadLine != null && deadLine.isBefore(startDate)) {
-            errorDateMsg = "Dead Line must be after Start Date.";
+            error += "Dead Line must be after Start Date. <br/>";
         }
 
-        if (!errorNameMsg.isEmpty() || !errorDescriptionMsg.isEmpty() || !errorCompletionMsg.isEmpty() || !errorBudgetMsg.isEmpty() || !errorProfitMsg.isEmpty() || !errorDateMsg.isEmpty()) {
-            request.setAttribute("errorNameMsg", errorNameMsg);
-            request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
-            request.setAttribute("errorCompletionMsg", errorCompletionMsg);
-            request.setAttribute("errorBudgetMsg", errorBudgetMsg);
-            request.setAttribute("errorDateMsg", errorDateMsg);
-            request.setAttribute("errorProfitMsg", errorProfitMsg);
-
+        if (!error.isEmpty()) {
+            request.setAttribute("error", error);
             request.setAttribute("projectCode", projectCode);
             request.setAttribute("projectName", projectName);
             request.setAttribute("descriptionArray", descriptionArray);

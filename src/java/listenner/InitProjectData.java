@@ -21,23 +21,17 @@ public class InitProjectData implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         List<Position> listPosition = new DAO.PositionDAO().selectAll();
         List<Department> listDepartment = new DAO.DepartmentDAO().selectAll();
-        List<EmployeeDTO> employees = new DAO.EmployeeDAO().selectEmployeesByPage(1, 10);
-        List<DepartmentDTO> departments = new DAO.DepartmentDAO().selectDepartmentsByPage(1, 10);
-        List<ProjectDTO> projects = new DAO.ProjectDAO().selectAllProjectDTO(1, 10);
+
         int itemsPerPage = 10;
 
         int totalEmployee = new DAO.EmployeeDAO().getTotalEmployees();
         int totalDepartment = new DAO.DepartmentDAO().getTotalDepartments();
         int totalProject = new DAO.ProjectDAO().getTotalProjects();
 
-        sce.getServletContext().setAttribute("itemsPerPage", itemsPerPage);
-
         sce.getServletContext().setAttribute("listPosition", listPosition);
         sce.getServletContext().setAttribute("listDepartment", listDepartment);
 
-        sce.getServletContext().setAttribute("employees", employees);
-        sce.getServletContext().setAttribute("departments", departments);
-        sce.getServletContext().setAttribute("projects", projects);
+        sce.getServletContext().setAttribute("itemsPerPage", itemsPerPage);
 
         sce.getServletContext().setAttribute("totalEmployee", totalEmployee);
         sce.getServletContext().setAttribute("totalDepartment", totalDepartment);

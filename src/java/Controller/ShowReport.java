@@ -31,11 +31,11 @@ public class ShowReport extends HttpServlet {
         switch (report) {
             case "employee" -> {
                 EmployeeDAO employeeDAO = new EmployeeDAO();
-                Map<String, Integer> employeeData = employeeDAO.getBasicSalaryPerEmployeeCode();
+                Map<String, Integer> employeeData = employeeDAO.getTopNBasicSalary(10);
                 Map<String, Integer> totalSalaryPerPosition = employeeDAO.getTotalBasicSalaryPerPosition();
-                int totalDirector = employeeDAO.getTotalDirectorPosition();
-                int totalEmployee = employeeDAO.getTotalEmployeePosition();
-                int totalManager = employeeDAO.getTotalManagerPosition();
+                int totalDirector = employeeDAO.getTotalEmployeeInPosition("GD");
+                int totalEmployee = employeeDAO.getTotalEmployeeInPosition("NV");
+                int totalManager = employeeDAO.getTotalEmployeeInPosition("QL");
                 int totalBasicSalary = employeeDAO.getTotalBasicSalary();
                 
                 List<String> salaryLabelsList = new ArrayList<>(employeeData.keySet());

@@ -345,10 +345,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public boolean insert(Employee t) {
         int result = 0;
         try {
-            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "INSERT INTO Employee(FirstName, LastName, BirthDate, Gender, Tel, Address, PositionID, DepartmentID, BasicSalary)\n"
                     + "VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement st = con.prepareStatement(sql);
@@ -362,15 +360,12 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             st.setInt(8, t.getDepartmentId());
             st.setInt(9, t.getBasicSalary());
 
-            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             result = st.executeUpdate();
 
-            // B4: Xử lý kết quả truy vấn
             System.out.println("You executed: " + sql);
             System.out.println("There are " + result + " rows affected!");
 
-            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -382,23 +377,18 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public boolean delete(Employee t) {
         int result = 0;
         try {
-            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "DELETE from Employee WHERE EmployeeCode=?";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, t.getEmployeeCode());
 
-            // B3: Thực thi câu lệnh sql
             System.out.println(sql);
             result = st.executeUpdate();
 
-            // B4: Xử lý kết quả truy vấn
             System.out.println("You executed: " + sql);
             System.out.println("There are " + result + " rows affected!");
 
-            // B5: Đóng kết nối
             JDBCUtil.closeConnection(con);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -444,10 +434,8 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     public boolean update(Employee t) {
         int result = 0;
         try {
-            // B1: Tạo kết nối đến CSDL
             Connection con = JDBCUtil.getConnection();
 
-            // B2: Tạo ra đối tượng PreparedStatement
             String sql = "UPDATE Employee\n"
                     + "SET FirstName=?, LastName=?, BirthDate=?, Gender=?, Tel=?, Address=?, PositionID=?, DepartmentID=?, BasicSalary=?\n"
                     + "WHERE EmployeeCode=?";
@@ -560,15 +548,16 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         }
         return isExist;
     }
-    
-    public Map<String, Integer> getBasicSalaryPerEmployeeCode() {
+
+    public Map<String, Integer> getTopNBasicSalary(int n) {
         Map<String, Integer> map = new HashMap<>();
-        String sql = "SELECT TOP(10) EmployeeCode, BasicSalary \n"
+        String sql = "SELECT TOP(?) EmployeeCode, BasicSalary \n"
                 + "FROM Employee\n"
                 + "ORDER BY BasicSalary DESC, EmployeeCode ASC;";
         Connection con = JDBCUtil.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);
+            st.setInt(1, n);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 map.put(rs.getString("EmployeeCode"), rs.getInt("BasicSalary"));
@@ -600,47 +589,16 @@ public class EmployeeDAO implements DAOInterface<Employee> {
         return map;
     }
 
-    public int getTotalDirectorPosition() {
-        String sql = "SELECT COUNT(*) AS TotalDirector\n"
+    public int getTotalEmployeeInPosition(String positionCode) {
+        String sql = "SELECT COUNT(*) AS Total\n"
                 + "FROM Employee e\n"
                 + "JOIN Position p ON e.PositionID = p.PositionID\n"
-                + "WHERE p.PositionCode = 'GD';";
+                + "WHERE p.PositionCode = ?;";
         try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, positionCode);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
-                return rs.getInt("TotalDirector");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public int getTotalEmployeePosition() {
-        String sql = "SELECT COUNT(*) AS TotalEmployee\n"
-                + "FROM Employee e\n"
-                + "JOIN Position p ON e.PositionID = p.PositionID\n"
-                + "WHERE p.PositionCode = 'NV';";
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("TotalEmployee");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public int getTotalManagerPosition() {
-        String sql = "SELECT COUNT(*) AS TotalManager\n"
-                + "FROM Employee e\n"
-                + "JOIN Position p ON e.PositionID = p.PositionID\n"
-                + "WHERE p.PositionCode = 'QL';";
-        try (Connection con = JDBCUtil.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-            ResultSet rs = st.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("TotalManager");
+                return rs.getInt("Total");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -660,11 +618,5 @@ public class EmployeeDAO implements DAOInterface<Employee> {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    public static void main(String[] args) {
-        EmployeeDAO eDao = new EmployeeDAO();
-        int test = eDao.getTotalEmployees("c");
-        System.out.println(test);
     }
 }
