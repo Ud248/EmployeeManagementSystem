@@ -16,7 +16,7 @@ CREATE TABLE Position(
 CREATE TABLE Department(
 	DepartmentID INT PRIMARY KEY IDENTITY,
 	DepartmentCode CHAR(7) DEFAULT '',
-	DepartmentName NVARCHAR(100) NOT NULL,
+	DepartmentName NVARCHAR(100) NOT NULL UNIQUE,
 	[Description] NVARCHAR(MAX) NOT NULL,
 	StartTime TIME NOT NULL,
 	EndTime TIME NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE Account(
 CREATE TABLE Project(
 	ProjectID INT NOT NULL PRIMARY KEY IDENTITY,
 	ProjectCode CHAR(7) DEFAULT '',
-	ProjectName NVARCHAR(100) NOT NULL,
+	ProjectName NVARCHAR(100) NOT NULL UNIQUE,
 	[Description] NVARCHAR(MAX),
 	Completion INT NOT NULL DEFAULT 0,
 	StartDate DATE NOT NULL,
