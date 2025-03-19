@@ -228,14 +228,14 @@
                         {value: stat1, label: "Total Completed Project"},
                         {value: Number(stat2).toLocaleString(), label: "Total Budget"},
                         {value: Number(stat3).toLocaleString(), label: "Total Profit"},
-                        {value: stat4, label: "Most Completed Project"},
+                        {value: stat4, label: "Most Completed Project"}
                     ];
                 } else if (report === "employee") {
                     statsData = [
                         {value: stat1, label: "Total Director Position"},
                         {value: stat2, label: "Total Manager Position"},
                         {value: stat3, label: "Total Employee Position"},
-                        {value: stat4, label: "Total Basic Salary"}
+                        {value: Number(stat4).toLocaleString(), label: "Total Basic Salary"}
                     ];
                 }
 
