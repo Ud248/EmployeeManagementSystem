@@ -5,7 +5,6 @@
 package Controller;
 
 import DAO.DepartmentDAO;
-import DTO.DepartmentDTO;
 import Model.Department;
 import Utils.DepartmentUtil;
 import java.io.IOException;
@@ -16,7 +15,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,7 +30,7 @@ public class InsertDepartment extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         DepartmentDAO dDao = new DepartmentDAO();
-        String departmentName = request.getParameter("departmentName");
+        String departmentName = request.getParameter("departmentName").trim();
         String telephone = request.getParameter("telephone");
         String openTime = request.getParameter("openTime");
         String[] descriptionArray = request.getParameterValues("description");
@@ -41,6 +39,9 @@ public class InsertDepartment extends HttpServlet {
         LocalTime endTime = null;
 
         String error = "";
+        if (departmentName.isEmpty()) {
+            error += "Department Name must not be empty <br/>";
+        }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }

@@ -9,7 +9,7 @@ USE ASM_PRJ301
 
 CREATE TABLE Position(
 	PositionID INT PRIMARY KEY IDENTITY,
-	PositionCode CHAR(2) NOT NULL UNIQUE, --kiểu GD, NV, QL,...
+	PositionCode CHAR(2) NOT NULL, --kiểu GD, NV, QL,...
 	PositionName NVARCHAR(50) NOT NULL
 )
 
@@ -46,75 +46,6 @@ CREATE TABLE Account(
 	[Password] VARCHAR(100) NOT NULL DEFAULT '123',
 	IsAdmin BIT NOT NULL DEFAULT 0 --1: True, 0: False
 	FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE
-)
-
-CREATE TABLE Insurance(
-	InsuranceID INT PRIMARY KEY IDENTITY,
-    EmployeeID INT NOT NULL,
-    InsuranceNumber VARCHAR(50),
-    [Type] NVARCHAR(100), -- Loại bảo hiểm (y tế, xã hội, thất nghiệp,...)
-    ExpiryDate DATE,
-	PricePerMonth DECIMAL(18,2) NOT NULL,
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE
-)
-
-CREATE TABLE Salary(
-    SalaryID INT PRIMARY KEY IDENTITY,             
-    EmployeeID INT NOT NULL,              
-    PayPeriodStart DATE NOT NULL,        
-    PayPeriodEnd DATE NOT NULL,            
-	NetSalary DECIMAL(18,2) NOT NULL,  
-    [Status] NVARCHAR(50) DEFAULT N'Đang xử lý' CHECK([Status] in (N'Đang xử lý', N'Hoàn thành', N'Từ chối')),
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE,
-	CHECK (PayPeriodEnd >= PayPeriodStart)
-)
-
-CREATE TABLE Attendance(
-	AttendanceID INT IDENTITY(1,1) PRIMARY KEY,  
-    EmployeeID INT NOT NULL,
-	CheckInDate Date NOT NULL,
-    CheckInTime TIME NOT NULL,  
-    [Status] NVARCHAR(50) DEFAULT N'Đang xử lý' CHECK (Status IN (N'Đang xử lý', N'Đúng giờ', N'Đi muộn')),
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE
-)
-
-CREATE TABLE Leave(
-	LeaveID INT PRIMARY KEY IDENTITY,
-EmployeeID INT NOT NULL,  
-    LeaveType NVARCHAR(50) NOT NULL CHECK (LeaveType IN (N'Phép năm', N'Nghỉ bệnh', N'Nghỉ không lương', N'Nghỉ thai sản', N'Khác')), 
-    StartDate DATE NOT NULL,  
-    EndDate DATE NOT NULL,  
-	TotalDay AS (DATEDIFF(DAY, EndDate, StartDate) + 1) PERSISTED,
-    Reason NVARCHAR(255) NULL,  
-    [Status] NVARCHAR(50) DEFAULT N'Chờ duyệt' CHECK (Status IN (N'Chờ duyệt', N'Đã duyệt', N'Từ chối')),
-    CreatedAt DATETIME DEFAULT GETDATE(),    
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE
-)
-
-CREATE TABLE BonusPenalty(
-    RecordID INT PRIMARY KEY IDENTITY, 
-    EmployeeID INT NOT NULL, 
-    RecordType BIT NOT NULL, --1 là thưởng, 0 là phạt  
-    Amount DECIMAL(18,2) NOT NULL CHECK (Amount > 0),  
-    Reason NVARCHAR(255) NOT NULL,  
-    RecordDate DATE DEFAULT GETDATE(),  
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE
-)
-
-CREATE TABLE [Shift](
-    ShiftID INT PRIMARY KEY IDENTITY,
-    ShiftName NVARCHAR(100) NOT NULL CHECK(ShiftName in (N'Ca Sáng', N'Ca Chiều', N'Ca Tối')),
-    StartTime TIME NOT NULL,
-    EndTime TIME NOT NULL
-)
-
-CREATE TABLE Work(
-    EmployeeID INT NOT NULL,
-    ShiftID INT NOT NULL,
-    WorkDate DATE NOT NULL,
-    FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (ShiftID) REFERENCES Shift(ShiftID) ON UPDATE CASCADE ON DELETE CASCADE
 )
 
 CREATE TABLE Project(

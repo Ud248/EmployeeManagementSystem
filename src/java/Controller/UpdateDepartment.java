@@ -62,7 +62,7 @@ public class UpdateDepartment extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String departmentCode = request.getParameter("departmentCode");
-        String departmentName = request.getParameter("departmentName");
+        String departmentName = request.getParameter("departmentName").trim();
         String telephone = request.getParameter("telephone");
         String openTime = request.getParameter("openTime");
         String[] descriptionArray = request.getParameterValues("description");
@@ -72,6 +72,9 @@ public class UpdateDepartment extends HttpServlet {
         DepartmentDAO dDao = new DepartmentDAO();
 
         String error = "";
+        if(departmentName.isEmpty()){
+            error += "Department Name must not be empty <br/>";
+        }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }
