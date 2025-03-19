@@ -563,9 +563,9 @@ public class EmployeeDAO implements DAOInterface<Employee> {
     
     public Map<String, Integer> getBasicSalaryPerEmployeeCode() {
         Map<String, Integer> map = new HashMap<>();
-        String sql = "SELECT EmployeeCode, BasicSalary \n"
+        String sql = "SELECT TOP(10) EmployeeCode, BasicSalary \n"
                 + "FROM Employee\n"
-                + "ORDER BY BasicSalary DESC;";
+                + "ORDER BY BasicSalary DESC, EmployeeCode ASC;";
         Connection con = JDBCUtil.getConnection();
         try {
             PreparedStatement st = con.prepareStatement(sql);

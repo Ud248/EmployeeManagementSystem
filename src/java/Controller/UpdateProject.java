@@ -35,7 +35,7 @@ public class UpdateProject extends HttpServlet {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         String completion = project.getCompletion() + "";
-        String startDate = project.getStartDate().format(formatter);
+        String startDate = project.getStartDate() + "";
         String endDate = "Chưa hoàn thiện";
         if (Integer.parseInt(completion) == 100) {
             endDate = LocalDate.now().format(formatter) + "";

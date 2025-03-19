@@ -69,7 +69,7 @@
                 const report = "${requestScope.report != null ?  requestScope.report : "employee"}";
 
                 if (report === "employee") {
-                    document.getElementById("tittleMainChart").textContent = "Basic Salary Per Employee";
+                    document.getElementById("tittleMainChart").textContent = "Top 10 Highest Employee's Basic Salary";
                     document.getElementById("tittleSubChart").textContent = "Total Basic Salary Per Position";
 
                     const salaryLabels = JSON.parse('${requestScope.salaryLabels}');
