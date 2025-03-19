@@ -68,7 +68,7 @@ public class UpdateProject extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String projectCode = request.getParameter("projectCode");
-        String projectName = request.getParameter("projectName");
+        String projectName = request.getParameter("projectName").trim();
         String[] descriptionArray = request.getParameterValues("description");
         String description = "";
         String completionStr = request.getParameter("completion");
@@ -83,6 +83,9 @@ public class UpdateProject extends HttpServlet {
 
         String error = "";
 
+        if (projectName.isEmpty()) {
+            error += "Project Name must not be empty <br/>";
+        }
         if (ProjectUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must not be empty. <br/>";
         }

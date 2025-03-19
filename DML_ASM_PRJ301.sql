@@ -182,11 +182,6 @@ VALUES
 (N'Nguyễn', N'Thu Hằng', '1991-04-23', N'Nữ', '0910655335', N'234 Đường B, Quận 2, Thành phố Hải Phòng', 3, 1, 14713100),
 (N'Hoàng', N'Anh B', '1997-06-21', N'Nam', '0943377894', N'234 Đường B, Quận 2, Thành phố Hải Phòng', 3, 2, 13449437);
 
-INSERT INTO [Shift](ShiftName, StartTime, EndTime) VALUES
-(N'Ca Sáng', '7:00', '12:00'),
-(N'Ca Chiều', '12:00', '17:00'),
-(N'Ca Tối', '17:00', '22:00')
-
 INSERT INTO Project (ProjectName, [Description], Completion, StartDate, EndDate, Deadline, Budget, Profit, DepartmentID)
 VALUES 
 -- Các dự án đã hoàn thành (Completion = 100%)
@@ -198,13 +193,28 @@ VALUES
 (N'Bộ phim Khoa học Viễn tưởng', N'Sản xuất phim điện ảnh chất lượng cao', 100, '2024-04-25', '2025-02-18', '2024-12-20', 15000000, 400000000, 6),
 (N'Dự án Xanh Hồi sinh Rừng', N'Tái tạo rừng tự nhiên', 100, '2024-01-10', '2024-08-29', '2025-07-15', 60000000, 180000000, 1),
 (N'Năng lượng Mặt trời Miền Trung', N'Triển khai hệ thống điện tái tạo', 100, '2023-10-01', '2024-07-14', '2025-05-30', 75000000, 200000000, 2),
+(N'Hệ thống Quản lý Tài chính', N'Ứng dụng theo dõi tài chính cá nhân', 100, '2023-09-15', '2024-08-01', '2025-03-30', 40000000, 150000000, 1),
+(N'Nghiên cứu Năng lượng Hydro', N'Ứng dụng hydro vào sản xuất', 100, '2024-01-10', '2024-12-20', '2025-10-10', 75000000, 250000000, 2),
+(N'Công viên Sinh thái Xanh', N'Xây dựng không gian xanh tại đô thị', 100, '2024-03-01', '2024-10-15', '2026-01-01', 65000000, 200000000, 3),
+(N'Nâng cấp Mạng Viễn thông 6G', N'Phát triển thế hệ mạng không dây mới', 100, '2023-07-20', '2024-06-10', '2025-12-15', 90000000, 300000000, 4),
+(N'Hệ thống AI Chăm sóc Khách hàng', N'Tích hợp AI vào hỗ trợ khách hàng', 100, '2024-04-05', '2025-02-01', '2025-09-30', 55000000, 180000000, 5),
+(N'Ứng dụng Thanh toán Điện tử', N'Triển khai hệ thống thanh toán không tiền mặt', 100, '2023-06-10', '2024-09-25', '2025-06-01', 30000000, 120000000, 6),
+(N'Khai thác và Tái chế Rác thải', N'Ứng dụng công nghệ xử lý rác tiên tiến', 100, '2023-12-01', '2024-10-10', '2025-11-20', 70000000, 220000000, 1),
+(N'Hệ thống Cảnh báo Thiên tai', N'Triển khai công nghệ giám sát thời tiết', 100, '2024-02-10', '2024-11-30', '2026-05-01', 65000000, 200000000, 2),
+(N'Mở rộng Trung tâm Dữ liệu Quốc gia', N'Nâng cấp hệ thống lưu trữ và bảo mật', 100, '2024-05-15', '2025-01-10', '2026-08-25', 85000000, 320000000, 3),
+(N'Chương trình Hỗ trợ Khởi nghiệp', N'Cung cấp vốn và đào tạo cho startup', 100, '2023-08-05', '2024-07-20', '2025-04-30', 45000000, 150000000, 4),
 -- Các dự án chưa hoàn thành (Completion < 100%)
 (N'Ứng dụng AI vào An ninh mạng', N'Bảo mật hệ thống dữ liệu', 80, '2024-05-10', NULL, '2025-12-31', 60000000, 180000000, 3),
 (N'Phát triển Thương mại Điện tử', N'Tối ưu hóa nền tảng bán hàng online', 50, '2023-11-15', NULL, '2024-09-10', 40000000, 120000000, 4),
 (N'Bảo tồn Di sản Văn hóa', N'Khôi phục và gìn giữ di sản', 65, '2024-02-01', NULL, '2026-08-20', 50000000, 140000000, 5),
 (N'Ứng dụng IoT vào Đô thị thông minh', N'Công nghệ quản lý đô thị', 75, '2024-03-10', NULL, '2026-06-30', 110000000, 330000000, 6),
 (N'Trung tâm Nghiên cứu Sinh học', N'Ứng dụng công nghệ gen', 35, '2024-03-20', NULL, '2026-11-15', 30000000, 90000000, 1),
-(N'Xây dựng Nhà Ở Xã Hội', N'Cung cấp nhà ở cho người lao động', 85, '2023-06-15', NULL, '2026-01-01', 100000000, 280000000, 6);
+(N'Xây dựng Nhà Ở Xã Hội', N'Cung cấp nhà ở cho người lao động', 85, '2023-06-15', NULL, '2026-01-01', 100000000, 280000000, 6),
+(N'Phát triển Nền tảng Metaverse', N'Triển khai công nghệ thực tế ảo', 70, '2024-06-01', NULL, '2026-09-15', 80000000, 250000000, 5),
+(N'Ứng dụng Blockchain trong Logistics', N'Quản lý chuỗi cung ứng bằng blockchain', 55, '2024-03-20', NULL, '2026-06-30', 75000000, 220000000, 6),
+(N'Nghiên cứu Trí tuệ Nhân tạo Y tế', N'Ứng dụng AI vào chẩn đoán bệnh', 45, '2024-02-15', NULL, '2025-12-31', 60000000, 180000000, 1),
+(N'Xây dựng Nhà Máy Sản xuất Pin Điện', N'Phát triển năng lượng sạch cho xe điện', 60, '2024-04-10', NULL, '2026-08-20', 90000000, 300000000, 2),
+(N'Triển khai Hệ thống Giao thông Thông minh', N'Ứng dụng công nghệ số vào quản lý giao thông', 50, '2023-10-10', NULL, '2025-07-01', 85000000, 280000000, 3);
 
 
 
