@@ -187,20 +187,25 @@ INSERT INTO [Shift](ShiftName, StartTime, EndTime) VALUES
 (N'Ca Chiều', '12:00', '17:00'),
 (N'Ca Tối', '17:00', '22:00')
 
-INSERT INTO Project (ProjectName, [Description], Completion, StartDate, Deadline, Budget, Profit, DepartmentID)
+INSERT INTO Project (ProjectName, [Description], Completion, StartDate, EndDate, Deadline, Budget, Profit, DepartmentID)
 VALUES 
-(N'Dự án Xây dựng Cầu A', N'Dự án xây dựng cầu vượt tại thành phố', 75, '2024-01-15', '2025-06-30', 5000000, 1200000, 1),
-(N'Dự án Phát triển Phần mềm B', N'Phát triển hệ thống quản lý khách hàng', 60, '2023-11-01', '2024-12-31', 200000, 50000, 2),
-(N'Dự án Nghiên cứu Y tế C', N'Nghiên cứu thuốc điều trị mới', 80, '2024-03-10', '2026-09-15', 800000, 150000, 3),
-(N'Dự án Nâng cấp Hệ thống D', N'Nâng cấp hệ thống máy chủ', 50, '2023-12-20', '2024-08-20', 300000, 90000, 4),
-(N'Dự án Xây dựng Nhà Máy E', N'Xây dựng nhà máy sản xuất mới', 40, '2024-02-05', '2025-11-01', 10000000, 2500000, 5),
-(N'Dự án Sản xuất Phim F', N'Bộ phim điện ảnh thể loại hành động', 30, '2024-04-25', '2024-12-20', 1500000, 400000, 6),
-(N'Dự án Trồng rừng G', N'Phục hồi rừng nhiệt đới tại địa phương', 55, '2024-01-10', '2025-07-15', 600000, 180000, 1),
-(N'Dự án Điện Mặt Trời H', N'Triển khai hệ thống điện mặt trời khu vực miền Trung', 90, '2023-10-01', '2025-05-30', 7500000, 2000000, 2),
-(N'Dự án Xây dựng Công Viên I', N'Công viên giải trí với nhiều trò chơi', 20, '2024-06-15', '2026-08-25', 5000000, 1200000, 3),
-(N'Dự án Cải thiện Giao thông J', N'Nâng cấp đường bộ trong khu đô thị', 65, '2023-09-05', '2025-02-18', 8500000, 3000000, 4),
-(N'Dự án Công nghệ AI K', N'Ứng dụng trí tuệ nhân tạo vào tự động hóa', 85, '2024-05-10', '2026-03-20', 5000000, 1500000, 5),
-(N'Dự án Mở rộng Cảng Biển L', N'Nâng cấp và mở rộng cảng biển phục vụ vận tải', 70, '2024-02-28', '2025-12-10', 9000000, 3200000, 6);
+-- Các dự án đã hoàn thành (Completion = 100%)
+(N'Xây dựng Cầu Long An', N'Xây cầu bắc qua sông giúp cải thiện giao thông', 100, '2023-01-15', '2024-07-30', '2025-06-30', 50000000, 120000000, 1),
+(N'Hệ thống CRM Doanh Nghiệp', N'Phát triển nền tảng quản lý khách hàng', 100, '2023-11-01', '2024-10-05', '2024-12-31', 20000000, 500000000, 2),
+(N'Nghiên cứu Vắc-xin COVID-25', N'Phát triển vắc-xin thế hệ mới', 100, '2024-03-10', '2024-12-12', '2026-09-15', 80000000, 150000000, 3),
+(N'Nâng cấp Hạ tầng CNTT', N'Hiện đại hóa hệ thống máy chủ', 100, '2023-12-20', '2024-11-10', '2024-08-20', 30000000, 900000000, 4),
+(N'Xây dựng Nhà Máy Điện Gió', N'Triển khai nhà máy năng lượng sạch', 100, '2024-02-05', '2024-12-01', '2025-11-01', 100000000, 250000000, 5),
+(N'Bộ phim Khoa học Viễn tưởng', N'Sản xuất phim điện ảnh chất lượng cao', 100, '2024-04-25', '2025-02-18', '2024-12-20', 15000000, 400000000, 6),
+(N'Dự án Xanh Hồi sinh Rừng', N'Tái tạo rừng tự nhiên', 100, '2024-01-10', '2024-08-29', '2025-07-15', 60000000, 180000000, 1),
+(N'Năng lượng Mặt trời Miền Trung', N'Triển khai hệ thống điện tái tạo', 100, '2023-10-01', '2024-07-14', '2025-05-30', 75000000, 200000000, 2),
+-- Các dự án chưa hoàn thành (Completion < 100%)
+(N'Ứng dụng AI vào An ninh mạng', N'Bảo mật hệ thống dữ liệu', 80, '2024-05-10', NULL, '2025-12-31', 60000000, 180000000, 3),
+(N'Phát triển Thương mại Điện tử', N'Tối ưu hóa nền tảng bán hàng online', 50, '2023-11-15', NULL, '2024-09-10', 40000000, 120000000, 4),
+(N'Bảo tồn Di sản Văn hóa', N'Khôi phục và gìn giữ di sản', 65, '2024-02-01', NULL, '2026-08-20', 50000000, 140000000, 5),
+(N'Ứng dụng IoT vào Đô thị thông minh', N'Công nghệ quản lý đô thị', 75, '2024-03-10', NULL, '2026-06-30', 110000000, 330000000, 6),
+(N'Trung tâm Nghiên cứu Sinh học', N'Ứng dụng công nghệ gen', 35, '2024-03-20', NULL, '2026-11-15', 30000000, 90000000, 1),
+(N'Xây dựng Nhà Ở Xã Hội', N'Cung cấp nhà ở cho người lao động', 85, '2023-06-15', NULL, '2026-01-01', 100000000, 280000000, 6);
+
 
 
 

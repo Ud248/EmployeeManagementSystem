@@ -26,9 +26,7 @@ public class DangXuat extends HttpServlet {
         HttpSession session = request.getSession();
         //Huy bo session
         session.invalidate();
-        String url = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-                + request.getContextPath();
-        response.sendRedirect(url + "/login.jsp");
+        response.sendRedirect("login");
     }
 
     @Override

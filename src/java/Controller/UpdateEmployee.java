@@ -126,8 +126,12 @@ public class UpdateEmployee extends HttpServlet {
             request.setAttribute("password", password);
             request.getRequestDispatcher("adminEmployeeUpdate.jsp").forward(request, response);
         } else {
-            boolean success = eDao.update(new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary));
+            Employee e = new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary);
+            boolean success = eDao.update(e);
             if (success) {
+                if(employeeCode.equals(((EmployeeDTO)session.getAttribute("employee")).getEmployeeCode())){
+                    session.setAttribute("employee", eDao.selectByEmployeeCode(new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary)));
+                }
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");
             } else {
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&errorMsg=Update failed. Please try again!");

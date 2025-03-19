@@ -216,7 +216,7 @@
             function sendRequestSearch(event) {
                 event.preventDefault();
                 let searchInputTag = document.getElementById("search");
-                if (searchInputTag.value === "") {
+                if (searchInputTag.value.trim() === "") {
                     window.location.href = "show-employee?page=1";
                 } else {
                     window.location.href = "show-employee?page=1&search=" + searchInputTag.value;
