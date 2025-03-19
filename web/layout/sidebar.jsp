@@ -52,7 +52,7 @@
                 <h4 class="title-side-bar">Account</h4>
                 <ul class="menu">
                     <li>
-                        <a href="changePassword.jsp">
+                        <a href="change-password">
                             <i class="ph-bold ph-arrows-clockwise"></i>
                             <span class="text">Change Password</span>
                         </a>

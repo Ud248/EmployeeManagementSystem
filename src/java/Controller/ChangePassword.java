@@ -26,7 +26,7 @@ public class ChangePassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        request.getRequestDispatcher("changePassword.jsp").forward(request, response);
     }
 
     @Override
@@ -34,35 +34,31 @@ public class ChangePassword extends HttpServlet {
             throws ServletException, IOException {
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");
-        String url = "";
         String error = "";
+        String changePasswordMsg = "";
 
         HttpSession session = request.getSession();
+
         Object obj = session.getAttribute("employee");
         EmployeeDTO employee = null;
         if (obj != null) {
             employee = (EmployeeDTO) obj;
         }
-        if (employee == null) {
-            error += "Bạn chưa đăng nhập vào hệ thống!";
-            url = "changePassword.jsp";
+        if (!oldPassword.equals(employee.getPassword())) {
+            error = "Mật khẩu hiện tại không chính xác!";
+            request.setAttribute("error", error);
+            request.getRequestDispatcher("changePassword.jsp").forward(request, response);
         } else {
-            if (!oldPassword.equals(employee.getPassword())) {
-                error = "Mật khẩu hiện tại không chính xác!";
-                url = "changePassword.jsp";
+            employee.setPassword(newPassword);
+            AccountDAO accoundDao = new AccountDAO();
+            if (accoundDao.update(employee)) {
+                changePasswordMsg = "Change password successfully !";
             } else {
-                employee.setPassword(newPassword);
-                AccountDAO accoundDao = new AccountDAO();
-                if (accoundDao.update(employee)) {
-                    error = "Mật khẩu đã thay đổi thành công";
-                    url = "changePassword.jsp";
-                } else {
-                    error = "Quá trình thay đổi mật khẩu không thành công !";
-                    url = "/changePassword.jsp";
-                }
+                changePasswordMsg = "Change password failed !";
             }
+            session.setAttribute("actionMsg", changePasswordMsg);
+            response.sendRedirect("change-password");
         }
-        request.setAttribute("error", error);
-        request.getRequestDispatcher(url).forward(request, response);
+
     }
 }
