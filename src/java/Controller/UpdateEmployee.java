@@ -100,12 +100,11 @@ public class UpdateEmployee extends HttpServlet {
         }
         try {
             basicSalary = Integer.parseInt(request.getParameter("basicSalary"));
+            if (basicSalary <= 0) {
+                error += "Basic salary must be greater than 0.<br>";
+            }
         } catch (NumberFormatException e) {
             error += "Please input a valid basic salary.<br>";
-        }
-
-        if (basicSalary <= 0) {
-            error += "Basic salary must be greater than 0.<br>";
         }
 
         if (eDao.isExistManagerInDepartmentForUpdate(departmentId, employeeCode) && positionId == 2) {

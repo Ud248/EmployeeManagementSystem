@@ -30,7 +30,7 @@ VALUES
 
     (N'Phòng Marketing', 
      N'Xây dựng thương hiệu và triển khai các chiến dịch truyền thông. Nghiên cứu thị trường và phân tích xu hướng. Đưa ra chiến lược tiếp cận khách hàng hiệu quả.',
-     '09:00:00', '17:00:00', '0978901234'),
+     '09:00:00', '17:00:00', '0978901234');
 
 	 /*
 	 --thêm để test phân trang
@@ -180,7 +180,7 @@ VALUES
 (N'Bùi', N'Bích Ngọc', '1997-05-21', N'Nữ', '0914612691', N'456 Đường D, Quận 4, Thành phố Hồ Chí Minh', 3, 5, 12564724),
 (N'Phạm', N'Quang D', '2001-05-03', N'Nam', '0989373632', N'456 Đường D, Quận 4, Thành phố Hồ Chí Minh', 3, 6, 13030618),
 (N'Nguyễn', N'Thu Hằng', '1991-04-23', N'Nữ', '0910655335', N'234 Đường B, Quận 2, Thành phố Hải Phòng', 3, 1, 14713100),
-(N'Hoàng', N'Anh B', '1997-06-21', N'Nam', '0943377894', N'234 Đường B, Quận 2, Thành phố Hải Phòng', 3, 2, 13449437),
+(N'Hoàng', N'Anh B', '1997-06-21', N'Nam', '0943377894', N'234 Đường B, Quận 2, Thành phố Hải Phòng', 3, 2, 13449437);
 
 INSERT INTO [Shift](ShiftName, StartTime, EndTime) VALUES
 (N'Ca Sáng', '7:00', '12:00'),

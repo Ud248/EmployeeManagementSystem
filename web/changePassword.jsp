@@ -35,6 +35,7 @@
                 <div class="input-box">
                     <input type="password" class="input-field" id="oldPassword" name="oldPassword" required>
                     <label for="oldPassword" class="label">Old password</label>
+                    <span style="color: red; margin: 10px 0px 0px 15px; font-size: 15px;">${empty error ? '' : error}</span>
                 </div>
                 <div class="input-box">
                     <input type="password" class="input-field" id="newPassword" name="newPassword" required>
@@ -45,9 +46,8 @@
                     <span id="msg" style="color: red; margin: 10px 0px 0px 0px; font-size: 15px"></span>
                     <label for="confirmNewPassword" class="label">Confirm new password</label>
                 </div>
-                <span style="color: red;">${empty error ? '' : error}</span>
                 <div class="input-box">
-                    <button class="btn-submit">Change Password</button>
+                    <button class="btn-submit" disabled>Change Password</button>
                     <a href="welcome" class="cancel_btn">Cancel</a>
                 </div>
             </form>
@@ -75,11 +75,14 @@
             function kiemTraMatKhau() {
                 let newPassword = document.getElementById("newPassword").value;
                 let confirmNewPassword = document.getElementById("confirmNewPassword").value;
+                let btnSubmit = document.querySelector(".btn-submit");
                 if (newPassword != confirmNewPassword) {
-                    document.getElementById("msg").innerHTML = "Mật khẩu không khớp!";
+                    document.getElementById("msg").innerHTML = "Mật khẩu nhập lại không khớp!";
+                    btnSubmit.disabled = true;
                     return false;
                 } else {
                     document.getElementById("msg").innerHTML = "";
+                    btnSubmit.disabled = false;
                     return true;
                 }
             }
