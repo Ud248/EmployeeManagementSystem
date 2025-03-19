@@ -45,7 +45,7 @@ public class ChangePassword extends HttpServlet {
             employee = (EmployeeDTO) obj;
         }
         if (!oldPassword.equals(employee.getPassword())) {
-            error = "Mật khẩu hiện tại không chính xác!";
+            error = "The old password is incorrect!";
             request.setAttribute("error", error);
             request.getRequestDispatcher("changePassword.jsp").forward(request, response);
         } else {
