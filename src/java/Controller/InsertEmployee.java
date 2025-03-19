@@ -63,8 +63,6 @@ public class InsertEmployee extends HttpServlet {
 
         if (tel == null || tel.trim().isEmpty()) {
             error += "Telephone is required.<br>";
-        } else if (!tel.matches("^0\\d{9}$")) {
-            error += "Telephone must have 10 digits and start with 0.<br>";
         } else if (eDao.isExistPhoneNumber(tel)) {
             error += "This phone number is already registered.<br>";
         }
@@ -87,12 +85,11 @@ public class InsertEmployee extends HttpServlet {
 
         try {
             basicSalary = Integer.parseInt(request.getParameter("basicSalary"));
+            if (basicSalary <= 0) {
+                error += "Basic salary must be greater than 0.<br>";
+            }
         } catch (NumberFormatException e) {
             error += "Please input a valid basic salary.<br>";
-        }
-
-        if (basicSalary <= 0) {
-            error += "Basic salary must be greater than 0.<br>";
         }
 
         if (eDao.isExistManagerInDepartment(departmentId) && positionId == 2) {
@@ -107,7 +104,7 @@ public class InsertEmployee extends HttpServlet {
             request.setAttribute("address", address);
             request.setAttribute("positionId", positionId);
             request.setAttribute("departmentId", departmentId);
-            request.setAttribute("basicSalary", basicSalary);
+            request.setAttribute("basicSalary", request.getParameter("basicSalary"));
             request.getRequestDispatcher("adminEmployeeInsert.jsp").forward(request, response);
         } else {
             boolean insertResult = eDao.insert(new Employee(firstName, lastName, birthdate, gender, tel, address, positionId, departmentId, basicSalary));

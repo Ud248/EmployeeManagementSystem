@@ -42,15 +42,8 @@ public class InsertProject extends HttpServlet {
         int departmentId = 0;
 
         String error = "";
-        
-        if (projectName.trim().isEmpty()) {
-            error += "Project Name must be not empty field <br/>";
-        }
         if (ProjectUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
-        }
-        if (startDateStr == null || startDateStr.trim().isEmpty()) {
-            error += "startDate is required <br/>";
         }
 
         LocalDate startDate = null;
@@ -62,8 +55,8 @@ public class InsertProject extends HttpServlet {
                 error += "Dead Line must be after Start Date. <br/>";
             }
         } catch (Exception e) {
-            error += "Invalid startDate format <br/>";
-            error += "Invalid deadLine format <br/>";
+            error += "Invalid Start Date format <br/>";
+            error += "Invalid Dead Line format <br/>";
         }
         try {
             departmentId = Integer.parseInt(request.getParameter("department"));
@@ -72,27 +65,19 @@ public class InsertProject extends HttpServlet {
         }
         double budget = 0, profit = 0;
         try {
-            if (budgetStr == null || budgetStr.isEmpty()) {
-                error += "Budget must not be empty. <br/>";
-            } else {
-                budget = Double.parseDouble(budgetStr);
-                if (budget < 0) {
-                    error += "Budget cannot be negative. <br/>";
-                }
+            budget = Double.parseDouble(budgetStr);
+            if (budget < 0) {
+                error += "Budget cannot be negative. <br/>";
             }
-            if (profitStr == null || profitStr.isEmpty()) {
-                error += "Profit must not be empty. <br/>";
-            } else {
-                profit = Double.parseDouble(profitStr);
-                if (profit < 0) {
-                    error += "Profit cannot be negative. <br/>";
-                }
+            profit = Double.parseDouble(profitStr);
+            if (profit < 0) {
+                error += "Profit cannot be negative. <br/>";
             }
         } catch (NumberFormatException e) {
             error += "Budget must be a valid number. <br/>";
             error += "Profit must be a valid number. <br/>";
         }
-        if (!error.isEmpty() ) {
+        if (!error.isEmpty()) {
             System.out.println("Validation errors found, returning to form");
             request.setAttribute("error", error);
             request.setAttribute("projectName", projectName);

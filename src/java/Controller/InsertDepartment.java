@@ -48,9 +48,6 @@ public class InsertDepartment extends HttpServlet {
         if (openTime.trim().isEmpty()) {
             error += "Open Time must be not empty field <br/>";
         }
-        if (telephone.trim().isEmpty()) {
-            error += "Telephone must be not empty field <br/>";
-        }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
             error += "Description must be not empty <br/>";
         }

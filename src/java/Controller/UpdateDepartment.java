@@ -70,41 +70,35 @@ public class UpdateDepartment extends HttpServlet {
         String description = "";
         LocalTime startTime = null;
         LocalTime endTime = null;
-
-        String errorTelephoneMsg = "";
-        String errorNameMsg = "";
-        String errorDescriptionMsg = "";
-        String errorOpenTimeMsg = "";
+        
+        String error= "";
         if (departmentName.trim().isEmpty()) {
-            errorNameMsg = "Department Name must be not empty field";
+            error += "Department Name must be not empty field <br/>";
         }
         if (openTime.trim().isEmpty()) {
-            errorOpenTimeMsg = "Open Time must be not empty field";
+            error += "Open Time must be not empty field <br/>";
         }
         if (telephone.trim().isEmpty()) {
-            errorTelephoneMsg = "Telephone must be not empty field";
+            error += "Telephone must be not empty field <br/>";
         }
         if (DepartmentUtil.isEmptyDescription(descriptionArray)) {
-            errorDescriptionMsg = "Description must be not empty";
+            error += "Description must be not empty <br/>";
         }
         if (!telephone.matches(REGEX_TELEPHONE)) {
-            errorTelephoneMsg = "Invalid telephone's format (10 characters contain number from 0 to 9)";
+            error += "Invalid telephone's format (10 characters contain number from 0 to 9) <br/>";
         }
         if (!openTime.matches(REGEX_OPENTIME)) {
-            errorOpenTimeMsg = "Invalid open time's format (HH:mm - HH:mm)";
+            error +="Invalid open time's format (HH:mm - HH:mm) <br/>";
         } else {
             LocalTime[] localTimeArray = DepartmentUtil.getStartAndEndTime(openTime);
             startTime = localTimeArray[0];
             endTime = localTimeArray[1];
             if (!DepartmentUtil.isValidOpenTimeValue(startTime, endTime)) {
-                errorOpenTimeMsg = "End Time must be after Start Time";
+                error += "End Time must be after Start Time <br/>";
             }
         }
-        if (!errorTelephoneMsg.isEmpty() || !errorDescriptionMsg.isEmpty() || !errorOpenTimeMsg.isEmpty()) {
-            request.setAttribute("errorNameMsg", errorNameMsg);
-            request.setAttribute("errorTelephoneMsg", errorTelephoneMsg);
-            request.setAttribute("errorDescriptionMsg", errorDescriptionMsg);
-            request.setAttribute("errorOpenTimeMsg", errorOpenTimeMsg);
+        if (!error.isEmpty()) {
+            request.setAttribute("error", error);
             request.setAttribute("departmentCode", departmentCode);
             request.setAttribute("departmentName", departmentName);
             request.setAttribute("telephone", telephone);

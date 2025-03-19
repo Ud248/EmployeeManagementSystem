@@ -123,7 +123,6 @@
                                     <div class="field-container">
                                         <label class="form-label">Department Name:</label>
                                         <input type="text" class="form-control detail" name="departmentName" value="${departmentName}" required>
-                                        <div class="error">${errorNameMsg}</div>
                                     </div>
                                 </div>                                
                             </div>
@@ -148,12 +147,10 @@
                                     <div class="field-container">
                                         <label class="form-label">Open Time:</label>
                                         <input type="text" class="form-control" name="openTime" value="${openTime}" required>
-                                        <div class="error">${errorOpenTimeMsg}</div>
                                     </div>
                                     <div class="field-container">
                                         <label class="form-label">Telephone:</label>
                                         <input type="text" class="form-control" name="telephone" value="${telephone}" required>
-                                        <div class="error">${errorTelephoneMsg}</div>
                                     </div>
                                 </div>
                             </div>
@@ -180,7 +177,6 @@
                                     <button type="button" id="btn-add-description" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center mt-2" style="width: 30px; height: 30px;" onclick="addInputTag()">
                                         <i class="fa fa-plus"></i>
                                     </button>
-                                    <div class="error">${errorDescriptionMsg}</div>
                                 </div>
                             </div>
 
@@ -193,6 +189,13 @@
                                 </div>
                             </div>
                         </div>
+
+                        <c:if test="${not empty error}">
+                            <div class="alert alert-danger mt-3">
+                                ${error}
+                            </div>
+                        </c:if>
+                                
                         <input type="submit" class="submit-button" value="Update"/>
                     </form>
                 </div>

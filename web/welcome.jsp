@@ -20,15 +20,22 @@
 
     <body>
         <c:if test="${sessionScope.employee != null}">
-        <jsp:include page="./layout/sidebar.jsp" />
+            <jsp:include page="./layout/sidebar.jsp" />
         </c:if>
-        
+
         <div class="container-main">
             <!-- Hero Section -->
             <div class="hero-section">
                 <h1>Welcome to Employee & Department Management System</h1>
                 <p>Effortless, efficient, and professional employee management</p>
-                <a href="login" class="btn-primary">Start now</a>
+                <c:choose>
+                    <c:when test="${sessionScope.employee == null}">
+                        <a href="login" class="btn-primary">Start Now</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="show-employee?page=1" class="btn-primary">Explore Now</a>
+                    </c:otherwise>
+                </c:choose>
             </div>
 
             <div class="content-row">

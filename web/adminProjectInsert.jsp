@@ -14,6 +14,25 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
+            :root {
+                --primary-color: #0D1936;
+                --secondary-color: #535354;
+                --background-color: #EFEFEF;
+                --shadow-color: rgba(0, 0, 0, 0.1);
+                --white-color: #FFF;
+                --black-color: #000;
+                --input-border-color: #E3E4E6;
+                --transition-3s: 0.3s;
+            }
+
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: var(--background-color);
+            }
+
             .insert-button {
                 background-color: #0d6efd;
                 color: white;
@@ -94,11 +113,7 @@
                                 <label class="form-label">Project Name:</label>
                             </div>                                  
                             <div class="col-md-8 position-relative">
-                                <input type="text" class="form-control ${not empty errorNameMsg ? 'is-invalid' : ''}" 
-                                       name="projectName" value="${projectName}" 
-                                       onfocus="hideError(this)" 
-                                       onblur="showError(this, '${errorNameMsg}')">
-                                <div class="custom-error-tooltip">${errorNameMsg}</div>
+                                <input type="text" class="form-control" name="projectName" value="${projectName}" required>
                             </div>
                         </div>
                         <div class="section-divider"></div>
@@ -109,7 +124,7 @@
                                     <label class="form-label">Start Project At:</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="date" class="form-control ${not empty errorStartDateMsg ? 'is-invalid' : ''}" name="startDate" value="${startDate}">
+                                    <input type="date" class="form-control" name="startDate" value="${startDate}" required>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -117,7 +132,7 @@
                                     <label class="form-label">Dead Line:</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="date" class="form-control ${not empty errorDeadLineMsg ? 'is-invalid' : ''}" name="deadLine" value="${deadLine}">
+                                    <input type="date" class="form-control" name="deadLine" value="${deadLine}" required>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -125,7 +140,7 @@
                                     <label class="form-label">Budget:</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="number" class="form-control ${not empty errorBudgetMsg ? 'is-invalid' : ''}" name="budget" value="${budget}">
+                                    <input type="number" class="form-control" name="budget" value="${budget}" required>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -134,7 +149,7 @@
                                     <label class="form-label">Profit:</label>
                                 </div>
                                 <div class="col-md-8">
-                                    <input type="number" class="form-control ${not empty errorProfitMsg ? 'is-invalid' : ''}" name="profit" value="${profit}">
+                                    <input type="number" class="form-control" name="profit" value="${profit}" required>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -189,7 +204,7 @@
                             </div>
                         </div>
 
-                        <div class="text-center">
+                        <div>
                             <c:if test="${not empty error}">
                                 <div class="alert alert-danger mt-3">
                                     ${error}

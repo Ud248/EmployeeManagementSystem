@@ -227,7 +227,7 @@
                             </div>
                         </div> 
 
-                        <div class="text-center">
+                        <div>
                             <c:if test="${not empty error}">
                                 <div class="alert alert-danger mt-3">
                                     ${error}

@@ -23,6 +23,24 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
+            :root {
+                --primary-color: #0D1936;
+                --secondary-color: #535354;
+                --background-color: #EFEFEF;
+                --shadow-color: rgba(0, 0, 0, 0.1);
+                --white-color: #FFF;
+                --black-color: #000;
+                --input-border-color: #E3E4E6;
+                --transition-3s: 0.3s;
+            }
+
+            body{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: var(--background-color);
+            }
 
             /* CSS cho nút Edit */
             .edit-button {
