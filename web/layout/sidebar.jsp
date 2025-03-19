@@ -36,7 +36,7 @@
                     </li>
                     <li>
                         <a href="show-project?page=1">
-                            <i class="ph-bold ph-clipboard-text"></i>
+                            <i class="ph ph-briefcase"></i>
                             <span class="text">Project Management</span>
                         </a>
                     </li>
