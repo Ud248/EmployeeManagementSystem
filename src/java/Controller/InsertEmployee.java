@@ -1,8 +1,5 @@
 package Controller;
 
-import DAO.EmployeeDAO;
-import DTO.DepartmentDTO;
-import DTO.EmployeeDTO;
 import Model.Employee;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -25,23 +22,30 @@ public class InsertEmployee extends HttpServlet {
         String error = "";
         EmployeeDAO eDao = new EmployeeDAO();
 
-        String fullname = request.getParameter("fullname");
+        String fullname = request.getParameter("fullname").trim();
         String birthdateStr = request.getParameter("birthdate");
         String gender = request.getParameter("gender");
         String tel = request.getParameter("telephone");
-        String address = request.getParameter("address");
+        String address = request.getParameter("address").trim();
         int positionId = 0, departmentId = 0, basicSalary = 0;
         HttpSession session = request.getSession();
         String insertMsg = "";
 
-        String firstName = "", lastName = "";
-        String[] fullnameArray = fullname.split("\\s+");
-        lastName = fullnameArray[0];
-        for (int i = 1; i < fullnameArray.length; i++) {
-            firstName += fullnameArray[i] + " ";
+        if (address == null || address.isEmpty()) {
+            error += "Address is required.<br>";
         }
-        firstName = firstName.trim();
 
+        if (fullname == null || fullname.isEmpty()) {
+            error += "Full name is required.<br>";
+        } else {
+            String firstName = "", lastName = "";
+            String[] fullnameArray = fullname.split("\\s+");
+            lastName = fullnameArray[0];
+            for (int i = 1; i < fullnameArray.length; i++) {
+                firstName += fullnameArray[i] + " ";
+            }
+            firstName = firstName.trim();
+        }
         LocalDate birthdate = null;
         try {
             birthdate = LocalDate.parse(birthdateStr);
@@ -52,6 +56,7 @@ public class InsertEmployee extends HttpServlet {
         if (gender.equals("None")) {
             error += "Please select your gender.<br>";
         }
+
         if (eDao.isExistPhoneNumber(tel)) {
             error += "This phone number is already registered.<br>";
         }

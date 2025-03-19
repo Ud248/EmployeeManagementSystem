@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="./css/styleReport.css">
         <script src="https://unpkg.com/@phosphor-icons/web"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="icon" type="image/x-icon" href="./image/Logo.jpg">
     </head>
     <body>
 

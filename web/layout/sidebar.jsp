@@ -43,7 +43,7 @@
                     <li>
                         <a href="show-report?report=employee" >
                             <i class="ph-bold ph-clipboard-text"></i>
-                            <span class="text">Report Project</span>
+                            <span class="text">Report Dashboard</span>
                         </a>
                     </li>
                 </ul>

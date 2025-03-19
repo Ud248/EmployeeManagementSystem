@@ -57,25 +57,32 @@ public class UpdateEmployee extends HttpServlet {
         String url = "";
         HttpSession session = request.getSession();
 
-        String fullname = request.getParameter("fullname");
+        String fullname = request.getParameter("fullname").trim();
         String birthdateStr = request.getParameter("birthdate");
         String gender = request.getParameter("gender");
         String tel = request.getParameter("tel");
-        String address = request.getParameter("address");
+        String address = request.getParameter("address").trim();
         String employeeCode = request.getParameter("employeeCode");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         int positionId = 0, departmentId = 0, basicSalary = 0;
 
         EmployeeDAO eDao = new EmployeeDAO();
-
-        String[] fullnameArray = fullname.split("\\s+");
-        String lastname = fullnameArray[0];
-        String firstname = "";
-        for (int i = 1; i < fullnameArray.length; i++) {
-            firstname += fullnameArray[i] + " ";
+        if (address == null || address.isEmpty()) {
+            error += "Address is required.<br>";
         }
-        firstname = firstname.trim();
+
+        String firstname = "", lastname = "";
+        if (fullname == null || fullname.isEmpty()) {
+            error += "Full name is required.<br>";
+        } else {
+            String[] fullnameArray = fullname.split("\\s+");
+            lastname = fullnameArray[0];
+            for (int i = 1; i < fullnameArray.length; i++) {
+                firstname += fullnameArray[i] + " ";
+            }
+            firstname = firstname.trim();
+        }
 
         LocalDate birthdate = null;
         try {
@@ -129,7 +136,7 @@ public class UpdateEmployee extends HttpServlet {
             Employee e = new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary);
             boolean success = eDao.update(e);
             if (success) {
-                if(employeeCode.equals(((EmployeeDTO)session.getAttribute("employee")).getEmployeeCode())){
+                if (employeeCode.equals(((EmployeeDTO) session.getAttribute("employee")).getEmployeeCode())) {
                     session.setAttribute("employee", eDao.selectByEmployeeCode(new Employee(employeeCode, firstname, lastname, birthdate, gender, tel, address, positionId, departmentId, basicSalary)));
                 }
                 response.sendRedirect("view-employee?employeeCode=" + employeeCode + "&successMsg=Update successful!");

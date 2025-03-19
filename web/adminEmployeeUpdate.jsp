@@ -186,7 +186,7 @@
                                 <div class="col-md-6">
                                     <div class="field-container">
                                         <label class="form-label">Basic Salary:</label>
-                                        <input type="text" class="form-control detail" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary" required>
+                                        <input type="number" class="form-control detail" value="${empty basicSalary ? '0' : basicSalary}" name="basicSalary" required>
                                     </div>
                                 </div>
                             </div>
