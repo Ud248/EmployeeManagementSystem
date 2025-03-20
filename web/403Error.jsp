@@ -65,7 +65,7 @@
                 <a href="admin.jsp">Back to home</a>
             </c:when>
             <c:otherwise>
-                <a href="employee.jsp">Back to home</a>
+                <a href="login">Back to Login</a>
             </c:otherwise>
         </c:choose>
     </body>

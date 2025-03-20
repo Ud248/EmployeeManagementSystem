@@ -36,7 +36,6 @@ public class Login extends HttpServlet {
             throws ServletException, IOException {
         String username = request.getParameter("username").trim();
         String password = request.getParameter("password").trim();
-        String url = "";
 
         Account a = new Account();
         a.setUsername(username);
@@ -53,6 +52,10 @@ public class Login extends HttpServlet {
             if (accountDAO.isAdmin(username)) {
                 session.setAttribute("isAdmin", true);
                 response.sendRedirect("welcome");
+            }
+            else{
+                response.sendRedirect("403-error");
+                session.invalidate();
             }
         } else {
             request.setAttribute("username", username);
