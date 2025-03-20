@@ -11,7 +11,7 @@
         return;
     }
     else if(!(boolean)session.getAttribute("isAdmin")){
-        response.sendRedirect("403Error.jsp");
+        response.sendRedirect("403-error");
         return;
     }
 %>

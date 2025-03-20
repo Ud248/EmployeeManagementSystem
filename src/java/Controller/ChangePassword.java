@@ -6,9 +6,7 @@ package Controller;
 
 import DAO.AccountDAO;
 import DTO.EmployeeDTO;
-import Model.Employee;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

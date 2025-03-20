@@ -8,11 +8,8 @@ import DAO.AccountDAO;
 import DAO.EmployeeDAO;
 import DTO.EmployeeDTO;
 import Model.Account;
-import Model.Employee;
 import java.io.IOException;
-import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
  */
 //@WebServlet(urlPatterns={"/login"})
 public class Login extends HttpServlet {
-    
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -52,8 +49,8 @@ public class Login extends HttpServlet {
             if (accountDAO.isAdmin(username)) {
                 session.setAttribute("isAdmin", true);
                 response.sendRedirect("welcome");
-            }
-            else{
+            } else {
+                session.setAttribute("isAdmin", false);
                 response.sendRedirect("403-error");
                 session.invalidate();
             }

@@ -35,10 +35,10 @@ public class InsertEmployee extends HttpServlet {
             error += "Address is required.<br>";
         }
 
+        String firstName = "", lastName = "";
         if (fullname == null || fullname.isEmpty()) {
             error += "Full name is required.<br>";
         } else {
-            String firstName = "", lastName = "";
             String[] fullnameArray = fullname.split("\\s+");
             lastName = fullnameArray[0];
             for (int i = 1; i < fullnameArray.length; i++) {
