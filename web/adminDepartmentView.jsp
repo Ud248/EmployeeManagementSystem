@@ -133,7 +133,6 @@
                                     <label class="form-label">Total Employee:</label>
                                     <span class="detail">
                                         ${totalEmployee} 
-                                        <a style="padding-left: 50px;" href="" onclick="window.parent.location.href = 'show-employee?page=1&search=${departmentName}';">View Detail</a>
                                     </span>
                                     
                                 </div>
