@@ -74,25 +74,33 @@
 
 
                 <!-- Pagination -->
-                <div class="pagination">
-                    <c:if test="${currentPage > 1}">
-                        <a href="show-employee?page=${currentPage - 1}${search != null ? '&search='.concat(search) : ''}">&laquo; Previous</a>
-                    </c:if>
+                <c:if  test="${totalPage > 0}">
+                    <div class="pagination">
 
-                    <c:forEach begin="1" end="${totalPage}" var="i">
-                        <a href="show-employee?page=${i}${search != null ? '&search='.concat(search) : ''}" 
-                           class="${i == currentPage ? 'active' : ''}">${i}</a>
-                    </c:forEach>
+                        <c:if test="${currentPage > 1}">
+                            <a href="show-employee?page=${currentPage - 1}${search != null ? '&search='.concat(search) : ''}">&laquo; Previous</a>
+                        </c:if>
 
-                    <c:if test="${currentPage < totalPage}">
-                        <a href="show-employee?page=${currentPage + 1}${search != null ? '&search='.concat(search) : ''}"">Next &raquo;</a>
-                    </c:if>
-                </div>
+                        <c:forEach begin="1" end="${totalPage}" var="i">
+                            <a href="show-employee?page=${i}${search != null ? '&search='.concat(search) : ''}" 
+                               class="${i == currentPage ? 'active' : ''}">${i}</a>
+                        </c:forEach>
 
-                <div class="page-info">
-                    Showing page ${currentPage} of ${totalPage}
-                    (Total: ${applicationScope.totalEmployee} employees)
-                </div>
+                        <c:if test="${currentPage < totalPage}">
+                            <a href="show-employee?page=${currentPage + 1}${search != null ? '&search='.concat(search) : ''}"">Next &raquo;</a>
+                        </c:if>
+
+
+                    </div>
+
+                    <div class="page-info">
+                        Showing page ${currentPage} of ${totalPage}
+                        (Total: ${applicationScope.totalEmployee} employees)
+                    </div>
+                </c:if>
+                <c:if test="${totalPage == 0}">
+                    <div style="text-align: center; color: #666; margin-top: 10px;"><span >No data</span></div>
+                </c:if>
             </div>
         </div>
 
@@ -224,39 +232,38 @@
             }
 
             function highlightSearchResults(text) {
-            let cells = document.querySelectorAll(".table tbody td:not(.select-column)");
-            cells.forEach(cell => {
-                let anchorTag = cell.querySelector("a");
-                if (anchorTag) {
-                    let innerHTML = anchorTag.innerHTML;
-                    let index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
-                    if (index !== -1) { 
-                        innerHTML =
-                            innerHTML.substring(0, index) +
-                            "<span style='background-color: yellow;'>" +
-                            innerHTML.substring(index, index + text.length) +
-                            "</span>" +
-                            innerHTML.substring(index + text.length);
-                        anchorTag.innerHTML = innerHTML;
-                    }
-                }
-                else {
-                    let innerHTML = cell.innerHTML;
-                    let index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
-                    if (index !== -1) { 
-                        innerHTML =
-                            innerHTML.substring(0, index) +
-                            "<span style='background-color: yellow;'>" +
-                            innerHTML.substring(index, index + text.length) +
-                            "</span>" +
-                            innerHTML.substring(index + text.length);
+                let cells = document.querySelectorAll(".table tbody td:not(.select-column)");
+                cells.forEach(cell => {
+                    let anchorTag = cell.querySelector("a");
+                    if (anchorTag) {
+                        let innerHTML = anchorTag.innerHTML;
+                        let index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
+                        if (index !== -1) {
+                            innerHTML =
+                                    innerHTML.substring(0, index) +
+                                    "<span style='background-color: yellow;'>" +
+                                    innerHTML.substring(index, index + text.length) +
+                                    "</span>" +
+                                    innerHTML.substring(index + text.length);
+                            anchorTag.innerHTML = innerHTML;
+                        }
+                    } else {
+                        let innerHTML = cell.innerHTML;
+                        let index = innerHTML.toLowerCase().indexOf(text.toLowerCase());
+                        if (index !== -1) {
+                            innerHTML =
+                                    innerHTML.substring(0, index) +
+                                    "<span style='background-color: yellow;'>" +
+                                    innerHTML.substring(index, index + text.length) +
+                                    "</span>" +
+                                    innerHTML.substring(index + text.length);
 
-                        cell.innerHTML = innerHTML;
+                            cell.innerHTML = innerHTML;
+                        }
                     }
-                }
-            });
-        }
-            
+                });
+            }
+
         </script>
     </body>
 </html>
