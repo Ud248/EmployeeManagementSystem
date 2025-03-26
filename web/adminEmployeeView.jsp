@@ -196,14 +196,6 @@
                                     <span class="detail">${username}</span>
                                 </div>
                             </div>
-
-                            <!-- Right Column -->
-                            <div class="col-md-6">
-                                <div class="field-container">
-                                    <label class="form-label">Password:</label>
-                                    <span class="detail">${password}</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

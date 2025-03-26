@@ -151,7 +151,7 @@
                             </div>
                         </div>
 
-                        <!--<div class="section-divider"></div>-->
+                        <div class="section-divider"></div>
 
                         <!-- EMPLOYMENT INFORMATION SECTION -->
                         <div class="mb-3">
@@ -192,7 +192,7 @@
                             </div>
                         </div>
 
-                        <!--<div class="section-divider"></div>-->
+                        <div class="section-divider"></div>
 
                         <!-- ACCOUNT INFORMATION SECTION -->
                         <div class="mb-3">
@@ -204,15 +204,6 @@
                                         <label class="form-label">Username:</label>
                                         <span class="detail">${username}</span>
                                         <input type="hidden" name="username" value="${username}">
-                                    </div>
-                                </div>
-
-                                <!-- Right Column -->
-                                <div class="col-md-6">
-                                    <div class="field-container">
-                                        <label class="form-label">Password:</label>
-                                        <span class="detail">${password}</span>
-                                        <input type="hidden" name="password" value="${password}">
                                     </div>
                                 </div>
                             </div>
