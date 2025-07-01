@@ -47,9 +47,9 @@ EmployeeManagementSystem/
 - DML_ASM_PRJ301.sql
 
 🔧 Cấu hình kết nối trong Utils/JDBCUtil.java
-private final String jdbcURL = "jdbc:sqlserver://localhost:1433;databaseName=ASM_PRJ301";
-private final static String userID = "sa";; // hoặc tên user SQL khác
-private final static String password = "123"; // hoặc password SQL khác
+- private final String jdbcURL = "jdbc:sqlserver://localhost:1433;databaseName=ASM_PRJ301";
+- private final static String userID = "sa";; // hoặc tên user SQL khác
+- private final static String password = "123"; // hoặc password SQL khác
 
 🔃 Chạy project
 - Mở project bằng NetBeans
