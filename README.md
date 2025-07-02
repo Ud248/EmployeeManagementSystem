@@ -29,7 +29,7 @@ Hệ thống quản lý nhân viên cơ bản viết bằng **Java Servlet, JSP,
 
 ```plaintext
 EmployeeManagementSystem/
-├── web/              # Giao diện người dùng JSP
+├── web/                    # Giao diện người dùng JSP
 ├── web/WEB-INF/web.xml     # Cấu hình Servlet
 ├── Controller/             # Servlet xử lý logic 
 ├── DAO/                    # Lớp truy xuất CSDL
